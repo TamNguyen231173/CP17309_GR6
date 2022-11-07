@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "645380439722",
+    "project_id": "onlinemusic-19f2b",
+    "storage_bucket": "onlinemusic-19f2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645380439722:android:cfc29b9a889e751a801ad3",
+        "android_client_info": {
+          "package_name": "com.workshops.onlinemusicplayer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "645380439722-eoo0p22nij1ghtu4jk5gfr0baoisk5hk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-dwf1TKA96yofNcWjQP1HO9PciZloW5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "645380439722-eoo0p22nij1ghtu4jk5gfr0baoisk5hk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
