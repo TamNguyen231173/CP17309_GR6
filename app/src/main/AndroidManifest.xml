@@ -16,8 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OnlineMusicPlayer"
         tools:targetApi="31">
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+
         <activity
-            android:name=".MusicActivity"
+            android:name=".view.MusicActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

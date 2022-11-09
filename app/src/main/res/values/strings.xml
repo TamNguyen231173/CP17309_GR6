@@ -1,12 +1,15 @@
 <resources>
     <string name="app_name">OnlineMusicPlayer</string>
 
+    <string name="facebook_app_id">820152965919460</string>
+    <string name="facebook_client_token">bd2be0b25d2eb0772a94bd644e2b3827</string>
+
     <string name="enjoy_listen">Enjoy listening to music</string>
     <string name="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis enim purus sed phasellus. Cursus ornare id scelerisque aliquam.</string>
     <string name="get_started">Get started</string>
     <string name="if_you_need">If you need any support</string>
     <string name="click_here"><u><i>Click here</i></u></string>
-    <string name="forgot_passsword"><u><i>Forgot password?</i></u></string>
+    <string name="forgot_password"><u><i>Forgot password?</i></u></string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_new_album">Happier Than Ever</string>
     <string name="author_new_album">billie_eili</string>

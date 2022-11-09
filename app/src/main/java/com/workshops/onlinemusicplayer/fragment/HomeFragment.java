@@ -21,7 +21,7 @@ public class HomeFragment extends Fragment {
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout_fragment);
         ViewPager2 viewPager2 = view.findViewById(R.id.view_pager);
-
+        viewPager2.setSaveEnabled(false);
         TrendAdapter demoAdapter = new TrendAdapter(getChildFragmentManager(), getLifecycle());
         viewPager2.setAdapter(demoAdapter);
 
