@@ -25,7 +25,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     EditText edtName, edtEmail, edtPassword;
     Button btn_register;
-    ImageView btn_gg;
     TextView btn_login;
 
     FirebaseAuth mAuth;
@@ -40,7 +39,6 @@ public class RegisterActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edt_register_email);
         edtPassword = findViewById(R.id.edt_register_password);
         btn_register = findViewById(R.id.btn_register);
-        btn_gg = findViewById(R.id.btn_logo_gg);
         btn_login = findViewById(R.id.btn_move_login);
 
         mAuth = FirebaseAuth.getInstance();

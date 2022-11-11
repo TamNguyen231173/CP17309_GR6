@@ -150,7 +150,7 @@
                     android:layout_marginTop="43dp"
                     android:layout_marginEnd="29dp"
                     android:text="See More"
-                    android:textColor="#131313"
+                    android:textAppearance="@style/see_more"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
@@ -159,8 +159,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:layout_marginTop="26dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textView10"
-                    tools:layout_editor_absoluteX="34dp" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
