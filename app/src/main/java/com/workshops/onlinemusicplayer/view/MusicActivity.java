@@ -2,7 +2,6 @@ package com.workshops.onlinemusicplayer.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -105,10 +104,10 @@ public class MusicActivity extends AppCompatActivity {
     }
 
     public void KhoiTaoNhac(){
-        mediaPlayer = MediaPlayer.create(MusicActivity.this, arraySong.get(position).getFile());
-        song_img.setBackgroundResource(arraySong.get(position).getAnh());
+        mediaPlayer = MediaPlayer.create(MusicActivity.this, arraySong.get(position).getResource());
+        song_img.setBackgroundResource(arraySong.get(position).getImage());
         txtbaihat.setText(arraySong.get(position).getTitle());
-        txttencasi.setText(arraySong.get(position).getName());
+        txttencasi.setText(arraySong.get(position).getSinger());
     }
 
     private void ThoiGian(){

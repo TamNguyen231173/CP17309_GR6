@@ -1,22 +1,5 @@
 package com.workshops.onlinemusicplayer.service;
 
-<<<<<<< HEAD
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
-import android.os.IBinder;
-
-import androidx.annotation.Nullable;
-
-import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.broadcast_receiver.MusicReceiver;
-
-import java.security.Provider;
-
-public class MusicService extends Service {
-=======
 import static com.workshops.onlinemusicplayer.model.MyApplication.CHANNEL_ID;
 
 import android.app.Notification;
@@ -51,14 +34,11 @@ public class MusicService extends Service {
     private MediaPlayer player;
     private boolean isPlaying;
     private Song mSong;
->>>>>>> eb10f9575a ae2e474677a3daf15074e85f138e6e
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-<<<<<<< HEAD
-=======
 
     @Override
     public void onCreate() {
@@ -84,7 +64,7 @@ public class MusicService extends Service {
 
     private void startPlayMediaService(Song song) {
         if(player == null){
-            player = MediaPlayer.create(getApplicationContext(),song.getResouce());
+            player = MediaPlayer.create(getApplicationContext(),song.getResource());
         }
         player.start();
         player.setVolume(100,100);
@@ -135,7 +115,7 @@ public class MusicService extends Service {
                 .setSmallIcon(R.drawable.ic_logo_spotify_24)
                 .setSubText("GR6")
                 .setContentTitle(song.getTitle())
-                .setContentText(song.getSingle())
+                .setContentText(song.getSinger())
                 .setLargeIcon(bitmap)
                 // Apply the media style template
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
@@ -144,7 +124,7 @@ public class MusicService extends Service {
 
         if(isPlaying){
             notificationBuilder
-            // Add media control buttons that invoke intents in your media service
+                    // Add media control buttons that invoke intents in your media service
                     .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
                     .addAction(R.drawable.ic_pause, "Pause", getPendingIntent(this,ACTION_PAUSE)) //#1             // #1
                     .addAction(R.drawable.ic_skip_next, "Next", null)//#2
@@ -162,7 +142,7 @@ public class MusicService extends Service {
 
         startForeground(1,notification);
     }
-    
+
     private PendingIntent getPendingIntent(Context context, int action){
         Intent intent = new Intent(this, MusicReceiver.class);
         intent.putExtra("action_music",action);

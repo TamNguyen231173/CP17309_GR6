@@ -52,7 +52,7 @@ public class MusicAdapter extends BaseAdapter {
         Song song = ds.get(i);
 
         txtTitle.setText(song.getTitle());
-        txtSingle.setText(song.getSingle());
+        txtSingle.setText(song.getSinger());
         imgSong.setImageResource(song.getImage());
         imgHeart.setOnClickListener(new View.OnClickListener() {
             @Override
