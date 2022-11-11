@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.user:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container,userFragment).commit();
                         return true;
+
                 }
                 return false;
             }

@@ -1,49 +1,52 @@
 package com.workshops.onlinemusicplayer.model;
 
-import java.io.Serializable;
+public class Song {
+    private String Name;
+    private String Title;
+    private int Anh;
+    private int File;
 
-public class Song implements Serializable {
-    private String title;
-    private String single;
-    private int image;
-    private int resouce;
-
-    public Song(String title, String single, int image, int resouce) {
-        this.title = title;
-        this.single = single;
-        this.image = image;
-        this.resouce = resouce;
+    public Song() {
     }
 
+    public Song(String name, String title, int anh, int file) {
+        Name = name;
+        Title = title;
+        Anh = anh;
+        File = file;
+    }
+
+    public int getAnh() {
+        return Anh;
+    }
+
+    public void setAnh(int anh) {
+        Anh = anh;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+
     public String getTitle() {
-        return title;
+        return Title;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        Title = title;
     }
 
-    public String getSingle() {
-        return single;
+    public int getFile() {
+        return File;
     }
 
-    public void setSingle(String single) {
-        this.single = single;
-    }
+    public void setFile(int file) {
+        File = file;
 
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
-    }
-
-    public int getResouce() {
-        return resouce;
-    }
-
-    public void setResouce(int resouce) {
-        this.resouce = resouce;
     }
 }

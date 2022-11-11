@@ -71,7 +71,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/txtbaihat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="17dp"
@@ -81,115 +81,119 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <TextView
+            android:id="@+id/txttencasi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Billie Eilish"
             android:textAppearance="@style/author_song"
-            app:layout_constraintStart_toStartOf="@+id/textView12"
-            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            app:layout_constraintStart_toStartOf="@+id/txtbaihat"
+            app:layout_constraintTop_toBottomOf="@+id/txtbaihat"
             android:layout_marginTop="6dp"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout4"
-            android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="31dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <SeekBar
+            android:id="@+id/seekBar_Song"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="129dp"
+            android:max="100"
+            android:progress="60"
+            android:progressBackgroundTint="#4D000000"
+            android:progressTint="#434343"
+            android:thumbTint="#434343"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
-            android:layout_marginStart="28dp"
-            android:layout_marginEnd="31dp">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <SeekBar
-                android:id="@+id/seekBar"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:max="100"
-                android:progress="60"
-                android:thumbTint="#434343"
-                android:progressTint="#434343"
-                android:progressBackgroundTint="#4D000000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/time_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="2:25"
+            android:textAppearance="@style/time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar_Song" />
 
-            <TextView
-                android:id="@+id/time_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2:25"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seekBar"
-                android:textAppearance="@style/time"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="16dp"/>
+        <TextView
+            android:id="@+id/time_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:text="4:02"
+            android:textAppearance="@style/time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar_Song" />
 
-            <TextView
-                android:id="@+id/time_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4:02"
-                android:textAppearance="@style/time"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seekBar"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"/>
-
-            <RelativeLayout
-                android:id="@+id/relativeLayout3"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_marginTop="74dp"
-                android:background="@drawable/ellipse_11"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seekBar">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@drawable/ic_baseline_pause_24" />
-            </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/relativeLayout3"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="74dp"
+            android:background="@drawable/ellipse_11"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar_Song">
 
             <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_marginEnd="17dp"
-                android:src="@drawable/prev"
-                app:layout_constraintBottom_toBottomOf="@+id/relativeLayout3"
-                app:layout_constraintEnd_toStartOf="@+id/relativeLayout3"
-                app:layout_constraintTop_toTopOf="@+id/relativeLayout3" />
+                android:id="@+id/imgPlay"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/play_ic" />
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/repeat_ic"
-                android:layout_marginEnd="29dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView11"
-                app:layout_constraintEnd_toStartOf="@+id/imageView11"
-                app:layout_constraintTop_toTopOf="@+id/imageView11" />
+        </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_marginStart="17dp"
-                android:src="@drawable/next"
-                app:layout_constraintBottom_toBottomOf="@+id/relativeLayout3"
-                app:layout_constraintStart_toEndOf="@+id/relativeLayout3"
-                app:layout_constraintTop_toTopOf="@+id/relativeLayout3" />
+        <ImageView
+            android:id="@+id/imgPrev"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginEnd="17dp"
+            android:src="@drawable/prev"
+            app:layout_constraintBottom_toBottomOf="@+id/relativeLayout3"
+            app:layout_constraintEnd_toStartOf="@+id/relativeLayout3"
+            app:layout_constraintTop_toTopOf="@+id/relativeLayout3" />
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_baseline_shuffle_24"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView12"
-                app:layout_constraintStart_toEndOf="@+id/imageView12"
-                app:layout_constraintTop_toTopOf="@+id/imageView12"
-                android:layout_marginStart="29dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="29dp"
+            android:src="@drawable/repeat_ic"
+            app:layout_constraintBottom_toBottomOf="@+id/imgPrev"
+            app:layout_constraintEnd_toStartOf="@+id/imgPrev"
+            app:layout_constraintTop_toTopOf="@+id/imgPrev" />
+
+        <ImageView
+            android:id="@+id/imgNext"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="17dp"
+            android:src="@drawable/next"
+            app:layout_constraintBottom_toBottomOf="@+id/relativeLayout3"
+            app:layout_constraintStart_toEndOf="@+id/relativeLayout3"
+            app:layout_constraintTop_toTopOf="@+id/relativeLayout3" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="29dp"
+            android:src="@drawable/ic_baseline_shuffle_24"
+            app:layout_constraintBottom_toBottomOf="@+id/imgNext"
+            app:layout_constraintStart_toEndOf="@+id/imgNext"
+            app:layout_constraintTop_toTopOf="@+id/imgNext" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"

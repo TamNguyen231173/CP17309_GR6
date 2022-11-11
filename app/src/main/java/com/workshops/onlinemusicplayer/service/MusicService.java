@@ -1,5 +1,22 @@
 package com.workshops.onlinemusicplayer.service;
 
+<<<<<<< HEAD
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.os.IBinder;
+
+import androidx.annotation.Nullable;
+
+import com.workshops.onlinemusicplayer.R;
+import com.workshops.onlinemusicplayer.broadcast_receiver.MusicReceiver;
+
+import java.security.Provider;
+
+public class MusicService extends Service {
+=======
 import static com.workshops.onlinemusicplayer.model.MyApplication.CHANNEL_ID;
 
 import android.app.Notification;
@@ -34,11 +51,14 @@ public class MusicService extends Service {
     private MediaPlayer player;
     private boolean isPlaying;
     private Song mSong;
+>>>>>>> eb10f9575a ae2e474677a3daf15074e85f138e6e
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
+<<<<<<< HEAD
+=======
 
     @Override
     public void onCreate() {
