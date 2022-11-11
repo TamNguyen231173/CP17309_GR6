@@ -1,22 +1,5 @@
 package com.workshops.onlinemusicplayer.service;
 
-<<<<<<< HEAD
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
-import android.os.IBinder;
-
-import androidx.annotation.Nullable;
-
-import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.broadcast_receiver.MusicReceiver;
-
-import java.security.Provider;
-
-public class MusicService extends Service {
-=======
 import static com.workshops.onlinemusicplayer.model.MyApplication.CHANNEL_ID;
 
 import android.app.Notification;
@@ -39,8 +22,11 @@ import com.workshops.onlinemusicplayer.broadcast_receiver.MusicReceiver;
 import com.workshops.onlinemusicplayer.fragment.HomeFragment;
 import com.workshops.onlinemusicplayer.model.Song;
 
+import java.security.Provider;
+
 
 public class MusicService extends Service {
+
     private static final int ACTION_PAUSE = 1;
     private static final int ACTION_PLAY = 2;
     private static final int ACTION_NEXT = 3;
@@ -51,14 +37,11 @@ public class MusicService extends Service {
     private MediaPlayer player;
     private boolean isPlaying;
     private Song mSong;
->>>>>>> eb10f9575a ae2e474677a3daf15074e85f138e6e
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-<<<<<<< HEAD
-=======
 
     @Override
     public void onCreate() {
@@ -84,7 +67,7 @@ public class MusicService extends Service {
 
     private void startPlayMediaService(Song song) {
         if(player == null){
-            player = MediaPlayer.create(getApplicationContext(),song.getResouce());
+            player = MediaPlayer.create(getApplicationContext(),song.getFile());
         }
         player.start();
         player.setVolume(100,100);
@@ -129,13 +112,13 @@ public class MusicService extends Service {
     private void sendNotification(Song song){
         Intent intent = new Intent(getApplicationContext(), HomeFragment.class);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), song.getImage());
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), song.getAnh());
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this,"Media Session");
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_logo_spotify_24)
                 .setSubText("GR6")
                 .setContentTitle(song.getTitle())
-                .setContentText(song.getSingle())
+                .setContentText(song.getName())
                 .setLargeIcon(bitmap)
                 // Apply the media style template
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()

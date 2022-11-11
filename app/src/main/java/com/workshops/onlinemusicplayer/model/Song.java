@@ -1,6 +1,8 @@
 package com.workshops.onlinemusicplayer.model;
 
-public class Song {
+import java.io.Serializable;
+
+public class Song implements Serializable {
     private String Name;
     private String Title;
     private int Anh;
