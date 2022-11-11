@@ -15,6 +15,7 @@ public class Song {
         Anh = anh;
         File = file;
     }
+
     public int getAnh() {
         return Anh;
     }
@@ -31,11 +32,6 @@ public class Song {
         Name = name;
     }
 
-    public Song(String name, String title, int file) {
-        Name = name;
-        Title = title;
-        File = file;
-    }
 
     public String getTitle() {
         return Title;
@@ -51,5 +47,6 @@ public class Song {
 
     public void setFile(int file) {
         File = file;
+
     }
 }

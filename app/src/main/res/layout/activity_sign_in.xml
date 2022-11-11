@@ -113,7 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/forgot_passsword"
+        android:text="@string/forgot_password"
         android:textAppearance="@style/click_here"
         android:textColor="#288ce9"
         app:layout_constraintStart_toStartOf="@+id/edt_login_password"
@@ -158,20 +158,27 @@
         android:layout_marginTop="29dp"
         android:text="Or"
         android:textColor="#C6383838"
-        android:textFontWeight="200"
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/imageView6"
         app:layout_constraintStart_toEndOf="@+id/imageView7"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
-    <ImageView
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/btn_login_gg"
-        android:layout_width="27.99dp"
-        android:layout_height="28.64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="44.88dp"
-        android:src="@drawable/gg"
-        android:layout_marginLeft="137dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/btn_login_fb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="44.88dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
