@@ -64,7 +64,6 @@ public class MusicAdapter extends BaseAdapter {
                     imgHeart.setImageResource(R.drawable.ic_favorite_black_30);
                     flag = false;
                 }
-
             }
         });
         return view;

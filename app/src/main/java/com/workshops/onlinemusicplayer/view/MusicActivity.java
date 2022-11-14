@@ -1,7 +1,7 @@
 package com.workshops.onlinemusicplayer.view;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,21 +13,19 @@ import android.widget.TextView;
 
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.model.Song;
+import com.workshops.onlinemusicplayer.service.MusicService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class MusicActivity extends AppCompatActivity {
     MediaPlayer media_player;
     ImageView next_btn, prev_btn, song_img, repeat_btn, shuffle_btn;
     TextView name_song_music_ac, singer_name_music_ac, time_end, time_start;
     SeekBar song_seekbar;
-    ArrayList<Song> array_song;
+    ArrayList<Song> array_song = new ArrayList<Song>();
     ImageView play_btn;
     int position;
     List<Integer> numbers = new ArrayList<Integer>();
@@ -40,6 +38,11 @@ public class MusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
+
+        Intent intent = getIntent();
+        int id_song = intent.getIntExtra("song_id", 1);
+        position = id_song - 1;
+
         initViews();
         AddSong();
         initMusic();
@@ -62,15 +65,7 @@ public class MusicActivity extends AppCompatActivity {
         play_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (media_player.isPlaying()) {
-                    media_player.pause();
-                    play_btn.setImageResource(R.drawable.play_ic);
-                } else {
-                    media_player.start();
-                    play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
-                }
-                showTime();
-                UpdateTime();
+                playAndPause();
             }
         });
 
@@ -105,6 +100,18 @@ public class MusicActivity extends AppCompatActivity {
                 media_player.seekTo(song_seekbar.getProgress());
             }
         });
+    }
+
+    public void playAndPause(){
+        if (media_player.isPlaying()) {
+            media_player.pause();
+            play_btn.setImageResource(R.drawable.play_ic);
+        } else {
+            media_player.start();
+            play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
+        }
+        showTime();
+        UpdateTime();
     }
 
     public void initMusic() {
@@ -145,6 +152,15 @@ public class MusicActivity extends AppCompatActivity {
         play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
         showTime();
         UpdateTime();
+        Intent intentStop = new Intent(getApplicationContext(), MusicService.class);
+        getApplicationContext().stopService(intentStop);
+        Song song = array_song.get(position);
+        Intent intent = new Intent(getApplicationContext(), MusicService.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("list_song", song);
+        intent.putExtras(bundle);
+        getApplicationContext().startService(intent);
+
     }
 
     public void nextSong() {
@@ -215,15 +231,18 @@ public class MusicActivity extends AppCompatActivity {
     }
 
     public void AddSong() {
-        array_song = new ArrayList<>();
-        array_song.add(new Song("Ấn nút nhớ thả giấc mơ", "Sơn Tùng MTP", R.drawable.sontung2, R.raw.annutnhothagiacmo));
-        array_song.add(new Song("Chắc ai đó sẽ về", "Sơn Tùng MTP", R.drawable.sontung1, R.raw.chacaidoseve));
-        array_song.add(new Song("Muộn rồi mà sao còn", "Sơn Tùng MTP", R.drawable.sontung3, R.raw.muonroimasaocon));
-        array_song.add(new Song("Có chàng trai viết trên cây", "Phan Mạnh Quỳnh", R.drawable.manhquynh, R.raw.cochangtraiviettrencay));
-        array_song.add(new Song("Khi người mình yêu khóc", "Phan Mạnh Quỳnh", R.drawable.manhquynh2, R.raw.khinguoiminhyeukhoc));
-        array_song.add(new Song("Thật bất ngờ", "Trúc Nhân", R.drawable.trucnhan, R.raw.thatbatngo));
-        array_song.add(new Song("Tình yêu màu nắng", "Trúc Nhân", R.drawable.trucnhan2, R.raw.tinhyeumaunang));
-        array_song.add(new Song("Sao cha không", "Phan Mạnh Quỳnh", R.drawable.manhquynh3, R.raw.saochakhong));
-        array_song.add(new Song("Có không giữ mất đừng tìm", "Trúc Nhân", R.drawable.trucnhan1, R.raw.cokhonggiumatdungtim));
+
+        array_song.add(new Song(1, "Survival","Drake",R.drawable.drake,R.raw.survival));
+        array_song.add(new Song(2, "Bad Guy","Billie Eilish",R.drawable.bad_guy,R.raw.bad_guy));
+        array_song.add(new Song(3, "Comethru","Drake",R.drawable.bi,R.raw.comethru));
+        array_song.add(new Song(4, "Ấn nút nhớ thả giấc mơ", "Sơn Tùng MTP", R.drawable.sontung2, R.raw.annutnhothagiacmo));
+        array_song.add(new Song(5, "Chắc ai đó sẽ về", "Sơn Tùng MTP", R.drawable.sontung1, R.raw.chacaidoseve));
+        array_song.add(new Song(6, "Muộn rồi mà sao còn", "Sơn Tùng MTP", R.drawable.sontung3, R.raw.muonroimasaocon));
+        array_song.add(new Song(7, "Có chàng trai viết trên cây", "Phan Mạnh Quỳnh", R.drawable.manhquynh, R.raw.cochangtraiviettrencay));
+        array_song.add(new Song(8, "Khi người mình yêu khóc", "Phan Mạnh Quỳnh", R.drawable.manhquynh2, R.raw.khinguoiminhyeukhoc));
+        array_song.add(new Song(9, "Thật bất ngờ", "Trúc Nhân", R.drawable.trucnhan, R.raw.thatbatngo));
+        array_song.add(new Song(10, "Tình yêu màu nắng", "Trúc Nhân", R.drawable.trucnhan2, R.raw.tinhyeumaunang));
+        array_song.add(new Song(11, "Sao cha không", "Phan Mạnh Quỳnh", R.drawable.manhquynh3, R.raw.saochakhong));
+        array_song.add(new Song(12, "Có không giữ mất đừng tìm", "Trúc Nhân", R.drawable.trucnhan1, R.raw.cokhonggiumatdungtim));
     }
 }

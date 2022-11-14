@@ -19,6 +19,7 @@ import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
 import com.workshops.onlinemusicplayer.adapter.TrendAdapter;
 import com.workshops.onlinemusicplayer.model.Song;
 import com.workshops.onlinemusicplayer.service.MusicService;
+import com.workshops.onlinemusicplayer.view.MusicActivity;
 
 import java.util.ArrayList;
 
@@ -29,26 +30,32 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         //List view song
         listViewPlaylist = view.findViewById(R.id.listViewPlaylist);
         list = new ArrayList<Song>();
 
-        list = new ArrayList<>();
-        list.add(new Song("Survival","Drake",R.drawable.drake,R.raw.survival));
-        list.add(new Song("Bad Guy","Billie Eilish",R.drawable.bad_guy,R.raw.bad_guy));
-        list.add(new Song("Comethru","Drake",R.drawable.bi,R.raw.comethru));
+        list.add(new Song(1, "Survival","Drake",R.drawable.drake,R.raw.survival));
+        list.add(new Song(2, "Bad Guy","Billie Eilish",R.drawable.bad_guy,R.raw.bad_guy));
+        list.add(new Song(3, "Comethru","Drake",R.drawable.bi,R.raw.comethru));
+        list.add(new Song(4, "Ấn nút nhớ thả giấc mơ", "Sơn Tùng MTP", R.drawable.sontung2, R.raw.annutnhothagiacmo));
+        list.add(new Song(5, "Chắc ai đó sẽ về", "Sơn Tùng MTP", R.drawable.sontung1, R.raw.chacaidoseve));
+        list.add(new Song(6, "Muộn rồi mà sao còn", "Sơn Tùng MTP", R.drawable.sontung3, R.raw.muonroimasaocon));
+        list.add(new Song(7, "Có chàng trai viết trên cây", "Phan Mạnh Quỳnh", R.drawable.manhquynh, R.raw.cochangtraiviettrencay));
+        list.add(new Song(8, "Khi người mình yêu khóc", "Phan Mạnh Quỳnh", R.drawable.manhquynh2, R.raw.khinguoiminhyeukhoc));
+        list.add(new Song(9, "Thật bất ngờ", "Trúc Nhân", R.drawable.trucnhan, R.raw.thatbatngo));
+        list.add(new Song(10, "Tình yêu màu nắng", "Trúc Nhân", R.drawable.trucnhan2, R.raw.tinhyeumaunang));
+        list.add(new Song(11, "Sao cha không", "Phan Mạnh Quỳnh", R.drawable.manhquynh3, R.raw.saochakhong));
+        list.add(new Song(12, "Có không giữ mất đừng tìm", "Trúc Nhân", R.drawable.trucnhan1, R.raw.cokhonggiumatdungtim));
 
         listViewPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intentStop = new Intent(getContext(), MusicService.class);
-                getContext().stopService(intentStop);
+
                 Song song = list.get(i);
-                Intent intent = new Intent(getContext(), MusicService.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("list_song",song);
-                intent.putExtras(bundle);
-                getContext().startService(intent);
+                Intent intent = new Intent(getContext(), MusicActivity.class);
+                 intent.putExtra("song_id", song.getId());
+                 getActivity().startActivity(intent);
             }
         });
 

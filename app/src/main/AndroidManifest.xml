@@ -5,7 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".model.MyApplication"
@@ -19,33 +21,43 @@
         android:theme="@style/Theme.OnlineMusicPlayer"
         tools:targetApi="31">
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
 
-        <service android:name=".service.MusicService"/>
-        <!--        <receiver android:name=".broadcast_receiver.MusicReceiver"/>-->
-        <receiver android:name=".broadcast_receiver.MusicReceiver"
+        <service android:name=".service.MusicService" /> <!-- <receiver android:name=".broadcast_receiver.MusicReceiver"/> -->
+        <receiver
+            android:name=".broadcast_receiver.MusicReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </receiver>
+
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.MusicActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
+<<<<<<< Updated upstream
             android:name=".view.WelcomeActivity"
+=======
+            android:name=".view.MainActivity"
+>>>>>>> Stashed changes
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -88,7 +100,6 @@
         <activity
             android:name=".view.MusicActivity"
             android:exported="true">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
