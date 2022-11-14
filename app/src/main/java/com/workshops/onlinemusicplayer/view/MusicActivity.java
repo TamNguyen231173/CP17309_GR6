@@ -1,23 +1,33 @@
 package com.workshops.onlinemusicplayer.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
+import com.workshops.onlinemusicplayer.fragment.HomeFragment;
 import com.workshops.onlinemusicplayer.model.Song;
 import com.workshops.onlinemusicplayer.service.MusicService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class MusicActivity extends AppCompatActivity {
@@ -33,6 +43,7 @@ public class MusicActivity extends AppCompatActivity {
     final int min = 0;
     int max;
     SimpleDateFormat format_time = new SimpleDateFormat("mm:ss");
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +55,7 @@ public class MusicActivity extends AppCompatActivity {
         position = id_song - 1;
 
         initViews();
-        AddSong();
+//        AddSong();
         initMusic();
         showTime();
 
@@ -115,8 +126,8 @@ public class MusicActivity extends AppCompatActivity {
     }
 
     public void initMusic() {
-        media_player = media_player.create(MusicActivity.this, array_song.get(position).getResource());
-        song_img.setBackgroundResource(array_song.get(position).getImage());
+        media_player = media_player.create(MusicActivity.this, Uri.parse(array_song.get(position).getResource()));
+        song_img.setBackgroundResource(Integer.parseInt(array_song.get(position).getImage()+" "));
         name_song_music_ac.setText(array_song.get(position).getTitle());
         singer_name_music_ac.setText(array_song.get(position).getSinger());
     }
@@ -230,19 +241,50 @@ public class MusicActivity extends AppCompatActivity {
         shuffle_btn = (ImageView) findViewById(R.id.shuffle_btn);
     }
 
-    public void AddSong() {
-
-        array_song.add(new Song(1, "Survival","Drake",R.drawable.drake,R.raw.survival));
-        array_song.add(new Song(2, "Bad Guy","Billie Eilish",R.drawable.bad_guy,R.raw.bad_guy));
-        array_song.add(new Song(3, "Comethru","Drake",R.drawable.bi,R.raw.comethru));
-        array_song.add(new Song(4, "Ấn nút nhớ thả giấc mơ", "Sơn Tùng MTP", R.drawable.sontung2, R.raw.annutnhothagiacmo));
-        array_song.add(new Song(5, "Chắc ai đó sẽ về", "Sơn Tùng MTP", R.drawable.sontung1, R.raw.chacaidoseve));
-        array_song.add(new Song(6, "Muộn rồi mà sao còn", "Sơn Tùng MTP", R.drawable.sontung3, R.raw.muonroimasaocon));
-        array_song.add(new Song(7, "Có chàng trai viết trên cây", "Phan Mạnh Quỳnh", R.drawable.manhquynh, R.raw.cochangtraiviettrencay));
-        array_song.add(new Song(8, "Khi người mình yêu khóc", "Phan Mạnh Quỳnh", R.drawable.manhquynh2, R.raw.khinguoiminhyeukhoc));
-        array_song.add(new Song(9, "Thật bất ngờ", "Trúc Nhân", R.drawable.trucnhan, R.raw.thatbatngo));
-        array_song.add(new Song(10, "Tình yêu màu nắng", "Trúc Nhân", R.drawable.trucnhan2, R.raw.tinhyeumaunang));
-        array_song.add(new Song(11, "Sao cha không", "Phan Mạnh Quỳnh", R.drawable.manhquynh3, R.raw.saochakhong));
-        array_song.add(new Song(12, "Có không giữ mất đừng tìm", "Trúc Nhân", R.drawable.trucnhan1, R.raw.cokhonggiumatdungtim));
-    }
+//    public void AddSong() {
+//
+//        array_song.add(new Song(1, "Survival","Drake",R.drawable.drake,R.raw.survival));
+//        array_song.add(new Song(2, "Bad Guy","Billie Eilish",R.drawable.bad_guy,R.raw.bad_guy));
+//        array_song.add(new Song(3, "Comethru","Drake",R.drawable.bi,R.raw.comethru));
+//        array_song.add(new Song(4, "Ấn nút nhớ thả giấc mơ", "Sơn Tùng MTP", R.drawable.sontung2, R.raw.annutnhothagiacmo));
+//        array_song.add(new Song(5, "Chắc ai đó sẽ về", "Sơn Tùng MTP", R.drawable.sontung1, R.raw.chacaidoseve));
+//        array_song.add(new Song(6, "Muộn rồi mà sao còn", "Sơn Tùng MTP", R.drawable.sontung3, R.raw.muonroimasaocon));
+//        array_song.add(new Song(7, "Có chàng trai viết trên cây", "Phan Mạnh Quỳnh", R.drawable.manhquynh, R.raw.cochangtraiviettrencay));
+//        array_song.add(new Song(8, "Khi người mình yêu khóc", "Phan Mạnh Quỳnh", R.drawable.manhquynh2, R.raw.khinguoiminhyeukhoc));
+//        array_song.add(new Song(9, "Thật bất ngờ", "Trúc Nhân", R.drawable.trucnhan, R.raw.thatbatngo));
+//        array_song.add(new Song(10, "Tình yêu màu nắng", "Trúc Nhân", R.drawable.trucnhan2, R.raw.tinhyeumaunang));
+//        array_song.add(new Song(11, "Sao cha không", "Phan Mạnh Quỳnh", R.drawable.manhquynh3, R.raw.saochakhong));
+//        array_song.add(new Song(12, "Có không giữ mất đừng tìm", "Trúc Nhân", R.drawable.trucnhan1, R.raw.cokhonggiumatdungtim));
+//    }
+//    private void readData(){
+//        //fill data to fragment
+//        db.collection("courses")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            ArrayList<Song> list = new ArrayList<>();
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Map<String,Object> map = document.getData();
+//                                String title = map.get("name").toString();
+//                                String singer = map.get("singer").toString();
+//                                String image = map.get("image").toString();
+//                                String resource = map.get("audio").toString();
+//
+//                                Song course = new Song(-1,title,singer,image,resource,1);
+//                                course.setTitle(document.getId());
+//                                list.add(course);
+//
+//                            }
+//                            getSupportFragmentManager()
+//                                    .beginTransaction()
+//                                    .replace(R.id.listViewPlaylist, HomeFragment.newInstance(list))
+//                                    .commit();
+//                        } else {
+//                            Log.w(">>>>>>>>>>>TAG", "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
+//    }
 }

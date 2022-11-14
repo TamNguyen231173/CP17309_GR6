@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -63,7 +64,7 @@ public class MusicService extends Service {
 
     private void startPlayMediaService(Song song) {
         if (player == null) {
-            player = MediaPlayer.create(getApplicationContext(), song.getResource());
+            player = MediaPlayer.create(getApplicationContext(), Uri.parse(song.getResource()));
         }
         player.start();
         player.setVolume(100, 100);
@@ -109,7 +110,7 @@ public class MusicService extends Service {
     private void sendNotification(Song song) {
         Intent intent = new Intent(getApplicationContext(), HomeFragment.class);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), song.getImage());
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Integer.parseInt(song.getImage()));
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "Media Session");
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_logo_spotify_24)

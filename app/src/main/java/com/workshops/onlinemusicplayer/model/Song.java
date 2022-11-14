@@ -3,21 +3,26 @@ package com.workshops.onlinemusicplayer.model;
 import java.io.Serializable;
 
 public class Song implements Serializable {
-    private String title, singer, category;
-    private int resource, id, image;
+    private int  id;
+    private String title, singer, category, resource, image;
 
-    public Song() {
+    public Song(int i, String title, String id_singer, String resource) {
     }
 
-    public Song(int id, String title, String singer, int image, int resource) {
+    public Song(int id, String title, String singer, String image, String resource) {
         this.title = title;
         this.singer = singer;
         this.resource = resource;
         this.id = id;
         this.image = image;
     }
+    public Song(int id, String title, String resource) {
+        this.title = title;
+        this.resource = resource;
+        this.id = id;
+    }
 
-    public Song(int id, String title, String singer, String category, int image, int resource) {
+    public Song(int id, String title, String singer, String category, String image, String resource) {
         this.title = title;
         this.singer = singer;
         this.resource = resource;
@@ -26,12 +31,12 @@ public class Song implements Serializable {
         this.category = category;
     }
 
-    public String getCategory() {
-        return category;
+    public int getId() {
+        return id;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -50,27 +55,27 @@ public class Song implements Serializable {
         this.singer = singer;
     }
 
-    public int getResource() {
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getResource() {
         return resource;
     }
 
-    public void setResource(int resource) {
+    public void setResource(String resource) {
         this.resource = resource;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }
