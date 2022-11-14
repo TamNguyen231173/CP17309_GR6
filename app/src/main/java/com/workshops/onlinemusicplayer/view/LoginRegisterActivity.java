@@ -53,4 +53,9 @@ public class LoginRegisterActivity extends AppCompatActivity {
         // Hide both the status bar and the navigation bar
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
     }
+
+    public void NextBack(View view){
+        Intent i = new Intent(LoginRegisterActivity.this, GetStartedActivity.class);
+        startActivity(i);
+    }
 }

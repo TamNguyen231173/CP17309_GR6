@@ -21,7 +21,8 @@
         card_view:cardElevation="0dp">
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/img_CallBack"
+            android:onClick="CallBack"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
