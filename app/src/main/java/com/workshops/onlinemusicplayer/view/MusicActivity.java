@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
+import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
 import com.workshops.onlinemusicplayer.fragment.HomeFragment;
 import com.workshops.onlinemusicplayer.model.Song;
 import com.workshops.onlinemusicplayer.service.MusicService;
@@ -31,17 +33,19 @@ import java.util.Map;
 import java.util.Random;
 
 public class MusicActivity extends AppCompatActivity {
+    private static final String TAG = "Read data from firebase";
     MediaPlayer media_player;
     ImageView next_btn, prev_btn, song_img, repeat_btn, shuffle_btn;
     TextView name_song_music_ac, singer_name_music_ac, time_end, time_start;
     SeekBar song_seekbar;
-    ArrayList<Song> array_song = new ArrayList<Song>();
+    ArrayList<Song> list = new ArrayList<Song>();
     ImageView play_btn;
     int position;
     List<Integer> numbers = new ArrayList<Integer>();
     Boolean repeat_song = false, shuffle_song = false;
     final int min = 0;
     int max;
+    int i;
     SimpleDateFormat format_time = new SimpleDateFormat("mm:ss");
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -52,10 +56,10 @@ public class MusicActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int id_song = intent.getIntExtra("song_id", 1);
-        position = id_song - 1;
+        position = id_song;
 
+        readData();
         initViews();
-//        AddSong();
         initMusic();
         showTime();
 
@@ -126,10 +130,10 @@ public class MusicActivity extends AppCompatActivity {
     }
 
     public void initMusic() {
-        media_player = media_player.create(MusicActivity.this, Uri.parse(array_song.get(position).getResource()));
-        song_img.setBackgroundResource(Integer.parseInt(array_song.get(position).getImage()+" "));
-        name_song_music_ac.setText(array_song.get(position).getTitle());
-        singer_name_music_ac.setText(array_song.get(position).getSinger());
+        media_player = media_player.create(MusicActivity.this, Uri.parse(list.get(position).getResource()));
+        song_img.setBackgroundResource(Integer.parseInt(list.get(position).getImage()+" "));
+        name_song_music_ac.setText(list.get(position).getTitle());
+        singer_name_music_ac.setText(list.get(position).getSinger());
     }
 
     private void showTime() {
@@ -165,7 +169,7 @@ public class MusicActivity extends AppCompatActivity {
         UpdateTime();
         Intent intentStop = new Intent(getApplicationContext(), MusicService.class);
         getApplicationContext().stopService(intentStop);
-        Song song = array_song.get(position);
+        Song song = list.get(position);
         Intent intent = new Intent(getApplicationContext(), MusicService.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("list_song", song);
@@ -177,7 +181,7 @@ public class MusicActivity extends AppCompatActivity {
     public void nextSong() {
         if (!shuffle_song) {
             position++;
-            if (position > array_song.size() - 1) {
+            if (position > list.size() - 1) {
                 position = 0;
             }
         } else {
@@ -190,7 +194,7 @@ public class MusicActivity extends AppCompatActivity {
     public void prevSong() {
         position--;
         if (position < 0) {
-            position = array_song.size() - 1;
+            position = list.size() - 1;
         }
         media_player.stop();
         renderSong();
@@ -219,7 +223,7 @@ public class MusicActivity extends AppCompatActivity {
     }
 
     public void randomSong() {
-        max = array_song.size() - 1;
+        max = list.size() - 1;
         while(numbers.contains(position)) {
             position = (new Random()).nextInt(max - min + 1) +min;
         }
@@ -241,50 +245,34 @@ public class MusicActivity extends AppCompatActivity {
         shuffle_btn = (ImageView) findViewById(R.id.shuffle_btn);
     }
 
-//    public void AddSong() {
-//
-//        array_song.add(new Song(1, "Survival","Drake",R.drawable.drake,R.raw.survival));
-//        array_song.add(new Song(2, "Bad Guy","Billie Eilish",R.drawable.bad_guy,R.raw.bad_guy));
-//        array_song.add(new Song(3, "Comethru","Drake",R.drawable.bi,R.raw.comethru));
-//        array_song.add(new Song(4, "Ấn nút nhớ thả giấc mơ", "Sơn Tùng MTP", R.drawable.sontung2, R.raw.annutnhothagiacmo));
-//        array_song.add(new Song(5, "Chắc ai đó sẽ về", "Sơn Tùng MTP", R.drawable.sontung1, R.raw.chacaidoseve));
-//        array_song.add(new Song(6, "Muộn rồi mà sao còn", "Sơn Tùng MTP", R.drawable.sontung3, R.raw.muonroimasaocon));
-//        array_song.add(new Song(7, "Có chàng trai viết trên cây", "Phan Mạnh Quỳnh", R.drawable.manhquynh, R.raw.cochangtraiviettrencay));
-//        array_song.add(new Song(8, "Khi người mình yêu khóc", "Phan Mạnh Quỳnh", R.drawable.manhquynh2, R.raw.khinguoiminhyeukhoc));
-//        array_song.add(new Song(9, "Thật bất ngờ", "Trúc Nhân", R.drawable.trucnhan, R.raw.thatbatngo));
-//        array_song.add(new Song(10, "Tình yêu màu nắng", "Trúc Nhân", R.drawable.trucnhan2, R.raw.tinhyeumaunang));
-//        array_song.add(new Song(11, "Sao cha không", "Phan Mạnh Quỳnh", R.drawable.manhquynh3, R.raw.saochakhong));
-//        array_song.add(new Song(12, "Có không giữ mất đừng tìm", "Trúc Nhân", R.drawable.trucnhan1, R.raw.cokhonggiumatdungtim));
-//    }
-//    private void readData(){
-//        //fill data to fragment
-//        db.collection("courses")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            ArrayList<Song> list = new ArrayList<>();
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Map<String,Object> map = document.getData();
-//                                String title = map.get("name").toString();
-//                                String singer = map.get("singer").toString();
-//                                String image = map.get("image").toString();
-//                                String resource = map.get("audio").toString();
-//
-//                                Song course = new Song(-1,title,singer,image,resource,1);
-//                                course.setTitle(document.getId());
-//                                list.add(course);
-//
-//                            }
-//                            getSupportFragmentManager()
-//                                    .beginTransaction()
-//                                    .replace(R.id.listViewPlaylist, HomeFragment.newInstance(list))
-//                                    .commit();
-//                        } else {
-//                            Log.w(">>>>>>>>>>>TAG", "Error getting documents.", task.getException());
-//                        }
-//                    }
-//                });
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    private void readData() {
+        i = 0;
+        db.collection("song")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                i++;
+                                String title = (String) document.getData().get("name");
+                                String singer = (String) document.getData().get("singer");
+                                String image = (String) document.getData().get("image");
+                                String audio = (String) document.getData().get("audio");
+
+                                list.add(new Song(i, title, singer, image, audio));
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+
+                    }
+                });
+    }
 }

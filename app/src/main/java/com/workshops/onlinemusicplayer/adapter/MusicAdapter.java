@@ -2,6 +2,7 @@ package com.workshops.onlinemusicplayer.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.model.Song;
 
@@ -53,7 +55,7 @@ public class MusicAdapter extends BaseAdapter {
 
         txtTitle.setText(song.getTitle());
         txtSingle.setText(song.getSinger());
-//        imgSong.setImageResource(Integer.parseInt(song.getImage()));
+        Picasso.get().load(song.getImage()).into(imgSong);
         imgHeart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

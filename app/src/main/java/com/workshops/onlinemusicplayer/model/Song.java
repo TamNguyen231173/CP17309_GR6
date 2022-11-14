@@ -3,11 +3,19 @@ package com.workshops.onlinemusicplayer.model;
 import java.io.Serializable;
 
 public class Song implements Serializable {
-    private int  id;
+    private  int id;
     private String title, singer, category, resource, image;
 
-    public Song(int i, String title, String id_singer, String resource) {
+    public Song() {
     }
+
+    public Song(int id, String title, String singer, String image) {
+        this.title = title;
+        this.singer = singer;
+        this.id = id;
+        this.image = image;
+    }
+
 
     public Song(int id, String title, String singer, String image, String resource) {
         this.title = title;
@@ -15,11 +23,6 @@ public class Song implements Serializable {
         this.resource = resource;
         this.id = id;
         this.image = image;
-    }
-    public Song(int id, String title, String resource) {
-        this.title = title;
-        this.resource = resource;
-        this.id = id;
     }
 
     public Song(int id, String title, String singer, String category, String image, String resource) {
