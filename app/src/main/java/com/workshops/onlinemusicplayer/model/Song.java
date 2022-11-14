@@ -8,47 +8,50 @@ public class Song implements Serializable {
     private int Anh;
     private int File;
 
+    private String title;
+    private String singer;
+    private int image;
+    private int resource;
+
     public Song() {
     }
 
-    public Song(String name, String title, int anh, int file) {
-        Name = name;
-        Title = title;
-        Anh = anh;
-        File = file;
+    public Song(String title, String singer, int image, int resource) {
+        this.title = title;
+        this.singer = singer;
+        this.image = image;
+        this.resource = resource;
     }
-
-    public int getAnh() {
-        return Anh;
-    }
-
-    public void setAnh(int anh) {
-        Anh = anh;
-    }
-
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String name) {
-        Name = name;
-    }
-
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        this.title = title;
     }
 
-    public int getFile() {
-        return File;
+    public String getSinger() {
+        return singer;
     }
 
-    public void setFile(int file) {
-        File = file;
+    public void setSinger(String singer) {
+        this.singer = singer;
+    }
 
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
+    public int getResource() {
+        return resource;
+    }
+
+    public void setResource(int resource) {
+        this.resource = resource;
     }
 }

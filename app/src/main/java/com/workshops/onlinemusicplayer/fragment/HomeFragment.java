@@ -54,7 +54,6 @@ public class HomeFragment extends Fragment {
 
         MusicAdapter adapter = new MusicAdapter(list,getContext());
         listViewPlaylist.setAdapter(adapter);
-
         //end listView song
 
         //tablayout

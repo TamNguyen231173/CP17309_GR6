@@ -8,7 +8,7 @@ import android.os.Build;
 public class MyApplication extends Application {
 
 
-    public static final String CHANNEL_ID = "Channle_App_Music";
+    public static final String CHANNEL_ID = "Channel_App_Music";
 
     @Override
     public void onCreate() {
@@ -17,16 +17,11 @@ public class MyApplication extends Application {
     }
 
     private void createNotificationChannel() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,"Thông báo",NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setSound(null,null);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            if(manager != null){
-                manager.createNotificationChannel(channel);
-            }
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Notification Handle Music", importance);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
-
-
 }

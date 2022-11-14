@@ -71,7 +71,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/txtbaihat"
+            android:id="@+id/name_song_music_ac"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="17dp"
@@ -81,13 +81,13 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <TextView
-            android:id="@+id/txttencasi"
+            android:id="@+id/singer_name_music_ac"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Billie Eilish"
             android:textAppearance="@style/author_song"
-            app:layout_constraintStart_toStartOf="@+id/txtbaihat"
-            app:layout_constraintTop_toBottomOf="@+id/txtbaihat"
+            app:layout_constraintStart_toStartOf="@+id/name_song_music_ac"
+            app:layout_constraintTop_toBottomOf="@+id/name_song_music_ac"
             android:layout_marginTop="6dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,7 +103,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <SeekBar
-            android:id="@+id/seekBar_Song"
+            android:id="@+id/song_seekbar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:max="100"
@@ -124,7 +124,7 @@
             android:text="2:25"
             android:textAppearance="@style/time"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/seekBar_Song" />
+            app:layout_constraintTop_toBottomOf="@+id/song_seekbar" />
 
         <TextView
             android:id="@+id/time_end"
@@ -135,7 +135,7 @@
             android:text="4:02"
             android:textAppearance="@style/time"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/seekBar_Song" />
+            app:layout_constraintTop_toBottomOf="@+id/song_seekbar" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout3"
@@ -146,10 +146,10 @@
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/seekBar_Song">
+            app:layout_constraintTop_toBottomOf="@+id/song_seekbar">
 
             <ImageView
-                android:id="@+id/imgPlay"
+                android:id="@+id/play_btn"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:src="@drawable/play_ic" />
@@ -157,7 +157,7 @@
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/imgPrev"
+            android:id="@+id/prev_btn"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginEnd="17dp"
@@ -167,16 +167,17 @@
             app:layout_constraintTop_toTopOf="@+id/relativeLayout3" />
 
         <ImageView
+            android:id="@+id/repeat_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="29dp"
             android:src="@drawable/repeat_ic"
-            app:layout_constraintBottom_toBottomOf="@+id/imgPrev"
-            app:layout_constraintEnd_toStartOf="@+id/imgPrev"
-            app:layout_constraintTop_toTopOf="@+id/imgPrev" />
+            app:layout_constraintBottom_toBottomOf="@+id/prev_btn"
+            app:layout_constraintEnd_toStartOf="@+id/prev_btn"
+            app:layout_constraintTop_toTopOf="@+id/prev_btn" />
 
         <ImageView
-            android:id="@+id/imgNext"
+            android:id="@+id/next_btn"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginStart="17dp"
@@ -186,13 +187,14 @@
             app:layout_constraintTop_toTopOf="@+id/relativeLayout3" />
 
         <ImageView
+            android:id="@+id/shuffle_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="29dp"
             android:src="@drawable/ic_baseline_shuffle_24"
-            app:layout_constraintBottom_toBottomOf="@+id/imgNext"
-            app:layout_constraintStart_toEndOf="@+id/imgNext"
-            app:layout_constraintTop_toTopOf="@+id/imgNext" />
+            app:layout_constraintBottom_toBottomOf="@+id/next_btn"
+            app:layout_constraintStart_toEndOf="@+id/next_btn"
+            app:layout_constraintTop_toTopOf="@+id/next_btn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout

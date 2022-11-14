@@ -22,21 +22,17 @@ import com.workshops.onlinemusicplayer.broadcast_receiver.MusicReceiver;
 import com.workshops.onlinemusicplayer.fragment.HomeFragment;
 import com.workshops.onlinemusicplayer.model.Song;
 
-import java.security.Provider;
-
-
 public class MusicService extends Service {
-
     private static final int ACTION_PAUSE = 1;
     private static final int ACTION_PLAY = 2;
     private static final int ACTION_NEXT = 3;
-    private static final int ACTION_PREVOUS = 4;
+    private static final int ACTION_PREVIOUS = 4;
     private static final int ACTION_CLOSE = 5;
-
 
     private MediaPlayer player;
     private boolean isPlaying;
     private Song mSong;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -53,29 +49,29 @@ public class MusicService extends Service {
         Bundle bundle = intent.getExtras();
         Song song = (Song) bundle.get("list_song");
 
-        if(song != null){
+        if (song != null) {
             mSong = song;
             startPlayMediaService(song);
             sendNotification(song);
         }
 
-        int actionMusic = intent.getIntExtra("action_music_service",0);
+        int actionMusic = intent.getIntExtra("action_music_service", 0);
         handleActionMusic(actionMusic);
 
         return START_NOT_STICKY;
     }
 
     private void startPlayMediaService(Song song) {
-        if(player == null){
-            player = MediaPlayer.create(getApplicationContext(),song.getFile());
+        if (player == null) {
+            player = MediaPlayer.create(getApplicationContext(), song.getResource());
         }
         player.start();
-        player.setVolume(100,100);
+        player.setVolume(100, 100);
         isPlaying = true;
-
     }
-    private void handleActionMusic(int action){
-        switch (action){
+
+    private void handleActionMusic(int action) {
+        switch (action) {
             case ACTION_PAUSE:
                 pauseMusic();
                 break;
@@ -85,7 +81,7 @@ public class MusicService extends Service {
             case ACTION_NEXT:
 
                 break;
-            case ACTION_PREVOUS:
+            case ACTION_PREVIOUS:
 
                 break;
             case ACTION_CLOSE:
@@ -93,72 +89,72 @@ public class MusicService extends Service {
                 break;
         }
     }
-    private void pauseMusic(){
-        if(player != null && isPlaying){
+
+    private void pauseMusic() {
+        if (player != null && isPlaying) {
             player.pause();
             isPlaying = false;
             sendNotification(mSong);
         }
     }
-    private void playMusic(){
-        if(player != null && !isPlaying){
+
+    private void playMusic() {
+        if (player != null && !isPlaying) {
             player.start();
             isPlaying = true;
             sendNotification(mSong);
-
         }
     }
 
-    private void sendNotification(Song song){
+    private void sendNotification(Song song) {
         Intent intent = new Intent(getApplicationContext(), HomeFragment.class);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), song.getAnh());
-        MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this,"Media Session");
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_ID)
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), song.getImage());
+        MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "Media Session");
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_logo_spotify_24)
                 .setSubText("GR6")
                 .setContentTitle(song.getTitle())
-                .setContentText(song.getName())
+                .setContentText(song.getSinger())
                 .setLargeIcon(bitmap)
                 // Apply the media style template
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(0,1,2 /* #1: pause button */)
+                        .setShowActionsInCompactView(0, 1, 2 /* #1: pause button */)
                         .setMediaSession(mediaSessionCompat.getSessionToken()));
 
-        if(isPlaying){
-            notificationBuilder
-            // Add media control buttons that invoke intents in your media service
-                    .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
-                    .addAction(R.drawable.ic_pause, "Pause", getPendingIntent(this,ACTION_PAUSE)) //#1             // #1
-                    .addAction(R.drawable.ic_skip_next, "Next", null)//#2
-                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(this,ACTION_CLOSE));  // #3
-        }else{
+        if (isPlaying) {
             notificationBuilder
                     // Add media control buttons that invoke intents in your media service
                     .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
-                    .addAction(R.drawable.ic_play, "Pause", getPendingIntent(this,ACTION_PLAY)) //#1             // #1
+                    .addAction(R.drawable.ic_pause, "Pause", getPendingIntent(this, ACTION_PAUSE)) //#1             // #1
                     .addAction(R.drawable.ic_skip_next, "Next", null)//#2
-                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(this,ACTION_CLOSE));  // #3
+                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(this, ACTION_CLOSE));  // #3
+        } else {
+            notificationBuilder
+                    // Add media control buttons that invoke intents in your media service
+                    .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
+                    .addAction(R.drawable.ic_play, "Pause", getPendingIntent(this, ACTION_PLAY)) //#1             // #1
+                    .addAction(R.drawable.ic_skip_next, "Next", null)//#2
+                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(this, ACTION_CLOSE));  // #3
         }
 
         Notification notification = notificationBuilder.build();
 
-        startForeground(1,notification);
+        startForeground(1, notification);
     }
-    
-    private PendingIntent getPendingIntent(Context context, int action){
+
+    private PendingIntent getPendingIntent(Context context, int action) {
         Intent intent = new Intent(this, MusicReceiver.class);
-        intent.putExtra("action_music",action);
-        return PendingIntent.getBroadcast(context.getApplicationContext(),action,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra("action_music", action);
+        return PendingIntent.getBroadcast(context.getApplicationContext(), action, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(player != null){
+        if (player != null) {
             player.release();
             player = null;
         }
-
     }
 }
