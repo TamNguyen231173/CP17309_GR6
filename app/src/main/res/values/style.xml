@@ -124,39 +124,4 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">#000000</item>
     </style>
-
-    <style name="name_artist_fragment">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">#222222</item>
-    </style>
-
-    <style name="amount_track">
-        <item name="android:textSize">13sp</item>
-        <item name="android:textColor">#393939</item>
-    </style>
-
-    <style name="info_singer">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">#838383</item>
-    </style>
-
-    <style name="info">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">#222222</item>
-    </style>
-
-    <style name="albums_artist">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">#222222</item>
-    </style>
-
-    <style name="see_more">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">#131313</item>
-    </style>
-
-    <style name="name_album_item">
-        <item name="android:textSize">13sp</item>
-        <item name="android:textColor">#3A3A3A</item>
-    </style>
 </resources>

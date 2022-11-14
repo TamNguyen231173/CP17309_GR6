@@ -3,6 +3,11 @@ package com.workshops.onlinemusicplayer.model;
 import java.io.Serializable;
 
 public class Song implements Serializable {
+    private String Name;
+    private String Title;
+    private int Anh;
+    private int File;
+
     private String title;
     private String singer;
     private int image;
