@@ -2,8 +2,12 @@ package com.workshops.onlinemusicplayer.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +24,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
 import com.workshops.onlinemusicplayer.fragment.HomeFragment;
@@ -56,68 +62,87 @@ public class MusicActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int id_song = intent.getIntExtra("song_id", 1);
-        position = id_song;
+        position = id_song - 1;
 
-        readData();
-        initViews();
-        initMusic();
-        showTime();
+        db.collection("song")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                i++;
+                                String title = (String) document.getData().get("name");
+                                String singer = (String) document.getData().get("singer");
+                                String image = (String) document.getData().get("image");
+                                String audio = (String) document.getData().get("audio");
 
-        next_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextSong();
-            }
-        });
+                                list.add(new Song(i, title, singer, image, audio));
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                        initViews();
+                        initMusic();
+                        showTime();
 
-        prev_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                prevSong();
-            }
-        });
+                        next_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                nextSong();
+                            }
+                        });
 
-        play_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playAndPause();
-            }
-        });
+                        prev_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                prevSong();
+                            }
+                        });
 
-        repeat_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                repeatSong();
-            }
-        });
+                        play_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                playAndPause();
+                            }
+                        });
+
+                        repeat_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                repeatSong();
+                            }
+                        });
 
 
-        shuffle_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shuffleSong();
-            }
-        });
+                        shuffle_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                shuffleSong();
+                            }
+                        });
 
-        song_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        song_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-            }
+                            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
 
-            }
+                            }
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                media_player.seekTo(song_seekbar.getProgress());
-            }
-        });
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+                                media_player.seekTo(song_seekbar.getProgress());
+                            }
+                        });
+                    }
+                });
     }
 
-    public void playAndPause(){
+    public void playAndPause() {
         if (media_player.isPlaying()) {
             media_player.pause();
             play_btn.setImageResource(R.drawable.play_ic);
@@ -131,7 +156,23 @@ public class MusicActivity extends AppCompatActivity {
 
     public void initMusic() {
         media_player = media_player.create(MusicActivity.this, Uri.parse(list.get(position).getResource()));
-        song_img.setBackgroundResource(Integer.parseInt(list.get(position).getImage()+" "));
+        Picasso.get().load(list.get(position).getImage()).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                song_img.setBackground(new BitmapDrawable(bitmap));
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+//        song_img.setBackgroundResource(Integer.parseInt(list.get(position).getImage() + " "));
         name_song_music_ac.setText(list.get(position).getTitle());
         singer_name_music_ac.setText(list.get(position).getSinger());
     }
@@ -224,11 +265,11 @@ public class MusicActivity extends AppCompatActivity {
 
     public void randomSong() {
         max = list.size() - 1;
-        while(numbers.contains(position)) {
-            position = (new Random()).nextInt(max - min + 1) +min;
+        while (numbers.contains(position)) {
+            position = (new Random()).nextInt(max - min + 1) + min;
         }
         numbers.add(position);
-        if(numbers.size() >= max) numbers.clear();
+        if (numbers.size() >= max) numbers.clear();
     }
 
     public void initViews() {
@@ -248,31 +289,6 @@ public class MusicActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
-    private void readData() {
-        i = 0;
-        db.collection("song")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                i++;
-                                String title = (String) document.getData().get("name");
-                                String singer = (String) document.getData().get("singer");
-                                String image = (String) document.getData().get("image");
-                                String audio = (String) document.getData().get("audio");
-
-                                list.add(new Song(i, title, singer, image, audio));
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-
-                    }
-                });
-    }
 }
