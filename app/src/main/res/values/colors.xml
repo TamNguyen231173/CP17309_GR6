@@ -13,4 +13,5 @@
     <color name="primary_color">#42C83C</color>
     <color name="bg_color">#F2F2F2</color>
     <color name="text_hint">#383838</color>
+    <color name="icon_menu_color">#808080</color>
 </resources>

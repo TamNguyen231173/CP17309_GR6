@@ -1,6 +1,7 @@
 package com.workshops.onlinemusicplayer.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -10,12 +11,15 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 import com.workshops.onlinemusicplayer.R;
 
 public class ChooseModeActivity extends AppCompatActivity {
     Button btn_continue;
+    ConstraintLayout choose_mode_wrap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +27,13 @@ public class ChooseModeActivity extends AppCompatActivity {
         hideSystemBars();
 
         btn_continue = findViewById(R.id.btn_continue_choose_mode);
+        choose_mode_wrap = findViewById(R.id.choose_mode_wrap);
+
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_up_and_fade);
+        btn_continue.startAnimation(animation);
+        choose_mode_wrap.startAnimation(animation);
+
         btn_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

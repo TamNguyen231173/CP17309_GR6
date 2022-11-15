@@ -9,9 +9,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="196dp"
-        android:layout_height="59dp"
-        android:layout_marginTop="175dp"
+        android:layout_width="176dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="155dp"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -20,7 +20,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/image_login_register3"
         android:layout_width="163dp"
         android:layout_height="187dp"
         android:layout_marginTop="-30dp"
@@ -29,18 +29,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="367dp"
-        android:layout_height="568dp"
+        android:id="@+id/image_login_register"
+        android:layout_width="347dp"
+        android:layout_height="548dp"
         android:layout_marginStart="-24dp"
-        android:layout_marginBottom="-70dp"
+        android:layout_marginBottom="-80dp"
         android:src="@drawable/billie_03"
         android:translationZ="-2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/image_login_register2"
         android:layout_width="166dp"
         android:layout_height="305dp"
         android:src="@drawable/union2"
@@ -49,13 +49,13 @@
 
     <TextView
         android:id="@+id/enjoy_liste"
-        android:layout_width="284dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="55dp"
+        android:layout_width="274dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="35dp"
         android:text="@string/enjoy_listen"
         android:textAppearance="@style/enjoy_listen"
         android:textColor="#383838"
-        android:textSize="26sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +77,7 @@
     <Button
         android:id="@+id/btn_navigate_register"
         android:layout_width="147dp"
-        android:layout_height="73dp"
+        android:layout_height="63dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/rectangle_1"
@@ -93,7 +93,7 @@
         android:id="@+id/btn_navigate_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="46dp"
         android:layout_marginEnd="60dp"
         android:text="Sign In"
         android:textColor="#313131"

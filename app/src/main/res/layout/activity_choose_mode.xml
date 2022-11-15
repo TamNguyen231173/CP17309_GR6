@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/choose_mode_wrap"
         android:layout_width="210dp"
         android:layout_height="157dp"
         android:layout_marginTop="418dp"
@@ -76,7 +77,7 @@
         android:layout_height="72dp"
         android:background="@drawable/rectangle_2"
         android:text="Continue"
-        android:layout_marginTop="643dp"
+        android:layout_marginTop="623dp"
         android:textColor="@color/text_white"
         android:textSize="22sp"
         android:textStyle="bold"

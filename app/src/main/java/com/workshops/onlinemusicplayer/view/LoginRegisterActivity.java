@@ -8,7 +8,10 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.workshops.onlinemusicplayer.R;
@@ -16,6 +19,7 @@ import com.workshops.onlinemusicplayer.R;
 public class LoginRegisterActivity extends AppCompatActivity {
     Button btn_register;
     TextView btn_sign_in;
+    ImageView image_login_register, image_login_register2, image_login_register3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,11 +28,30 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
         btn_register = findViewById(R.id.btn_navigate_register);
         btn_sign_in = findViewById(R.id.btn_navigate_sign_in);
+        image_login_register = findViewById(R.id.image_login_register);
+        image_login_register2 = findViewById(R.id.image_login_register2);
+        image_login_register3 = findViewById(R.id.image_login_register3);
+
+        Animation slide_in_right = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_in_right);
+        Animation slide_in_left = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_in_left_and_fade);
+
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        image_login_register.startAnimation(slide_in_left);
+                        image_login_register2.startAnimation(slide_in_right);
+                        image_login_register3.startAnimation(slide_in_right);
+                    }
+                }, 200);
+
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginRegisterActivity.this, RegisterActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -36,6 +59,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginRegisterActivity.this, LoginActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
@@ -55,7 +79,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
 
     public void NextBack(View view){
-        Intent i = new Intent(LoginRegisterActivity.this, GetStartedActivity.class);
+        Intent i = new Intent(LoginRegisterActivity.this, ChooseModeActivity.class);
         startActivity(i);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

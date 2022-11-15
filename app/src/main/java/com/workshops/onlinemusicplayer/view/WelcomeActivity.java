@@ -37,16 +37,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
         image_welcome.startAnimation(animation);
 
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                Intent startLandingPageActivity = new Intent(WelcomeActivity.this, GetStartedActivity.class);
-                startActivity(startLandingPageActivity);
-                finish();
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        }, 3500);
     }
 
     @Override
@@ -57,7 +47,12 @@ public class WelcomeActivity extends AppCompatActivity {
             Log.d(TAG, "Currently Signed in: " + currentUser.getEmail());
             Toast.makeText(WelcomeActivity.this, "Currently Logged in: " + currentUser.getEmail(), Toast.LENGTH_LONG).show();
             startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+        } else {
+            Intent startLandingPageActivity = new Intent(WelcomeActivity.this, GetStartedActivity.class);
+            startActivity(startLandingPageActivity);
         }
+        finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private void hideSystemBars() {

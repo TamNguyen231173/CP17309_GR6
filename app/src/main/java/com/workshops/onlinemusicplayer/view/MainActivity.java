@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
 
-        BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.explore);
-        badgeDrawable.setVisible(true);
-        badgeDrawable.setNumber(8);
+//        BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.explore);
+//        badgeDrawable.setVisible(true);
+//        badgeDrawable.setNumber(8);
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.user:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container,userFragment).commit();
                         return true;
-
                 }
                 return false;
             }

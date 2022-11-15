@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -69,7 +71,15 @@ public class LoginActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_login);
         btn_login_gg = findViewById(R.id.btn_login_gg);
         btn_move_register = findViewById(R.id.btn_move_register);
+        LoginButton loginButton = findViewById(R.id.btn_login_fb);
 
+        Animation slide_in_right = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_in_right_and_fade);
+        Animation slide_in_left = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_in_left_and_fade);
+
+        btn_login_gg.startAnimation(slide_in_left);
+        loginButton.startAnimation(slide_in_right);
 
         btn_login.setOnClickListener(view -> {
             loginUser();
@@ -93,7 +103,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = findViewById(R.id.btn_login_fb);
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
