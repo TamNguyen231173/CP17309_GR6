@@ -114,17 +114,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            Log.d(TAG, "Currently Signed in: " + currentUser.getEmail());
-            Toast.makeText(LoginActivity.this, "Currently Logged in: " + currentUser.getEmail(), Toast.LENGTH_LONG).show();
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        }
-    }
-
     public void CallBack(View view){
         Intent intent = new Intent(LoginActivity.this, LoginRegisterActivity.class);
         startActivity(intent);

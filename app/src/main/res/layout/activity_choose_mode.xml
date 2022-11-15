@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="196dp"
-        android:layout_height="59dp"
+        android:layout_width="176dp"
+        android:layout_height="39dp"
         android:layout_marginTop="37dp"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,9 +19,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="230dp"
-        android:layout_height="177dp"
-        android:layout_marginTop="438dp"
+        android:layout_width="210dp"
+        android:layout_height="157dp"
+        android:layout_marginTop="418dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,11 +72,11 @@
 
     <Button
         android:id="@+id/btn_continue_choose_mode"
-        android:layout_width="329dp"
-        android:layout_height="92dp"
+        android:layout_width="309dp"
+        android:layout_height="72dp"
         android:background="@drawable/rectangle_2"
         android:text="Continue"
-        android:layout_marginTop="663dp"
+        android:layout_marginTop="643dp"
         android:textColor="@color/text_white"
         android:textSize="22sp"
         android:textStyle="bold"
