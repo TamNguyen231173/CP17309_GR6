@@ -31,21 +31,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <RelativeLayout
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="35dp"
-                android:background="@drawable/ellipse_8"
-                android:gravity="center"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/arrow_back" />
-            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/imageView10"

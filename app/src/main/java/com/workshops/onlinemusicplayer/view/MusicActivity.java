@@ -45,7 +45,7 @@ public class MusicActivity extends AppCompatActivity {
     TextView name_song_music_ac, singer_name_music_ac, time_end, time_start;
     SeekBar song_seekbar;
     ArrayList<Song> list = new ArrayList<Song>();
-    ImageView play_btn;
+    PlayPauseView play_btn;
     int position;
     List<Integer> numbers = new ArrayList<Integer>();
     Boolean repeat_song = false, shuffle_song = false;
@@ -144,11 +144,15 @@ public class MusicActivity extends AppCompatActivity {
 
     public void playAndPause() {
         if (media_player.isPlaying()) {
+            play_btn.fadeOut();
+            play_btn.setState(PlayPauseView.STATE_PAUSE);
             media_player.pause();
-            play_btn.setImageResource(R.drawable.play_ic);
+            play_btn.fadeIn();
         } else {
+            play_btn.fadeOut();
+            play_btn.setState(PlayPauseView.STATE_PLAY);
             media_player.start();
-            play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
+            play_btn.fadeIn();
         }
         showTime();
         UpdateTime();
@@ -273,7 +277,7 @@ public class MusicActivity extends AppCompatActivity {
     }
 
     public void initViews() {
-        play_btn = (ImageView) findViewById(R.id.play_btn);
+        play_btn = (PlayPauseView) findViewById(R.id.play_btn);
         name_song_music_ac = (TextView) findViewById(R.id.name_song_music_ac);
         singer_name_music_ac = (TextView) findViewById(R.id.singer_name_music_ac);
         song_img = (ImageView) findViewById(R.id.song_image);

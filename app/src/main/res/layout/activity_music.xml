@@ -148,11 +148,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/song_seekbar">
 
-            <ImageView
+            <com.workshops.onlinemusicplayer.view.PlayPauseView
                 android:id="@+id/play_btn"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/play_ic" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/pause_to_play" />
 
         </RelativeLayout>
 
