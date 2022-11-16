@@ -9,15 +9,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.MediaMetadata;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.broadcast_receiver.MusicReceiver;
 import com.workshops.onlinemusicplayer.fragment.HomeFragment;
@@ -52,7 +59,7 @@ public class MusicService extends Service {
 
         if (song != null) {
             mSong = song;
-            startPlayMediaService(song);
+            //startPlayMediaService(song);
             sendNotification(song);
         }
 
@@ -109,39 +116,70 @@ public class MusicService extends Service {
 
     private void sendNotification(Song song) {
         Intent intent = new Intent(getApplicationContext(), HomeFragment.class);
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Integer.parseInt(song.getImage()));
+        PendingIntent homePendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        final Bitmap[] musicThumbnail = new Bitmap[1];
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "Media Session");
+
+        mediaSessionCompat.setMetadata(new MediaMetadataCompat.Builder()
+                .putString(MediaMetadata.METADATA_KEY_TITLE, song.getTitle())
+                .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getSinger())
+                .putString(MediaMetadata.METADATA_KEY_ALBUM_ART_URI, song.getImage())
+                //.putLong(MediaMetadata.METADATA_KEY_DURATION, mediaPlayer.getDuration() / 1000)
+                .build()
+        );
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_logo_spotify_24)
                 .setSubText("GR6")
                 .setContentTitle(song.getTitle())
                 .setContentText(song.getSinger())
-                .setLargeIcon(bitmap)
+                .setContentIntent(homePendingIntent)
+                .setSound(null)
+                .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
+                .addAction(R.drawable.ic_pause, "Pause", null) //#1             // #1
+                .addAction(R.drawable.ic_skip_next, "Next", null)//#2
+                .addAction(R.drawable.ic_close, "Close", null)  // #3
                 // Apply the media style template
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(0, 1, 2 /* #1: pause button */)
                         .setMediaSession(mediaSessionCompat.getSessionToken()));
 
-        if (isPlaying) {
-            notificationBuilder
-                    // Add media control buttons that invoke intents in your media service
-                    .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
-                    .addAction(R.drawable.ic_pause, "Pause", getPendingIntent(this, ACTION_PAUSE)) //#1             // #1
-                    .addAction(R.drawable.ic_skip_next, "Next", null)//#2
-                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(this, ACTION_CLOSE));  // #3
-        } else {
-            notificationBuilder
-                    // Add media control buttons that invoke intents in your media service
-                    .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
-                    .addAction(R.drawable.ic_play, "Pause", getPendingIntent(this, ACTION_PLAY)) //#1             // #1
-                    .addAction(R.drawable.ic_skip_next, "Next", null)//#2
-                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(this, ACTION_CLOSE));  // #3
-        }
+        Glide.with(MusicService.this)
+                .asBitmap()
+                .load(song.getImage())
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        notificationBuilder.setLargeIcon(resource);
+                        musicThumbnail[0] = resource;
 
-        Notification notification = notificationBuilder.build();
+//        if (isPlaying) {
+//            notificationBuilder
+//                    // Add media control buttons that invoke intents in your media service
+//                    .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
+//                    .addAction(R.drawable.ic_pause, "Pause", getPendingIntent(this, ACTION_PAUSE)) //#1             // #1
+//                    .addAction(R.drawable.ic_skip_next, "Next", null)//#2
+//                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(this, ACTION_CLOSE));  // #3
+//        } else {
+//            notificationBuilder
+//                    // Add media control buttons that invoke intents in your media service
+//                    .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
+//                    .addAction(R.drawable.ic_play, "Pause", getPendingIntent(this, ACTION_PLAY)) //#1             // #1
+//                    .addAction(R.drawable.ic_skip_next, "Next", null)//#2
+//                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(this, ACTION_CLOSE));  // #3
+//        }
 
-        startForeground(1, notification);
+                        Notification notification = notificationBuilder.build();
+
+                        startForeground(1, notification);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.bad_guy));
+                        Notification notification = notificationBuilder.build();
+                        startForeground(1, notification);
+                    }
+                });
     }
 
     private PendingIntent getPendingIntent(Context context, int action) {

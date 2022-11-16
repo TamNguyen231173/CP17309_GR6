@@ -179,6 +179,17 @@ public class MusicActivity extends AppCompatActivity {
 //        song_img.setBackgroundResource(Integer.parseInt(list.get(position).getImage() + " "));
         name_song_music_ac.setText(list.get(position).getTitle());
         singer_name_music_ac.setText(list.get(position).getSinger());
+        media_player.start();
+        play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
+        showTime();
+        UpdateTime();
+
+        Song song = list.get(position);
+        Intent intent = new Intent(getApplicationContext(), MusicService.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("list_song", song);
+        intent.putExtras(bundle);
+        getApplicationContext().startService(intent);
     }
 
     private void showTime() {
@@ -212,14 +223,14 @@ public class MusicActivity extends AppCompatActivity {
         play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
         showTime();
         UpdateTime();
-        Intent intentStop = new Intent(getApplicationContext(), MusicService.class);
-        getApplicationContext().stopService(intentStop);
-        Song song = list.get(position);
-        Intent intent = new Intent(getApplicationContext(), MusicService.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("list_song", song);
-        intent.putExtras(bundle);
-        getApplicationContext().startService(intent);
+//        Intent intentStop = new Intent(getApplicationContext(), MusicService.class);
+//        getApplicationContext().stopService(intentStop);
+//        Song song = list.get(position);
+//        Intent intent = new Intent(getApplicationContext(), MusicService.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("list_song", song);
+//        intent.putExtras(bundle);
+//        getApplicationContext().startService(intent);
 
     }
 
