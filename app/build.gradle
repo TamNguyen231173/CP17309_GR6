@@ -56,6 +56,10 @@ dependencies {
     //MediaStyle
     implementation "androidx.media:media:1.6.0"
 
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+
     implementation 'jp.mixi:AndroidDeviceCompatibility:2.0.0'
 
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
