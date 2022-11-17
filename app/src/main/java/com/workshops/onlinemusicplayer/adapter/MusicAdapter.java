@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.model.Song;
@@ -55,7 +56,7 @@ public class MusicAdapter extends BaseAdapter {
 
         txtTitle.setText(song.getTitle());
         txtSingle.setText(song.getSinger());
-        Picasso.get().load(song.getImage()).into(imgSong);
+        Glide.with(context).load(song.getImage()).into(imgSong);
         imgHeart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

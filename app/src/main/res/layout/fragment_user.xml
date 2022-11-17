@@ -62,7 +62,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/etEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="11dp"
@@ -74,7 +74,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/etName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -110,8 +110,8 @@
                 android:layout_marginTop="18dp"
                 android:text="999"
                 android:textAppearance="@style/amount_profile"
-                app:layout_constraintStart_toEndOf="@+id/textView16"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
+                app:layout_constraintStart_toEndOf="@+id/etEmail"
+                app:layout_constraintTop_toBottomOf="@+id/etName" />
 
             <TextView
                 android:layout_width="wrap_content"
