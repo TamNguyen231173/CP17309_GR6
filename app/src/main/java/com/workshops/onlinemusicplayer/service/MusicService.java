@@ -37,8 +37,15 @@ public class MusicService extends Service {
     private static final int ACTION_PREVIOUS = 4;
     private static final int ACTION_CLOSE = 5;
 
+
+    public static final String ENVENT_ACTION_PAUSE = "ENVENT_ACTION_PAUSE";
+    public static final String ENVENT_ACTION_PLAY = "ENVENT_ACTION_PLAY";
+    public static final String ENVENT_ACTION_NEXT = "ENVENT_ACTION_NEXT";
+    public static final String ENVENT_ACTION_PREVIOUS = "ENVENT_ACTION_PREVIOUS";
+
     private MediaPlayer player;
     private boolean isPlaying;
+    private boolean notifyPlay = true;
     private Song mSong;
 
     @Nullable
@@ -87,10 +94,10 @@ public class MusicService extends Service {
                 playMusic();
                 break;
             case ACTION_NEXT:
-
+                nextMusic();
                 break;
             case ACTION_PREVIOUS:
-
+                previousMusic();
                 break;
             case ACTION_CLOSE:
                 stopSelf();
@@ -98,19 +105,45 @@ public class MusicService extends Service {
         }
     }
 
+    private void nextMusic() {
+        notifyPlay = true;
+        sendNotification(mSong);
+        Intent intentnNext = new Intent();
+        intentnNext.setAction("Next");
+        intentnNext.putExtra("action", ENVENT_ACTION_NEXT);
+        sendBroadcast(intentnNext);
+
+    }
+    private void previousMusic() {
+        notifyPlay = true;
+        sendNotification(mSong);
+        Intent intentnPrevious = new Intent();
+        intentnPrevious.setAction("Previous");
+        intentnPrevious.putExtra("action", ENVENT_ACTION_PREVIOUS);
+        sendBroadcast(intentnPrevious);
+    }
+
     private void pauseMusic() {
-        if (player != null && isPlaying) {
-            player.pause();
-            isPlaying = false;
+        if (notifyPlay) {
+            notifyPlay = false;
             sendNotification(mSong);
+            Intent intentPause = new Intent();
+            intentPause.putExtra("notifyPause", notifyPlay);
+            intentPause.setAction("Pause");
+            intentPause.putExtra("action", ENVENT_ACTION_PAUSE);
+            sendBroadcast(intentPause);
         }
     }
 
     private void playMusic() {
-        if (player != null && !isPlaying) {
-            player.start();
-            isPlaying = true;
+        if (!notifyPlay) {
+            notifyPlay = true;
             sendNotification(mSong);
+            Intent intentPlay = new Intent();
+            intentPlay.putExtra("notifyPlay", notifyPlay);
+            intentPlay.setAction("Play");
+            intentPlay.putExtra("action", ENVENT_ACTION_PLAY);
+            sendBroadcast(intentPlay);
         }
     }
 
@@ -134,10 +167,6 @@ public class MusicService extends Service {
                 .setContentText(song.getSinger())
                 .setContentIntent(homePendingIntent)
                 .setSound(null)
-                .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
-                .addAction(R.drawable.ic_pause, "Pause", null) //#1             // #1
-                .addAction(R.drawable.ic_skip_next, "Next", null)//#2
-                .addAction(R.drawable.ic_close, "Close", null)  // #3
                 // Apply the media style template
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(0, 1, 2 /* #1: pause button */)
@@ -152,21 +181,21 @@ public class MusicService extends Service {
                         notificationBuilder.setLargeIcon(resource);
                         musicThumbnail[0] = resource;
 
-//        if (isPlaying) {
-//            notificationBuilder
-//                    // Add media control buttons that invoke intents in your media service
-//                    .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
-//                    .addAction(R.drawable.ic_pause, "Pause", getPendingIntent(this, ACTION_PAUSE)) //#1             // #1
-//                    .addAction(R.drawable.ic_skip_next, "Next", null)//#2
-//                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(this, ACTION_CLOSE));  // #3
-//        } else {
-//            notificationBuilder
-//                    // Add media control buttons that invoke intents in your media service
-//                    .addAction(R.drawable.ic_skip_previous, "Previous", null)   // #0
-//                    .addAction(R.drawable.ic_play, "Pause", getPendingIntent(this, ACTION_PLAY)) //#1             // #1
-//                    .addAction(R.drawable.ic_skip_next, "Next", null)//#2
-//                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(this, ACTION_CLOSE));  // #3
-//        }
+                        if (notifyPlay) {
+                            notificationBuilder
+                                    // Add media control buttons that invoke intents in your media service
+                                    .addAction(R.drawable.ic_skip_previous, "Previous", getPendingIntent(MusicService.this, ACTION_PREVIOUS))   // #0
+                                    .addAction(R.drawable.ic_pause, "Pause", getPendingIntent(MusicService.this, ACTION_PAUSE)) //#1             // #1
+                                    .addAction(R.drawable.ic_skip_next, "Next", getPendingIntent(MusicService.this, ACTION_NEXT))//#2
+                                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(MusicService.this, ACTION_CLOSE));  // #3
+                        } else {
+                            notificationBuilder
+                                    // Add media control buttons that invoke intents in your media service
+                                    .addAction(R.drawable.ic_skip_previous, "Previous", getPendingIntent(MusicService.this, ACTION_PREVIOUS))   // #0
+                                    .addAction(R.drawable.ic_play, "Play", getPendingIntent(MusicService.this, ACTION_PLAY)) //#1             // #1
+                                    .addAction(R.drawable.ic_skip_next, "Next", getPendingIntent(MusicService.this,ACTION_NEXT))//#2
+                                    .addAction(R.drawable.ic_close, "Close", getPendingIntent(MusicService.this, ACTION_NEXT));  // #3
+                        }
 
                         Notification notification = notificationBuilder.build();
 

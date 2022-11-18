@@ -3,7 +3,10 @@ package com.workshops.onlinemusicplayer.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -52,6 +55,8 @@ public class MusicActivity extends AppCompatActivity {
     final int min = 0;
     int max;
     int i;
+    boolean isPlaying = true;
+    IntentFilter intentFilter;
     SimpleDateFormat format_time = new SimpleDateFormat("mm:ss");
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -59,6 +64,12 @@ public class MusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("Pause");
+        intentFilter.addAction("Play");
+        intentFilter.addAction("Next");
+        intentFilter.addAction("Previous");
 
         Intent intent = getIntent();
         int id_song = intent.getIntExtra("song_id", 1);
@@ -180,6 +191,7 @@ public class MusicActivity extends AppCompatActivity {
         name_song_music_ac.setText(list.get(position).getTitle());
         singer_name_music_ac.setText(list.get(position).getSinger());
         media_player.start();
+        isPlaying = true;
         play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
         showTime();
         UpdateTime();
@@ -223,14 +235,6 @@ public class MusicActivity extends AppCompatActivity {
         play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
         showTime();
         UpdateTime();
-//        Intent intentStop = new Intent(getApplicationContext(), MusicService.class);
-//        getApplicationContext().stopService(intentStop);
-//        Song song = list.get(position);
-//        Intent intent = new Intent(getApplicationContext(), MusicService.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable("list_song", song);
-//        intent.putExtras(bundle);
-//        getApplicationContext().startService(intent);
 
     }
 
@@ -304,6 +308,53 @@ public class MusicActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(receiver,intentFilter);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getStringExtra("action");
+            switch (action){
+                case MusicService.ENVENT_ACTION_PAUSE:
+                    boolean pause = intent.getBooleanExtra("notifyPause",true);
+                    if(pause == false){
+                        media_player.pause();
+                        isPlaying = false;
+                        play_btn.setImageResource(R.drawable.ic_play);
+
+//                        Intent intentPause = new Intent(MusicActivity.this,MusicService.class);
+//                        intentPause.putExtra("isPlaying",isPlaying);
+//                        startService(intentPause);
+                    }
+                    break;
+                case MusicService.ENVENT_ACTION_PLAY:
+                    boolean play = intent.getBooleanExtra("notifyPlay",false);
+                    if(play == true){
+                        media_player.start();
+                        isPlaying = true;
+                        play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
+//                        Intent intentPlay = new Intent(MusicActivity.this,MusicService.class);
+//                        intentPlay.putExtra("isPlaying",isPlaying);
+//                        startService(intentPlay);
+                    }
+                    break;
+                case MusicService.ENVENT_ACTION_NEXT:
+                    nextSong();
+                    break;
+                case MusicService.ENVENT_ACTION_PREVIOUS:
+                    prevSong();
+                    break;
+                default: break;
+
+            }
+        }
+    };
 
 }

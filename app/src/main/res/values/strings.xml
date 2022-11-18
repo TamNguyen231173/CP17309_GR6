@@ -1,12 +1,6 @@
     <resources>
     <string name="app_name">OnlineMusicPlayer</string>
-        <string name="default_web_client_id" translatable="false">645380439722-eoo0p22nij1ghtu4jk5gfr0baoisk5hk.apps.googleusercontent.com</string>
-        <string name="gcm_defaultSenderId" translatable="false">645380439722</string>
-        <string name="google_api_key" translatable="false">AIzaSyC-dwf1TKA96yofNcWjQP1HO9PciZloW5E</string>
-        <string name="google_app_id" translatable="false">1:645380439722:android:cfc29b9a889e751a801ad3</string>
-        <string name="google_crash_reporting_api_key" translatable="false">AIzaSyC-dwf1TKA96yofNcWjQP1HO9PciZloW5E</string>
-        <string name="google_storage_bucket" translatable="false">onlinemusic-19f2b.appspot.com</string>
-        <string name="project_id" translatable="false">onlinemusic-19f2b</string>
+
     <string name="facebook_app_id">820152965919460</string>
     <string name="facebook_client_token">bd2be0b25d2eb0772a94bd644e2b3827</string>
     <string name="enjoy_listen">Enjoy listening to music</string>
