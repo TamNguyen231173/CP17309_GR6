@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "645380439722",
+    "firebase_url": "https://onlinemusic-19f2b-default-rtdb.firebaseio.com",
     "project_id": "onlinemusic-19f2b",
     "storage_bucket": "onlinemusic-19f2b.appspot.com"
   },
@@ -13,6 +14,38 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "645380439722-8k1es1e0s7otub6754c1e4josuekor4f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.workshops.onlinemusicplayer",
+            "certificate_hash": "2aba7c4974d7dbd20f98e57a72d579cc1dc3d0a3"
+          }
+        },
+        {
+          "client_id": "645380439722-aob44eq2ult4cgl95b2gb9tfe6e4vru4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.workshops.onlinemusicplayer",
+            "certificate_hash": "767b2d9401f522136fbd507253d5148d91b35068"
+          }
+        },
+        {
+          "client_id": "645380439722-m017gci278atcoefn1iv57rcklig0tue.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.workshops.onlinemusicplayer",
+            "certificate_hash": "b7f23b60d300d1446643b1fa5af64316b5db7969"
+          }
+        },
+        {
+          "client_id": "645380439722-vmkc2lpd0a41dcmj1d5lqbkl92f23mrp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.workshops.onlinemusicplayer",
+            "certificate_hash": "a3e35fcb05f8d3d9f8bf22e2b8034727389d0dda"
+          }
+        },
         {
           "client_id": "645380439722-eoo0p22nij1ghtu4jk5gfr0baoisk5hk.apps.googleusercontent.com",
           "client_type": 3

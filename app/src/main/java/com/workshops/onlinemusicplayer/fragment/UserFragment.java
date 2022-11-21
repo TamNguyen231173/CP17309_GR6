@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -55,11 +56,18 @@ public class UserFragment extends Fragment {
         userID = mAuth.getCurrentUser().getUid();
 
         DocumentReference documentReference = fStore.collection("users").document(userID);
-        documentReference.addSnapshotListener((Activity) getContext(), new EventListener<DocumentSnapshot>() {
+//        documentReference.addSnapshotListener(g, new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                etEmail.setText(value.getString("email"));
+//                etName.setText(value.getString("name"));
+//            }
+//        });
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                etEmail.setText(value.getString("email"));
-                etName.setText(value.getString("name"));
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                etEmail.setText(documentSnapshot.getString("email"));
+                etName.setText(documentSnapshot.getString("fName"));
             }
         });
 
@@ -119,4 +127,5 @@ public class UserFragment extends Fragment {
         //Facebook SignOut
         LoginManager.getInstance().logOut();
     }
+
 }

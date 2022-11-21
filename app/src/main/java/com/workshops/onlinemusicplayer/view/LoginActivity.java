@@ -236,9 +236,10 @@ public class LoginActivity extends AppCompatActivity {
 //                    }
 //                }
 //            });
-            mAuth.signInWithEmailAndPassword(edt_email.getText().toString(), edt_password.getText().toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            mAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
                 public void onSuccess(AuthResult authResult) {
+                    Toast.makeText(LoginActivity.this, "User logged in successfully", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 }
