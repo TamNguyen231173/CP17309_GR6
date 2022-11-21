@@ -1,5 +1,7 @@
 package com.workshops.onlinemusicplayer.adapter;
 
+import static com.workshops.onlinemusicplayer.fragment.HomeFragment.singers;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -48,14 +50,19 @@ public class MusicAdapter extends BaseAdapter {
         LayoutInflater inflater = ((Activity)context).getLayoutInflater();
         view = inflater.inflate(R.layout.layout_list_view,null);
         TextView txtTitle = view.findViewById(R.id.txtitle);
-        TextView txtSingle = view.findViewById(R.id.txtSingle);
+        TextView txtSinger = view.findViewById(R.id.txtSingle);
         ImageView imgSong = view.findViewById(R.id.imgSong);
         ImageView imgHeart = view.findViewById(R.id.imgHeart);
 
         Song song = ds.get(i);
 
         txtTitle.setText(song.getTitle());
-        txtSingle.setText(song.getSinger());
+//        txtSingle.setText(song.getSinger());
+        for (int i1=0; i1<singers.size(); i1++) {
+            if (song.getSinger().equals(singers.get(i1).getId())) {
+                txtSinger.setText(singers.get(i1).getName());
+            }
+        }
         Glide.with(context).load(song.getImage()).into(imgSong);
         imgHeart.setOnClickListener(new View.OnClickListener() {
             @Override

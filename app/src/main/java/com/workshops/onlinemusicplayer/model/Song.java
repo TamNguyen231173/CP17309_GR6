@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Song implements Serializable {
     private  int id;
-    private String title, singer, category, resource, image;
+    private String title, singer, category, resource, image, lyrics;
 
     public Song() {
     }
@@ -26,22 +26,23 @@ public class Song implements Serializable {
     }
 
 
-    public Song(int id, String title, String singer, String image, String resource) {
+    public Song(int id, String title, String singer, String image, String resource, String lyrics) {
         this.title = title;
         this.singer = singer;
         this.resource = resource;
         this.id = id;
         this.image = image;
+        this.lyrics = lyrics;
     }
 
-    public Song(int id, String title, String singer, String category, String image, String resource) {
-        this.title = title;
-        this.singer = singer;
-        this.resource = resource;
-        this.id = id;
-        this.image = image;
-        this.category = category;
-    }
+//    public Song(int id, String title, String singer, String category, String image, String resource) {
+//        this.title = title;
+//        this.singer = singer;
+//        this.resource = resource;
+//        this.id = id;
+//        this.image = image;
+//        this.category = category;
+//    }
 
     public int getId() {
         return id;
@@ -89,5 +90,13 @@ public class Song implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getLyrics() {
+        return lyrics;
+    }
+
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
     }
 }

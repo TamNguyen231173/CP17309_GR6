@@ -87,8 +87,9 @@ public class MusicActivity extends AppCompatActivity {
                                 String singer = (String) document.getData().get("singer");
                                 String image = (String) document.getData().get("image");
                                 String audio = (String) document.getData().get("audio");
+                                String lyrics = (String) document.getData().get("lyrics");
 
-                                list.add(new Song(i, title, singer, image, audio));
+                                list.add(new Song(i, title, singer, image, audio, lyrics));
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

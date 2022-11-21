@@ -1,12 +1,15 @@
 package com.workshops.onlinemusicplayer.view;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -59,7 +62,10 @@ public class LoginActivity extends AppCompatActivity {
     EditText edt_email, edt_password;
     Button btn_login;
     SignInButton btn_login_gg;
-    TextView btn_move_register;
+    TextView btn_move_register, forgot_password;
+    AlertDialog.Builder reset_alert;
+    LayoutInflater inflater;
+//    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +73,16 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         mAuth = FirebaseAuth.getInstance();
+//        user = mAuth.getCurrentUser();
+        reset_alert =  new AlertDialog.Builder(this);
+        inflater = this.getLayoutInflater();
 
         edt_email = findViewById(R.id.edt_login_email);
         edt_password = findViewById(R.id.edt_login_password);
         btn_login = findViewById(R.id.btn_login);
         btn_login_gg = findViewById(R.id.btn_login_gg);
         btn_move_register = findViewById(R.id.btn_move_register);
+        forgot_password = findViewById(R.id.etforgot_password);
         LoginButton loginButton = findViewById(R.id.btn_login_fb);
 
         Animation slide_in_right = AnimationUtils.loadAnimation(getApplicationContext(),
@@ -121,6 +131,42 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG_FB, "facebook:onError", error);
+            }
+        });
+
+        forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // start alertdialog
+                View view2 = inflater.inflate(R.layout.reset_pop, null);
+                reset_alert.setTitle("Reset Forgot Password ?")
+                        .setMessage("Enter Your to get Password Reset link.")
+                        .setPositiveButton("Reset", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // validate the email address
+                                EditText email = view2.findViewById(R.id.edt_rest_email_pop);
+                                if (email.getText().toString().isEmpty()) {
+                                    email.setError("Required Field");
+                                    return;
+                                }
+                                // send the reset link
+                                mAuth.sendPasswordResetEmail(email.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(LoginActivity.this, "Reset Email  Sent", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }).setNegativeButton("Cancel", null)
+                        .setView(view2)
+                        .create()
+                        .show();
             }
         });
     }
