@@ -42,6 +42,7 @@ public class MusicService extends Service {
     public static final String ENVENT_ACTION_PLAY = "ENVENT_ACTION_PLAY";
     public static final String ENVENT_ACTION_NEXT = "ENVENT_ACTION_NEXT";
     public static final String ENVENT_ACTION_PREVIOUS = "ENVENT_ACTION_PREVIOUS";
+    public static final String ENVENT_ACTION_CLOSE = "ENVENT_ACTION_CLOSE";
 
     private MediaPlayer player;
     private boolean isPlaying;
@@ -100,9 +101,19 @@ public class MusicService extends Service {
                 previousMusic();
                 break;
             case ACTION_CLOSE:
-                stopSelf();
+                closeMusic();
                 break;
         }
+    }
+
+    private void closeMusic() {
+        stopSelf();
+        notifyPlay = false;
+        Intent intentPause = new Intent();
+        intentPause.putExtra("notifyPause", notifyPlay);
+        intentPause.setAction("Close");
+        intentPause.putExtra("action", ENVENT_ACTION_CLOSE);
+        sendBroadcast(intentPause);
     }
 
     private void nextMusic() {

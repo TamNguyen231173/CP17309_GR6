@@ -55,6 +55,7 @@ public class MusicActivity extends AppCompatActivity {
     final int min = 0;
     int max;
     int i;
+    private boolean dangODau = true;
     boolean isPlaying = true;
     IntentFilter intentFilter;
     SimpleDateFormat format_time = new SimpleDateFormat("mm:ss");
@@ -70,6 +71,7 @@ public class MusicActivity extends AppCompatActivity {
         intentFilter.addAction("Play");
         intentFilter.addAction("Next");
         intentFilter.addAction("Previous");
+        intentFilter.addAction("Close");
 
         Intent intent = getIntent();
         int id_song = intent.getIntExtra("song_id", 1);
@@ -351,6 +353,10 @@ public class MusicActivity extends AppCompatActivity {
                     break;
                 case MusicService.ENVENT_ACTION_PREVIOUS:
                     prevSong();
+                    break;
+                case MusicService.ENVENT_ACTION_CLOSE:
+                    media_player.stop();
+                    finish();
                     break;
                 default: break;
 

@@ -70,6 +70,8 @@ dependencies {
     implementation 'com.android.support:support-v4:23.1.1'
     implementation 'com.google.firebase:firebase-firestore:24.4.1'
 
+    // youtube player - Videofragment
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
 
 
 }
