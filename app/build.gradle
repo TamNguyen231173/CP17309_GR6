@@ -73,5 +73,7 @@ dependencies {
     // youtube player - Videofragment
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
 
+    //CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 }

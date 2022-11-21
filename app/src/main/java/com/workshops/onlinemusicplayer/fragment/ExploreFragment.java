@@ -3,12 +3,20 @@ package com.workshops.onlinemusicplayer.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.workshops.onlinemusicplayer.R;
+import com.workshops.onlinemusicplayer.adapter.PlayListPopularAdapter;
+import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
+import com.workshops.onlinemusicplayer.model.PlayListPopular;
+import com.workshops.onlinemusicplayer.model.PlayListSinger;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,10 +65,59 @@ public class ExploreFragment extends Fragment {
         }
     }
 
+    private RecyclerView recyclerViewSinger;
+    private RecyclerView recyclerViewPopular;
+    private PlayListSingerAdapter adapterSinger;
+    private PlayListPopularAdapter adapterPopular;
+    private LinearLayoutManager layoutManagerSinger;
+    private LinearLayoutManager layoutManagerPopular;
+    ArrayList<PlayListSinger> listSinger = new ArrayList<>();
+    ArrayList<PlayListPopular> listPopular = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_explore, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_explore, container, false);
+        recyclerViewSinger = view.findViewById(R.id.playListSinger);
+        recyclerViewPopular = view.findViewById(R.id.playListPopular);
+
+        getListSinger();
+        getListPopular();
+
+        // singer
+        layoutManagerSinger = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        adapterSinger = new PlayListSingerAdapter(listSinger,getActivity());
+        recyclerViewSinger.setLayoutManager(layoutManagerSinger);
+        recyclerViewSinger.setAdapter(adapterSinger);
+        //popular
+        adapterPopular = new PlayListPopularAdapter(listPopular,getActivity());
+        layoutManagerPopular = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewPopular.setLayoutManager(layoutManagerPopular);
+        recyclerViewPopular.setAdapter(adapterPopular);
+
+        return view;
+
+    }
+
+    private void getListPopular() {
+        listPopular.add(new PlayListPopular("Ðông Tây Nam Bắc","Ái Phương",R.drawable.ai_phuong_dongtaynambac));
+        listPopular.add(new PlayListPopular("Gone (Da Da Da)","Imanbek, Jay",R.drawable.gone_dadada));
+        listPopular.add(new PlayListPopular("Cô Ðơn Trên Sofa","Hồ Ngọc Hà",R.drawable.ho_ngoc_ha_codontrensofa));
+        listPopular.add(new PlayListPopular("906090","Tóc Tiên",R.drawable.toc_tien_906090));
+        listPopular.add(new PlayListPopular("Element","David Guetta",R.drawable.element));
+        listPopular.add(new PlayListPopular("dongvui harmony","Ðen Vâu",R.drawable.dongvui_denvau));
+
+    }
+
+    private void getListSinger(){
+        listSinger.add(new PlayListSinger("Sơn Tùng MTP", R.drawable.son_tung));
+        listSinger.add(new PlayListSinger("Hương Tràm", R.drawable.huong_tram));
+        listSinger.add(new PlayListSinger("Phan Mạnh Quỳnh", R.drawable.phan_manh_quynh));
+        listSinger.add(new PlayListSinger("Tóc Tiên", R.drawable.toc_tien));
+        listSinger.add(new PlayListSinger("JustaTee", R.drawable.justatee));
+        listSinger.add(new PlayListSinger("BLACKPINK", R.drawable.blackpink));
+        listSinger.add(new PlayListSinger("Sam Smith", R.drawable.sam_smith));
     }
 }
