@@ -18,7 +18,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -30,15 +29,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
-import com.workshops.onlinemusicplayer.fragment.HomeFragment;
 import com.workshops.onlinemusicplayer.model.Song;
 import com.workshops.onlinemusicplayer.service.MusicService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class MusicActivity extends AppCompatActivity {
@@ -55,8 +51,6 @@ public class MusicActivity extends AppCompatActivity {
     final int min = 0;
     int max;
     int i;
-    private boolean dangODau = true;
-    boolean isPlaying = true;
     IntentFilter intentFilter;
     SimpleDateFormat format_time = new SimpleDateFormat("mm:ss");
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -67,8 +61,7 @@ public class MusicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_music);
 
         intentFilter = new IntentFilter();
-        intentFilter.addAction("Pause");
-        intentFilter.addAction("Play");
+        intentFilter.addAction("PlayOrPause");
         intentFilter.addAction("Next");
         intentFilter.addAction("Previous");
         intentFilter.addAction("Close");
@@ -117,7 +110,7 @@ public class MusicActivity extends AppCompatActivity {
                         play_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                playAndPause();
+                                playOrPause();
                             }
                         });
 
@@ -127,7 +120,6 @@ public class MusicActivity extends AppCompatActivity {
                                 repeatSong();
                             }
                         });
-
 
                         shuffle_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -156,7 +148,7 @@ public class MusicActivity extends AppCompatActivity {
                 });
     }
 
-    public void playAndPause() {
+    public void playOrPause() {
         if (media_player.isPlaying()) {
             play_btn.fadeOut();
             play_btn.setState(PlayPauseView.STATE_PAUSE);
@@ -168,6 +160,12 @@ public class MusicActivity extends AppCompatActivity {
             media_player.start();
             play_btn.fadeIn();
         }
+
+        Intent intentPlayPauseService = new Intent();
+        intentPlayPauseService.setAction("Play_Pause_Service");
+        intentPlayPauseService.putExtra("isPlaying", media_player.isPlaying());
+        sendBroadcast(intentPlayPauseService);
+
         showTime();
         UpdateTime();
     }
@@ -190,11 +188,9 @@ public class MusicActivity extends AppCompatActivity {
 
             }
         });
-//        song_img.setBackgroundResource(Integer.parseInt(list.get(position).getImage() + " "));
         name_song_music_ac.setText(list.get(position).getTitle());
         singer_name_music_ac.setText(list.get(position).getSinger());
         media_player.start();
-        isPlaying = true;
         play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
         showTime();
         UpdateTime();
@@ -218,9 +214,7 @@ public class MusicActivity extends AppCompatActivity {
             @Override
             public void run() {
                 time_start.setText(format_time.format(media_player.getCurrentPosition()));
-                //update format
                 song_seekbar.setProgress(media_player.getCurrentPosition());
-                //Kiểm tra tg bài hát --> nếu kết thúc next
                 media_player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
@@ -238,7 +232,6 @@ public class MusicActivity extends AppCompatActivity {
         play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
         showTime();
         UpdateTime();
-
     }
 
     public void nextSong() {
@@ -325,36 +318,16 @@ public class MusicActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getStringExtra("action");
             switch (action){
-                case MusicService.ENVENT_ACTION_PAUSE:
-                    boolean pause = intent.getBooleanExtra("notifyPause",true);
-                    if(pause == false){
-                        media_player.pause();
-                        isPlaying = false;
-                        play_btn.setImageResource(R.drawable.ic_play);
-
-//                        Intent intentPause = new Intent(MusicActivity.this,MusicService.class);
-//                        intentPause.putExtra("isPlaying",isPlaying);
-//                        startService(intentPause);
-                    }
+                case MusicService.EVENT_PLAY_OR_PAUSE:
+                    playOrPause();
                     break;
-                case MusicService.ENVENT_ACTION_PLAY:
-                    boolean play = intent.getBooleanExtra("notifyPlay",false);
-                    if(play == true){
-                        media_player.start();
-                        isPlaying = true;
-                        play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
-//                        Intent intentPlay = new Intent(MusicActivity.this,MusicService.class);
-//                        intentPlay.putExtra("isPlaying",isPlaying);
-//                        startService(intentPlay);
-                    }
-                    break;
-                case MusicService.ENVENT_ACTION_NEXT:
+                case MusicService.EVENT_ACTION_NEXT:
                     nextSong();
                     break;
-                case MusicService.ENVENT_ACTION_PREVIOUS:
+                case MusicService.EVENT_ACTION_PREVIOUS:
                     prevSong();
                     break;
-                case MusicService.ENVENT_ACTION_CLOSE:
+                case MusicService.EVENT_ACTION_CLOSE:
                     media_player.stop();
                     finish();
                     break;
