@@ -10,12 +10,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,10 +38,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
+import com.workshops.onlinemusicplayer.model.Singer;
+import com.workshops.onlinemusicplayer.model.Song;
 import com.workshops.onlinemusicplayer.view.LoginActivity;
+import com.workshops.onlinemusicplayer.view.MusicActivity;
 import com.workshops.onlinemusicplayer.view.ResetPasswordActivity;
+
+import java.util.ArrayList;
 
 public class UserFragment extends Fragment {
 
@@ -50,6 +60,13 @@ public class UserFragment extends Fragment {
     String userID;
     AlertDialog.Builder reset_alert;
     LayoutInflater inflater2;
+    private static final String TAG = "Read data from firebase";
+    ArrayList<Song> list = new ArrayList<Song>();
+    ListView listViewPlaylist;
+    MusicAdapter adapter;
+    int i;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public static ArrayList<Singer> singers = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,13 +82,6 @@ public class UserFragment extends Fragment {
         inflater2 = this.getLayoutInflater();
 
         DocumentReference documentReference = fStore.collection("users").document(userID);
-//        documentReference.addSnapshotListener(g, new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                etEmail.setText(value.getString("email"));
-//                etName.setText(value.getString("name"));
-//            }
-//        });
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -124,6 +134,19 @@ public class UserFragment extends Fragment {
                 });
                 // Showing the popup menu
                 popupMenu.show();
+            }
+        });
+        getDataPlaylist();
+
+        listViewPlaylist = view.findViewById(R.id.listViewPlaylist);
+
+        listViewPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Song song = list.get(i);
+                Intent intent = new Intent(getContext(), MusicActivity.class);
+                intent.putExtra("song_id", song.getId());
+                getActivity().startActivity(intent);
             }
         });
         return view;
@@ -207,6 +230,59 @@ public class UserFragment extends Fragment {
 //                                        .setView(view3)
                 .create()
                 .show();
+    }
+    private void readData() {
+        i = 0;
+        db.collection("song")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                i++;
+                                String title = (String) document.getData().get("name");
+                                String singer = (String) document.getData().get("id_singer");
+                                String image = (String) document.getData().get("image");
+
+                                list.add(new Song(i, title, singer, image));
+                            }
+                            adapter = new MusicAdapter(list, getContext());
+                            listViewPlaylist.setAdapter(adapter);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        readData();
+    }
+
+    private void getDataPlaylist() {
+        db.collection("singer")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                singers.add(new Singer(document.get("name").toString(),document.getId()));
+                            }
+                            adapter = new MusicAdapter(list, getContext());
+                            listViewPlaylist.setAdapter(adapter);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("<<singer>>", "Lấy dữ liệu không thành công" );
+                    }
+                });
     }
 
 }

@@ -6,7 +6,7 @@ public class Song implements Serializable {
     private  int id;
     private String title, singer, category, resource, image, lyrics;
 
-    public Song() {
+    public Song(int i, String title) {
     }
 
     public Song(int id, String title, String singer, String image) {

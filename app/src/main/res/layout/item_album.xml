@@ -23,6 +23,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/txtTitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Happier Than Ever"
