@@ -41,7 +41,7 @@ public class MusicActivity extends AppCompatActivity {
     private static final String TAG = "Read data from firebase";
     MediaPlayer media_player;
     ImageView next_btn, prev_btn, song_img, repeat_btn, shuffle_btn;
-    TextView name_song_music_ac, singer_name_music_ac, time_end, time_start;
+    TextView name_song_music_ac, singer_name_music_ac, time_end, time_start, lyric;
     SeekBar song_seekbar;
     ArrayList<Song> list = new ArrayList<Song>();
     PlayPauseView play_btn;
@@ -190,6 +190,7 @@ public class MusicActivity extends AppCompatActivity {
         });
         name_song_music_ac.setText(list.get(position).getTitle());
         singer_name_music_ac.setText(list.get(position).getSinger());
+        lyric.setText(list.get(position).getLyrics());
         media_player.start();
         play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
         showTime();
@@ -299,6 +300,7 @@ public class MusicActivity extends AppCompatActivity {
         time_start = (TextView) findViewById(R.id.time_start);
         repeat_btn = (ImageView) findViewById(R.id.repeat_btn);
         shuffle_btn = (ImageView) findViewById(R.id.shuffle_btn);
+        lyric = (TextView) findViewById(R.id.lyric);
     }
 
     @Override

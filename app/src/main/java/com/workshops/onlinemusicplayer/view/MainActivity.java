@@ -9,7 +9,6 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.workshops.onlinemusicplayer.R;
@@ -70,11 +69,9 @@ public class MainActivity extends AppCompatActivity {
         if (windowInsetsController == null) {
             return;
         }
-        // Configure the behavior of the hidden system bars
         windowInsetsController.setSystemBarsBehavior(
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         );
-        // Hide both the status bar and the navigation bar
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
     }
 }
