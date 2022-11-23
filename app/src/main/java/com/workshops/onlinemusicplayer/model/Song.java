@@ -35,15 +35,6 @@ public class Song implements Serializable {
         this.lyrics = lyrics;
     }
 
-//    public Song(int id, String title, String singer, String category, String image, String resource) {
-//        this.title = title;
-//        this.singer = singer;
-//        this.resource = resource;
-//        this.id = id;
-//        this.image = image;
-//        this.category = category;
-//    }
-
     public int getId() {
         return id;
     }
