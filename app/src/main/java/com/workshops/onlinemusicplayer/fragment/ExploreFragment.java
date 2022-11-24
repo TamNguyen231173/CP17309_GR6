@@ -95,9 +95,9 @@ public class ExploreFragment extends Fragment {
         recyclerViewSinger = view.findViewById(R.id.playListSinger);
         recyclerViewPopular = view.findViewById(R.id.playListPopular);
 
-//        getListSinger();
+        getListSinger();
         getListPopular();
-        readData();
+//        readData();
 
         // singer
         layoutManagerSinger = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
@@ -116,31 +116,30 @@ public class ExploreFragment extends Fragment {
     }
 
 
-//    public void onResume() {
-//        super.onResume();
-//        readData();
-//    }
-
     private void getListPopular() {
-        listPopular.add(new PlayListPopular("Ðông Tây Nam Bắc","Ái Phương",R.drawable.ai_phuong_dongtaynambac));
-        listPopular.add(new PlayListPopular("Gone (Da Da Da)","Imanbek, Jay",R.drawable.gone_dadada));
-        listPopular.add(new PlayListPopular("Cô Ðơn Trên Sofa","Hồ Ngọc Hà",R.drawable.ho_ngoc_ha_codontrensofa));
-        listPopular.add(new PlayListPopular("906090","Tóc Tiên",R.drawable.toc_tien_906090));
-        listPopular.add(new PlayListPopular("Element","David Guetta",R.drawable.element));
-        listPopular.add(new PlayListPopular("dongvui harmony","Ðen Vâu",R.drawable.dongvui_denvau));
-
+        db.collection("popular")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String id = (String) document.getData().get("id");
+                                String name = (String) document.getData().get("name");
+                                String image = (String) document.getData().get("image");
+                                String singer = (String) document.getData().get("singer");
+                                listPopular.add(new PlayListPopular(id, name, image, singer));
+                            }
+                            adapterPopular = new PlayListPopularAdapter(listPopular, getContext());
+                            recyclerViewPopular.setAdapter(adapterPopular);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
-//    private void getListSinger(){
-//        listSinger.add(new PlayListSinger("Sơn Tùng MTP", R.drawable.son_tung));
-//        listSinger.add(new PlayListSinger("Hương Tràm", R.drawable.huong_tram));
-//        listSinger.add(new PlayListSinger("Phan Mạnh Quỳnh", R.drawable.phan_manh_quynh));
-//        listSinger.add(new PlayListSinger("Tóc Tiên", R.drawable.toc_tien));
-//        listSinger.add(new PlayListSinger("JustaTee", R.drawable.justatee));
-//        listSinger.add(new PlayListSinger("BLACKPINK", R.drawable.blackpink));
-//        listSinger.add(new PlayListSinger("Sam Smith", R.drawable.sam_smith));
-//    }
-    private void readData() {
+    private void getListSinger() {
         db.collection("singer")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -150,11 +149,8 @@ public class ExploreFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String id = (String) document.getData().get("id");
                                 String name = (String) document.getData().get("name");
-//                                String singer = (String) document.getData().get("id_singer");
                                 String image = (String) document.getData().get("image");
-                                Log.d("namesinger", "onComplete: " +name);
                                 ds.add(new PlayListSinger(id, name, image));
-                                Log.d("singera", "onComplete: "+ds);
                             }
                             adapterSinger = new PlayListSingerAdapter(ds, getContext());
                             recyclerViewSinger.setAdapter(adapterSinger);

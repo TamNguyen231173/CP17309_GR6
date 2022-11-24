@@ -11,8 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.model.PlayListPopular;
+import com.workshops.onlinemusicplayer.model.PlayListSinger;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,12 @@ public class PlayListPopularAdapter extends RecyclerView.Adapter<PlayListPopular
         this.context = context;
     }
 
+    public void add(PlayListPopular popular) {
+        ds.add(popular);
+        notifyDataSetChanged();
+    }
+
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,9 +45,10 @@ public class PlayListPopularAdapter extends RecyclerView.Adapter<PlayListPopular
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.imagePopular.setBackgroundResource(ds.get(position).getImagePopular());
-        holder.txtNameSinger.setText(ds.get(position).getNameSinger());
-        holder.txtNameSong.setText(ds.get(position).getNameSong());
+        PlayListPopular popular = ds.get(position);
+        holder.txtNameSong.setText(popular.getName());
+        holder.txtNameSinger.setText(popular.getSinger());
+        Glide.with(context).load(popular.getImage()).into(holder.imagePopular);
     }
 
     @Override

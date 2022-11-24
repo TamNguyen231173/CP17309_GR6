@@ -3,20 +3,19 @@ package com.workshops.onlinemusicplayer.model;
 import java.io.Serializable;
 
 public class Albums implements Serializable {
-    int id;
-    String name, image;
+    String id, name, image;
 
-    public Albums(int id, String name, String image) {
+    public Albums(String id, String name, String image) {
         this.id = id;
-        this.image = image;
         this.name = name;
+        this.image = image;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

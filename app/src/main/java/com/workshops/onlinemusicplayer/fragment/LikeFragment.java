@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -26,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.AlbumAdapter;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
+import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
 import com.workshops.onlinemusicplayer.adapter.TrendAdapter;
 import com.workshops.onlinemusicplayer.model.Albums;
 import com.workshops.onlinemusicplayer.model.Singer;
@@ -44,14 +47,23 @@ public class LikeFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static ArrayList<Singer> singers = new ArrayList<>();
     ArrayList<Albums> albums = new ArrayList<>();
+    private RecyclerView recyclerViewAlbum;
+    private LinearLayoutManager layoutManagerAlbum;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_like, container, false);
+        recyclerViewAlbum = view.findViewById(R.id.list_view_albums);
         getDataPlaylist();
-        listViewAlBums = view.findViewById(R.id.list_view_albums);
+//        listViewAlBums = view.findViewById(R.id.list_view_albums);
         listViewPlaylist = view.findViewById(R.id.listViewPlaylist);
+
+        // albums
+        layoutManagerAlbum = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        adapter1 = new AlbumAdapter(albums,getActivity());
+        recyclerViewAlbum.setLayoutManager(layoutManagerAlbum);
+        recyclerViewAlbum.setAdapter(adapter1);
 
         listViewPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,12 +110,13 @@ public class LikeFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String title = (String) document.getData().get("name");
+                                String id = (String) document.getData().get("id");
+                                String name = (String) document.getData().get("name");
                                 String image = (String) document.getData().get("image");
-                                albums.add(new Albums(i, title, image));
+                                albums.add(new Albums(id, name, image));
                             }
                             adapter1 = new AlbumAdapter(albums, getContext());
-                            listViewAlBums.setAdapter(adapter1);
+                            recyclerViewAlbum.setAdapter(adapter1);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

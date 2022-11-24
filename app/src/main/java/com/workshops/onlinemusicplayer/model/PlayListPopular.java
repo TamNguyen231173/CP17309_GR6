@@ -1,40 +1,46 @@
 package com.workshops.onlinemusicplayer.model;
 
-public class PlayListPopular {
-    private String nameSong;
-    private String nameSinger;
-    private int imagePopular;
+import java.io.Serializable;
 
-    public PlayListPopular() {
+public class PlayListPopular implements Serializable {
+    String id, name, image, singer;
+
+    public PlayListPopular(String id, String name, String image, String singer) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.singer = singer;
     }
 
-    public PlayListPopular(String nameSong, String nameSinger, int imagePopular) {
-        this.nameSong = nameSong;
-        this.nameSinger = nameSinger;
-        this.imagePopular = imagePopular;
+    public String getId() {
+        return id;
     }
 
-    public String getNameSong() {
-        return nameSong;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setNameSong(String nameSong) {
-        this.nameSong = nameSong;
+    public String getName() {
+        return name;
     }
 
-    public String getNameSinger() {
-        return nameSinger;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setNameSinger(String nameSinger) {
-        this.nameSinger = nameSinger;
+    public String getImage() {
+        return image;
     }
 
-    public int getImagePopular() {
-        return imagePopular;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public void setImagePopular(int imagePopular) {
-        this.imagePopular = imagePopular;
+    public String getSinger() {
+        return singer;
+    }
+
+    public void setSinger(String singer) {
+        this.singer = singer;
     }
 }
