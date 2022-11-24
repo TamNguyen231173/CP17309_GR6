@@ -2,19 +2,27 @@ package com.workshops.onlinemusicplayer.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.PlayListPopularAdapter;
 import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
 import com.workshops.onlinemusicplayer.model.PlayListPopular;
 import com.workshops.onlinemusicplayer.model.PlayListSinger;
+import com.workshops.onlinemusicplayer.model.Singer;
 
 import java.util.ArrayList;
 
@@ -24,6 +32,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ExploreFragment extends Fragment {
+    int id;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,14 +74,17 @@ public class ExploreFragment extends Fragment {
         }
     }
 
+    private static final String TAG = "Read data from firebase";
     private RecyclerView recyclerViewSinger;
     private RecyclerView recyclerViewPopular;
     private PlayListSingerAdapter adapterSinger;
     private PlayListPopularAdapter adapterPopular;
     private LinearLayoutManager layoutManagerSinger;
     private LinearLayoutManager layoutManagerPopular;
-    ArrayList<PlayListSinger> listSinger = new ArrayList<>();
     ArrayList<PlayListPopular> listPopular = new ArrayList<>();
+
+    ArrayList<PlayListSinger> ds = new ArrayList<>();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,14 +95,16 @@ public class ExploreFragment extends Fragment {
         recyclerViewSinger = view.findViewById(R.id.playListSinger);
         recyclerViewPopular = view.findViewById(R.id.playListPopular);
 
-        getListSinger();
+//        getListSinger();
         getListPopular();
+        readData();
 
         // singer
         layoutManagerSinger = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
-        adapterSinger = new PlayListSingerAdapter(listSinger,getActivity());
+        adapterSinger = new PlayListSingerAdapter(ds,getActivity());
         recyclerViewSinger.setLayoutManager(layoutManagerSinger);
         recyclerViewSinger.setAdapter(adapterSinger);
+
         //popular
         adapterPopular = new PlayListPopularAdapter(listPopular,getActivity());
         layoutManagerPopular = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
@@ -100,6 +114,12 @@ public class ExploreFragment extends Fragment {
         return view;
 
     }
+
+
+//    public void onResume() {
+//        super.onResume();
+//        readData();
+//    }
 
     private void getListPopular() {
         listPopular.add(new PlayListPopular("Ðông Tây Nam Bắc","Ái Phương",R.drawable.ai_phuong_dongtaynambac));
@@ -111,13 +131,38 @@ public class ExploreFragment extends Fragment {
 
     }
 
-    private void getListSinger(){
-        listSinger.add(new PlayListSinger("Sơn Tùng MTP", R.drawable.son_tung));
-        listSinger.add(new PlayListSinger("Hương Tràm", R.drawable.huong_tram));
-        listSinger.add(new PlayListSinger("Phan Mạnh Quỳnh", R.drawable.phan_manh_quynh));
-        listSinger.add(new PlayListSinger("Tóc Tiên", R.drawable.toc_tien));
-        listSinger.add(new PlayListSinger("JustaTee", R.drawable.justatee));
-        listSinger.add(new PlayListSinger("BLACKPINK", R.drawable.blackpink));
-        listSinger.add(new PlayListSinger("Sam Smith", R.drawable.sam_smith));
+//    private void getListSinger(){
+//        listSinger.add(new PlayListSinger("Sơn Tùng MTP", R.drawable.son_tung));
+//        listSinger.add(new PlayListSinger("Hương Tràm", R.drawable.huong_tram));
+//        listSinger.add(new PlayListSinger("Phan Mạnh Quỳnh", R.drawable.phan_manh_quynh));
+//        listSinger.add(new PlayListSinger("Tóc Tiên", R.drawable.toc_tien));
+//        listSinger.add(new PlayListSinger("JustaTee", R.drawable.justatee));
+//        listSinger.add(new PlayListSinger("BLACKPINK", R.drawable.blackpink));
+//        listSinger.add(new PlayListSinger("Sam Smith", R.drawable.sam_smith));
+//    }
+    private void readData() {
+        db.collection("singer")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String id = (String) document.getData().get("id");
+                                String name = (String) document.getData().get("name");
+//                                String singer = (String) document.getData().get("id_singer");
+                                String image = (String) document.getData().get("image");
+                                Log.d("namesinger", "onComplete: " +name);
+                                ds.add(new PlayListSinger(id, name, image));
+                                Log.d("singera", "onComplete: "+ds);
+                            }
+                            adapterSinger = new PlayListSingerAdapter(ds, getContext());
+                            recyclerViewSinger.setAdapter(adapterSinger);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 }

@@ -42,6 +42,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
+import com.workshops.onlinemusicplayer.adapter.PlayListMusicAdapter;
 import com.workshops.onlinemusicplayer.model.Singer;
 import com.workshops.onlinemusicplayer.model.Song;
 import com.workshops.onlinemusicplayer.view.LoginActivity;
@@ -63,7 +64,7 @@ public class UserFragment extends Fragment {
     private static final String TAG = "Read data from firebase";
     ArrayList<Song> list = new ArrayList<Song>();
     ListView listViewPlaylist;
-    MusicAdapter adapter;
+    PlayListMusicAdapter adapter;
     int i;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static ArrayList<Singer> singers = new ArrayList<>();
@@ -247,7 +248,7 @@ public class UserFragment extends Fragment {
 
                                 list.add(new Song(i, title, singer, image));
                             }
-                            adapter = new MusicAdapter(list, getContext());
+                            adapter = new PlayListMusicAdapter(list, getContext());
                             listViewPlaylist.setAdapter(adapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -272,7 +273,7 @@ public class UserFragment extends Fragment {
                             for (DocumentSnapshot document : task.getResult()) {
                                 singers.add(new Singer(document.get("name").toString(),document.getId()));
                             }
-                            adapter = new MusicAdapter(list, getContext());
+                            adapter = new PlayListMusicAdapter(list, getContext());
                             listViewPlaylist.setAdapter(adapter);
                         }
                     }

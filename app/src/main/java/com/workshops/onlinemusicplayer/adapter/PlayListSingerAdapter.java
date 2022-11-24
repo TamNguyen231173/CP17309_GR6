@@ -5,17 +5,18 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.model.PlayListSinger;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PlayListSingerAdapter extends RecyclerView.Adapter<PlayListSingerAdapter.ViewHolder> {
 
@@ -25,6 +26,11 @@ public class PlayListSingerAdapter extends RecyclerView.Adapter<PlayListSingerAd
     public PlayListSingerAdapter(ArrayList<PlayListSinger> ds, Context context) {
         this.ds = ds;
         this.context = context;
+    }
+
+    public void add(PlayListSinger singer) {
+        ds.add(singer);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -38,8 +44,11 @@ public class PlayListSingerAdapter extends RecyclerView.Adapter<PlayListSingerAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.imageSinger.setImageResource(ds.get(position).getImageSinger());
-        holder.txtNameSinger.setText(ds.get(position).getNameSinger());
+//        holder.imageSinger.setImageResource(ds.get(position).getImageSinger());
+        PlayListSinger singer = ds.get(position);
+//        holder.NameSinger.setText(ds.get(position).getName());
+        holder.NameSinger.setText(singer.getName());
+        Glide.with(context).load(singer.getImage()).into(holder.imageSinger);
     }
 
     @Override
@@ -48,12 +57,12 @@ public class PlayListSingerAdapter extends RecyclerView.Adapter<PlayListSingerAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        CircleImageView imageSinger;
-        TextView txtNameSinger;
+        ImageView imageSinger;
+        TextView NameSinger;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageSinger = itemView.findViewById(R.id.profile_image);
-            txtNameSinger = itemView.findViewById(R.id.txtNameSinger);
+            NameSinger = itemView.findViewById(R.id.txtNameSinger1);
         }
     }
 }

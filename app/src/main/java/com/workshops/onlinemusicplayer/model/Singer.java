@@ -3,12 +3,18 @@ package com.workshops.onlinemusicplayer.model;
 import java.io.Serializable;
 
 public class Singer implements Serializable {
-    String name, id;
+    String name, id, image;
 
 
     public Singer(String name, String id) {
         this.name = name;
         this.id = id;
+    }
+
+    public Singer(String name, String id, String image) {
+        this.name = name;
+        this.id = id;
+        this.image = image;
     }
 
     public String getName() {
@@ -25,5 +31,13 @@ public class Singer implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

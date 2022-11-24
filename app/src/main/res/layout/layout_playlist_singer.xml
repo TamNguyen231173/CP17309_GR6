@@ -6,7 +6,7 @@
     android:layout_margin="20dp"
     android:gravity="center_horizontal">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
         android:layout_width="100dp"
@@ -16,7 +16,7 @@
         app:civ_border_color="#42C83C"/>
 
     <TextView
-        android:id="@+id/txtNameSinger"
+        android:id="@+id/txtNameSinger1"
         android:text="Sơn Tùng MTP"
         android:textSize="18sp"
         android:textColor="@color/text_white"
