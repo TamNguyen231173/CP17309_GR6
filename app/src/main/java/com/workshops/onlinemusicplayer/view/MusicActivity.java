@@ -15,8 +15,12 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -52,6 +56,7 @@ public class MusicActivity extends AppCompatActivity {
     int max;
     int i;
     IntentFilter intentFilter;
+    Animation rotateAnimation;
     SimpleDateFormat format_time = new SimpleDateFormat("mm:ss");
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -59,6 +64,8 @@ public class MusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
+
+        rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
 
         intentFilter = new IntentFilter();
         intentFilter.addAction("PlayOrPause");
@@ -154,11 +161,13 @@ public class MusicActivity extends AppCompatActivity {
             play_btn.setState(PlayPauseView.STATE_PAUSE);
             media_player.pause();
             play_btn.fadeIn();
+            song_img.clearAnimation();
         } else {
             play_btn.fadeOut();
             play_btn.setState(PlayPauseView.STATE_PLAY);
             media_player.start();
             play_btn.fadeIn();
+            song_img.startAnimation(rotateAnimation);
         }
 
         Intent intentPlayPauseService = new Intent();
@@ -195,7 +204,7 @@ public class MusicActivity extends AppCompatActivity {
         play_btn.setImageResource(R.drawable.ic_baseline_pause_24);
         showTime();
         UpdateTime();
-
+        song_img.startAnimation(rotateAnimation);
         Song song = list.get(position);
         Intent intent = new Intent(getApplicationContext(), MusicService.class);
         Bundle bundle = new Bundle();
@@ -301,12 +310,14 @@ public class MusicActivity extends AppCompatActivity {
         repeat_btn = (ImageView) findViewById(R.id.repeat_btn);
         shuffle_btn = (ImageView) findViewById(R.id.shuffle_btn);
         lyric = (TextView) findViewById(R.id.lyric);
+        lyric.setMovementMethod(ScrollingMovementMethod.getInstance());
+        lyric.setVerticalScrollBarEnabled(true);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(receiver,intentFilter);
+        registerReceiver(receiver, intentFilter);
     }
 
     @Override
@@ -319,7 +330,7 @@ public class MusicActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getStringExtra("action");
-            switch (action){
+            switch (action) {
                 case MusicService.EVENT_PLAY_OR_PAUSE:
                     playOrPause();
                     break;
@@ -333,7 +344,8 @@ public class MusicActivity extends AppCompatActivity {
                     media_player.stop();
                     finish();
                     break;
-                default: break;
+                default:
+                    break;
 
             }
         }
