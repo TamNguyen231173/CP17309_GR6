@@ -86,12 +86,92 @@ public class MusicActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 i++;
                                 String title = (String) document.getData().get("name");
-                                String singer = (String) document.getData().get("singer");
                                 String image = (String) document.getData().get("image");
-                                String audio = (String) document.getData().get("audio");
+                                String singer = (String) document.getData().get("singer");
+                                String resource = (String) document.getData().get("audio");
                                 String lyrics = (String) document.getData().get("lyrics");
 
-                                list.add(new Song(i, title, singer, image, audio, lyrics));
+                                list.add(new Song(i, title, image, singer, resource, lyrics));
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                        initViews();
+                        initMusic();
+                        showTime();
+
+                        next_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                nextSong();
+                            }
+                        });
+
+                        prev_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                prevSong();
+                            }
+                        });
+
+                        play_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                playOrPause();
+                            }
+                        });
+
+                        repeat_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                repeatSong();
+                            }
+                        });
+
+                        shuffle_btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                shuffleSong();
+                            }
+                        });
+
+                        song_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+                                media_player.seekTo(song_seekbar.getProgress());
+                            }
+                        });
+                    }
+                });
+
+        int id_popular = intent.getIntExtra("popular_id", 1);
+        position = id_popular - 1;
+
+        db.collection("popular")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                i++;
+                                String name = (String) document.getData().get("name");
+                                String image = (String) document.getData().get("image");
+                                String singer = (String) document.getData().get("singer");
+                                String resource = (String) document.getData().get("audio");
+                                String lyrics = (String) document.getData().get("lyrics");
+
+                                list.add(new Song(i, name, image, singer, resource, lyrics));
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

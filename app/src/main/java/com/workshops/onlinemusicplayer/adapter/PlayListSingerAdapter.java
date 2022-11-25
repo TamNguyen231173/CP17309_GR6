@@ -17,6 +17,8 @@ import com.workshops.onlinemusicplayer.model.PlayListSinger;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class PlayListSingerAdapter extends RecyclerView.Adapter<PlayListSingerAdapter.ViewHolder> {
 
@@ -57,7 +59,7 @@ public class PlayListSingerAdapter extends RecyclerView.Adapter<PlayListSingerAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageSinger;
+        CircleImageView imageSinger;
         TextView NameSinger;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

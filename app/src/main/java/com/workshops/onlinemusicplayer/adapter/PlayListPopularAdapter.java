@@ -2,19 +2,23 @@ package com.workshops.onlinemusicplayer.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.model.PlayListPopular;
 import com.workshops.onlinemusicplayer.model.PlayListSinger;
+import com.workshops.onlinemusicplayer.view.MusicActivity;
 
 import java.util.ArrayList;
 
@@ -49,6 +53,16 @@ public class PlayListPopularAdapter extends RecyclerView.Adapter<PlayListPopular
         holder.txtNameSong.setText(popular.getName());
         holder.txtNameSinger.setText(popular.getSinger());
         Glide.with(context).load(popular.getImage()).into(holder.imagePopular);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(context, "Popular"+position, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, MusicActivity.class);
+                intent.putExtra("song_id", popular.getId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -60,11 +74,13 @@ public class PlayListPopularAdapter extends RecyclerView.Adapter<PlayListPopular
         ImageView imagePopular;
         TextView txtNameSinger;
         TextView txtNameSong;
+        CardView cardView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imagePopular = itemView.findViewById(R.id.imagePopular);
             txtNameSinger = itemView.findViewById(R.id.txtNameSinger);
             txtNameSong = itemView.findViewById(R.id.txtNameSong);
+            cardView = itemView.findViewById(R.id.cardViewPopular);
         }
     }
 }

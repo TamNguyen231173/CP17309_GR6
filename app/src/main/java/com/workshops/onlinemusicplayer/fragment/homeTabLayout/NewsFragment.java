@@ -38,6 +38,7 @@ public class NewsFragment extends Fragment {
     ArrayList<PlayListPopular> listPopular = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "Read data from firebase";
+    int i;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +46,7 @@ public class NewsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_news, container, false);
         recyclerViewPopular = view.findViewById(R.id.playListPopular);
+
 
         getListPopular();
 
@@ -64,11 +66,11 @@ public class NewsFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String id = (String) document.getData().get("id");
+                                i++;
                                 String name = (String) document.getData().get("name");
                                 String image = (String) document.getData().get("image");
                                 String singer = (String) document.getData().get("singer");
-                                listPopular.add(new PlayListPopular(id, name, image, singer));
+                                listPopular.add(new PlayListPopular(i, name, image, singer));
                             }
                             adapterPopular = new PlayListPopularAdapter(listPopular, getContext());
                             recyclerViewPopular.setAdapter(adapterPopular);
@@ -82,6 +84,5 @@ public class NewsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((TextView)view.findViewById(R.id.title_new )).setText("News");
     }
 }

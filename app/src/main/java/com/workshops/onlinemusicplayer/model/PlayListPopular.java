@@ -3,20 +3,29 @@ package com.workshops.onlinemusicplayer.model;
 import java.io.Serializable;
 
 public class PlayListPopular implements Serializable {
-    String id, name, image, singer;
+    String  name, image, singer, resource, lyrics;
+    int id;
 
-    public PlayListPopular(String id, String name, String image, String singer) {
+    public PlayListPopular(int id, String name, String image, String singer, String resource, String lyrics) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.singer = singer;
+        this.resource = resource;
+        this.lyrics = lyrics;
+    }
+    public PlayListPopular(int id, String name, String image, String singer) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.singer = singer;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -42,5 +51,21 @@ public class PlayListPopular implements Serializable {
 
     public void setSinger(String singer) {
         this.singer = singer;
+    }
+
+    public String getResource() {
+        return resource;
+    }
+
+    public void setResource(String resource) {
+        this.resource = resource;
+    }
+
+    public String getLyrics() {
+        return lyrics;
+    }
+
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
     }
 }

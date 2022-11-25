@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ExploreFragment extends Fragment {
-    int id;
+    int i;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -124,11 +124,11 @@ public class ExploreFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String id = (String) document.getData().get("id");
+                                i++;
                                 String name = (String) document.getData().get("name");
                                 String image = (String) document.getData().get("image");
                                 String singer = (String) document.getData().get("singer");
-                                listPopular.add(new PlayListPopular(id, name, image, singer));
+                                listPopular.add(new PlayListPopular(i, name, image, singer));
                             }
                             adapterPopular = new PlayListPopularAdapter(listPopular, getContext());
                             recyclerViewPopular.setAdapter(adapterPopular);

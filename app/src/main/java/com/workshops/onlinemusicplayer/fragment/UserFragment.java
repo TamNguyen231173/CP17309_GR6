@@ -113,7 +113,6 @@ public class UserFragment extends Fragment {
                         switch (id) {
                             case R.id.reset_password:
                                 getActivity().startActivity(new Intent(getActivity(), ResetPasswordActivity.class));
-                                getActivity().finish();
                                 return true;
                             case R.id.update_email:
                                 updateEmail(getActivity());
