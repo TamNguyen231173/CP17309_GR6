@@ -1,5 +1,6 @@
 package com.workshops.onlinemusicplayer.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,7 +24,9 @@ import com.workshops.onlinemusicplayer.adapter.PlayListPopularAdapter;
 import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
 import com.workshops.onlinemusicplayer.model.PlayListPopular;
 import com.workshops.onlinemusicplayer.model.PlayListSinger;
+import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
 import com.workshops.onlinemusicplayer.model.Singer;
+import com.workshops.onlinemusicplayer.view.PlayListSingerActivity;
 
 import java.util.ArrayList;
 
@@ -31,7 +35,7 @@ import java.util.ArrayList;
  * Use the {@link ExploreFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExploreFragment extends Fragment {
+public class ExploreFragment extends Fragment implements RecyclerViewInterface {
     int i;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -101,7 +105,7 @@ public class ExploreFragment extends Fragment {
 
         // singer
         layoutManagerSinger = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
-        adapterSinger = new PlayListSingerAdapter(ds,getActivity());
+        adapterSinger = new PlayListSingerAdapter(ds,getActivity(),this);
         recyclerViewSinger.setLayoutManager(layoutManagerSinger);
         recyclerViewSinger.setAdapter(adapterSinger);
 
@@ -152,7 +156,7 @@ public class ExploreFragment extends Fragment {
                                 String image = (String) document.getData().get("image");
                                 ds.add(new PlayListSinger(id, name, image));
                             }
-                            adapterSinger = new PlayListSingerAdapter(ds, getContext());
+                            adapterSinger = new PlayListSingerAdapter(ds, getContext(),ExploreFragment.this);
                             recyclerViewSinger.setAdapter(adapterSinger);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -160,5 +164,18 @@ public class ExploreFragment extends Fragment {
                     }
                 });
 
+    }
+
+    @Override
+    public void onClickItem(int position) {
+        Intent intent = new Intent(getActivity(), PlayListSingerActivity.class);
+
+        intent.putExtra("id",ds.get(position).getId());
+        intent.putExtra("name",ds.get(position).getName());
+        intent.putExtra("image",ds.get(position).getImage());
+
+        startActivity(intent);
+
+        //Toast.makeText(getActivity(), "Title"+ds.get(position).getName(), Toast.LENGTH_SHORT).show();
     }
 }
