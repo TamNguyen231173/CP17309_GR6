@@ -21,9 +21,6 @@ public class Song implements Serializable {
         this.id = id;
         this.image = image;
     }
-    public Song(String singer) {
-        this.singer = singer;
-    }
 
 
     public Song(int id, String title, String singer, String image, String resource, String lyrics) {

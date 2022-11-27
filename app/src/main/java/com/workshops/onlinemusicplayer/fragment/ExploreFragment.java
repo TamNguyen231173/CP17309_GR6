@@ -12,20 +12,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
+import com.workshops.onlinemusicplayer.adapter.PlayListMusicAdapter;
 import com.workshops.onlinemusicplayer.adapter.PlayListPopularAdapter;
 import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
 import com.workshops.onlinemusicplayer.model.PlayListPopular;
 import com.workshops.onlinemusicplayer.model.PlayListSinger;
 import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
 import com.workshops.onlinemusicplayer.model.Singer;
+import com.workshops.onlinemusicplayer.model.Song;
+import com.workshops.onlinemusicplayer.view.MusicActivity;
 import com.workshops.onlinemusicplayer.view.PlayListSingerActivity;
 
 import java.util.ArrayList;
@@ -86,7 +93,6 @@ public class ExploreFragment extends Fragment implements RecyclerViewInterface {
     private LinearLayoutManager layoutManagerSinger;
     private LinearLayoutManager layoutManagerPopular;
     ArrayList<PlayListPopular> listPopular = new ArrayList<>();
-
     ArrayList<PlayListSinger> ds = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -95,9 +101,11 @@ public class ExploreFragment extends Fragment implements RecyclerViewInterface {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
         recyclerViewSinger = view.findViewById(R.id.playListSinger);
         recyclerViewPopular = view.findViewById(R.id.playListPopular);
+
 
         getListSinger();
         getListPopular();
@@ -165,6 +173,7 @@ public class ExploreFragment extends Fragment implements RecyclerViewInterface {
                 });
 
     }
+
 
     @Override
     public void onClickItem(int position) {

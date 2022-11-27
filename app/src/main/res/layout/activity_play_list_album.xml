@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/text_white"
-    tools:context=".view.PlayListSingerActivity">
+    tools:context=".view.PlayListAlbumActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/imageSinger"
+                    android:id="@+id/imageAlbum"
                     android:layout_width="300dp"
                     android:layout_height="300dp"
                     android:background="@drawable/son_tung" />
@@ -69,7 +69,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/nameSinger"
+                android:id="@+id/nameAlbum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -91,10 +91,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.071"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameSinger" />
+                app:layout_constraintTop_toBottomOf="@+id/nameAlbum" />
 
             <ListView
-                android:id="@+id/listSong"
+                android:id="@+id/listAlbum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"

@@ -57,7 +57,7 @@ public class MusicAdapter extends BaseAdapter {
         Song song = ds.get(i);
 
         txtTitle.setText(song.getTitle());
-//        txtSingle.setText(song.getSinger());
+//        txtSinger.setText(song.getSinger());
         for (int i1=0; i1<singers.size(); i1++) {
             if (song.getSinger().equals(singers.get(i1).getId())) {
                 txtSinger.setText(singers.get(i1).getName());
