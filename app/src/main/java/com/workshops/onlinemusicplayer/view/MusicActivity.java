@@ -85,12 +85,12 @@ public class MusicActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 i++;
                                 String title = (String) document.getData().get("name");
-                                String image = (String) document.getData().get("image");
                                 String singer = (String) document.getData().get("singer");
+                                String image = (String) document.getData().get("image");
                                 String resource = (String) document.getData().get("audio");
                                 String lyrics = (String) document.getData().get("lyrics");
 
-                                list.add(new Music(i, title, image, singer, resource, lyrics));
+                                list.add(new Music(i, title, singer, image, resource, lyrics));
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

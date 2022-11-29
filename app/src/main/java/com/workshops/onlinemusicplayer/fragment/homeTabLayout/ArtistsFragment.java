@@ -1,66 +1,112 @@
 package com.workshops.onlinemusicplayer.fragment.homeTabLayout;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
+import com.workshops.onlinemusicplayer.adapter.PlayListPopularAdapter;
+import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
+import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter2;
+import com.workshops.onlinemusicplayer.fragment.ExploreFragment;
+import com.workshops.onlinemusicplayer.fragment.SongsFragment;
+import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
+import com.workshops.onlinemusicplayer.model.PlayListPopular;
+import com.workshops.onlinemusicplayer.model.PlayListSinger;
+import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
+import com.workshops.onlinemusicplayer.view.PlayListSingerActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ArtistsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ArtistsFragment extends Fragment {
+import java.util.ArrayList;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class ArtistsFragment extends Fragment implements RecyclerViewInterface {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+    private static final String TAG = "Read data from firebase";
+    private RecyclerView recyclerViewSinger;
+    private PlayListSingerAdapter2 adapterSinger;
+    private LinearLayoutManager layoutManagerSinger;
+    ArrayList<PlayListSinger> ds = new ArrayList<>();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public ArtistsFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ArtistsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ArtistsFragment newInstance(String param1, String param2) {
-        ArtistsFragment fragment = new ArtistsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static ArtistsFragment newInstance(MusicSelectListener selectListener) {
+        SongsFragment.listener = selectListener;
+        return new ArtistsFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_artists, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_artists, container, false);
+        recyclerViewSinger = view.findViewById(R.id.playListSinger);
+
+
+        getListSinger();
+//        readData();
+
+        // singer
+        layoutManagerSinger = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        adapterSinger = new PlayListSingerAdapter2(ds,getActivity(),this);
+        recyclerViewSinger.setLayoutManager(layoutManagerSinger);
+        recyclerViewSinger.setAdapter(adapterSinger);
+
+        return view;
+
+    }
+
+    private void getListSinger() {
+        db.collection("singer")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String id = (String) document.getData().get("id");
+                                String name = (String) document.getData().get("name");
+                                String image = (String) document.getData().get("image");
+                                ds.add(new PlayListSinger(id, name, image));
+                            }
+                            adapterSinger = new PlayListSingerAdapter2(ds, getContext(),ArtistsFragment.this);
+                            recyclerViewSinger.setAdapter(adapterSinger);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+
+    @Override
+    public void onClickItem(int position) {
+        Intent intent = new Intent(getActivity(), PlayListSingerActivity.class);
+
+        intent.putExtra("id",ds.get(position).getId());
+        intent.putExtra("name",ds.get(position).getName());
+        intent.putExtra("image",ds.get(position).getImage());
+
+        startActivity(intent);
+
+        //Toast.makeText(getActivity(), "Title"+ds.get(position).getName(), Toast.LENGTH_SHORT).show();
     }
 }

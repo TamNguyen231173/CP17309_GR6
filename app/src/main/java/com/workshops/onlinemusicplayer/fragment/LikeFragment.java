@@ -30,13 +30,15 @@ import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
 import com.workshops.onlinemusicplayer.adapter.TrendAdapter;
 import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
 import com.workshops.onlinemusicplayer.model.Albums;
+import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
 import com.workshops.onlinemusicplayer.model.Singer;
 import com.workshops.onlinemusicplayer.model.Music;
 import com.workshops.onlinemusicplayer.view.MusicActivity;
+import com.workshops.onlinemusicplayer.view.PlayListAlbumActivity;
 
 import java.util.ArrayList;
 
-public class LikeFragment extends Fragment {
+public class LikeFragment extends Fragment implements RecyclerViewInterface {
     private static final String TAG = "Read data from firebase";
     ArrayList<Music> list = new ArrayList<Music>();
     ListView listViewPlaylist, listViewAlBums;
@@ -68,7 +70,7 @@ public class LikeFragment extends Fragment {
 
         // albums
         layoutManagerAlbum = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
-        adapter1 = new AlbumAdapter(albums,getActivity());
+        adapter1 = new AlbumAdapter(albums,getActivity(),this);
         recyclerViewAlbum.setLayoutManager(layoutManagerAlbum);
         recyclerViewAlbum.setAdapter(adapter1);
 
@@ -122,7 +124,7 @@ public class LikeFragment extends Fragment {
                                 String image = (String) document.getData().get("image");
                                 albums.add(new Albums(id, name, image));
                             }
-                            adapter1 = new AlbumAdapter(albums, getContext());
+                            adapter1 = new AlbumAdapter(albums, getContext(),LikeFragment.this);
                             recyclerViewAlbum.setAdapter(adapter1);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -159,5 +161,17 @@ public class LikeFragment extends Fragment {
                         Log.d("<<singer>>", "Lấy dữ liệu không thành công" );
                     }
                 });
+    }
+    @Override
+    public void onClickItem(int position) {
+        Intent intent = new Intent(getActivity(), PlayListAlbumActivity.class);
+
+        intent.putExtra("id",albums.get(position).getId());
+        intent.putExtra("name",albums.get(position).getName());
+        intent.putExtra("image",albums.get(position).getImage());
+
+        startActivity(intent);
+
+        //Toast.makeText(getActivity(), "Title"+ds.get(position).getName(), Toast.LENGTH_SHORT).show();
     }
 }

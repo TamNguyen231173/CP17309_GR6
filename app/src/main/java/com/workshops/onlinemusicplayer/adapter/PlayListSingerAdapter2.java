@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,24 +13,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.model.Albums;
+import com.workshops.onlinemusicplayer.model.PlayListSinger;
 import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
 
 import java.util.ArrayList;
 
-public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+
+public class PlayListSingerAdapter2 extends RecyclerView.Adapter<PlayListSingerAdapter2.ViewHolder> {
+
     private final RecyclerViewInterface recyclerViewInterface;
-    private ArrayList<Albums> ds;
+    private ArrayList<PlayListSinger> ds;
     private Context context;
 
-    public AlbumAdapter(ArrayList<Albums> ds, Context context,  RecyclerViewInterface recyclerViewInterface) {
+    public PlayListSingerAdapter2(ArrayList<PlayListSinger> ds, Context context, RecyclerViewInterface recyclerViewInterface) {
         this.ds = ds;
         this.context = context;
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
-    public void add(Albums albums) {
-        ds.add(albums);
+    public void add(PlayListSinger singer) {
+        ds.add(singer);
         notifyDataSetChanged();
     }
 
@@ -39,16 +42,18 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-        View view = inflater.inflate(R.layout.item_album,parent,false);
-        return new AlbumAdapter.ViewHolder(view);
+        View view = inflater.inflate(R.layout.layout_playlist_singer2,parent,false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Albums albums = ds.get(position);
-        holder.NameAlbum.setText(albums.getName());
-        Glide.with(context).load(albums.getImage()).into(holder.imageAlbum);
 
+//        holder.imageSinger.setImageResource(ds.get(position).getImageSinger());
+        PlayListSinger singer = ds.get(position);
+//        holder.NameSinger.setText(ds.get(position).getName());
+        holder.NameSinger.setText(singer.getName());
+        Glide.with(context).load(singer.getImage()).into(holder.imageSinger);
     }
 
     @Override
@@ -57,12 +62,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageAlbum;
-        TextView NameAlbum;
+        ImageView imageSinger;
+        TextView NameSinger;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageAlbum = itemView.findViewById(R.id.song_image);
-            NameAlbum = itemView.findViewById(R.id.txtTitel);
+            imageSinger = itemView.findViewById(R.id.profile_image);
+            NameSinger = itemView.findViewById(R.id.txtNameSinger1);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,5 +84,4 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             });
         }
     }
-
 }
