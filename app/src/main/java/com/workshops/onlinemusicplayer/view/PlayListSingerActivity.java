@@ -31,8 +31,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
-import com.workshops.onlinemusicplayer.model.Singer;
-import com.workshops.onlinemusicplayer.model.Song;
+import com.workshops.onlinemusicplayer.model.Music;
 
 import java.util.ArrayList;
 
@@ -42,7 +41,7 @@ public class PlayListSingerActivity extends AppCompatActivity {
     String name;
     int i;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ArrayList<Song> list = new ArrayList<Song>();
+    ArrayList<Music> list = new ArrayList<Music>();
     MusicAdapter adapter;
     ListView listViewPlaylist;
 
@@ -82,7 +81,7 @@ public class PlayListSingerActivity extends AppCompatActivity {
         listViewPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Song song = list.get(i);
+                Music song = list.get(i);
                 Intent intent = new Intent(PlayListSingerActivity.this, MusicActivity.class);
                 intent.putExtra("song_id", song.getId());
                 startActivity(intent);
@@ -103,7 +102,7 @@ public class PlayListSingerActivity extends AppCompatActivity {
                                 String singer = (String) document.getData().get("id_singer");
                                 String image = (String) document.getData().get("image");
 
-                                list.add(new Song(i, title, singer, image));
+                                list.add(new Music(i, title, singer, image));
                             }
                             adapter = new MusicAdapter(list, PlayListSingerActivity.this);
                             listViewPlaylist.setAdapter(adapter);

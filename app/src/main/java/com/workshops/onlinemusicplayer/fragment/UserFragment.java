@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -35,16 +34,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
 import com.workshops.onlinemusicplayer.adapter.PlayListMusicAdapter;
+import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
 import com.workshops.onlinemusicplayer.model.Singer;
-import com.workshops.onlinemusicplayer.model.Song;
+import com.workshops.onlinemusicplayer.model.Music;
 import com.workshops.onlinemusicplayer.view.LoginActivity;
 import com.workshops.onlinemusicplayer.view.MusicActivity;
 import com.workshops.onlinemusicplayer.view.ResetPasswordActivity;
@@ -52,7 +49,7 @@ import com.workshops.onlinemusicplayer.view.ResetPasswordActivity;
 import java.util.ArrayList;
 
 public class UserFragment extends Fragment {
-
+    private static MusicSelectListener listener;
     private ImageView menu_btn;
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
@@ -62,12 +59,21 @@ public class UserFragment extends Fragment {
     AlertDialog.Builder reset_alert;
     LayoutInflater inflater2;
     private static final String TAG = "Read data from firebase";
-    ArrayList<Song> list = new ArrayList<Song>();
+    ArrayList<Music> list = new ArrayList<Music>();
     ListView listViewPlaylist;
     PlayListMusicAdapter adapter;
     int i;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static ArrayList<Singer> singers = new ArrayList<>();
+
+    public UserFragment() {
+    }
+
+    public static Fragment newInstance()
+    {
+        UserFragment userFragment = new UserFragment();
+        return userFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,7 +149,7 @@ public class UserFragment extends Fragment {
         listViewPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Song song = list.get(i);
+                Music song = list.get(i);
                 Intent intent = new Intent(getContext(), MusicActivity.class);
                 intent.putExtra("song_id", song.getId());
                 getActivity().startActivity(intent);
@@ -245,7 +251,7 @@ public class UserFragment extends Fragment {
                                 String singer = (String) document.getData().get("id_singer");
                                 String image = (String) document.getData().get("image");
 
-                                list.add(new Song(i, title, singer, image));
+                                list.add(new Music(i, title, singer, image));
                             }
                             adapter = new PlayListMusicAdapter(list, getContext());
                             listViewPlaylist.setAdapter(adapter);

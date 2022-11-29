@@ -14,7 +14,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadata;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.media.MediaMetadataCompat;
@@ -31,7 +30,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.broadcast_receiver.MusicReceiver;
 import com.workshops.onlinemusicplayer.fragment.HomeFragment;
-import com.workshops.onlinemusicplayer.model.Song;
+import com.workshops.onlinemusicplayer.model.Music;
 
 public class MusicService extends Service {
     private static final int ACTION_PLAY_OR_PAUSE = 1;
@@ -47,7 +46,7 @@ public class MusicService extends Service {
 
     private MediaPlayer player;
     private boolean notifyPlay = false;
-    private Song mSong;
+    private Music mSong;
     IntentFilter intentFilter;
 
     @Nullable
@@ -64,7 +63,7 @@ public class MusicService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Bundle bundle = intent.getExtras();
-        Song song = (Song) bundle.get("list_song");
+        Music song = (Music) bundle.get("list_song");
 
         if (song != null) {
             mSong = song;
@@ -133,14 +132,14 @@ public class MusicService extends Service {
         sendNotification(mSong);
     }
 
-    private void sendNotification(Song song) {
+    private void sendNotification(Music song) {
         Intent intent = new Intent(getApplicationContext(), HomeFragment.class);
         PendingIntent homePendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        final Bitmap[] musicThumbnail = new Bitmap[1];
+
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "Media Session");
 
         mediaSessionCompat.setMetadata(new MediaMetadataCompat.Builder()
-                .putString(MediaMetadata.METADATA_KEY_TITLE, song.getTitle())
+                .putString(MediaMetadata.METADATA_KEY_TITLE, song.getName())
                 .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getSinger())
                 .putString(MediaMetadata.METADATA_KEY_ALBUM_ART_URI, song.getImage())
                 //.putLong(MediaMetadata.METADATA_KEY_DURATION, mediaPlayer.getDuration() / 1000)
@@ -149,7 +148,7 @@ public class MusicService extends Service {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_logo_spotify_24)
                 .setSubText("GR6")
-                .setContentTitle(song.getTitle())
+                .setContentTitle(song.getName())
                 .setContentText(song.getSinger())
                 .setContentIntent(homePendingIntent)
                 .setSound(null)
@@ -164,7 +163,6 @@ public class MusicService extends Service {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         notificationBuilder.setLargeIcon(resource);
-                        musicThumbnail[0] = resource;
 
                         if (!notifyPlay) {
                             notificationBuilder

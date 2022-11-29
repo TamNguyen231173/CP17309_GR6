@@ -13,6 +13,6 @@
     <string name="title_new_album">Happier Than Ever</string>
     <string name="author_new_album">billie_eili</string>
     <string name="now_playing">Now playing</string>
-
+    <string name="zero_time">00:00</string>
 
 </resources>

@@ -10,8 +10,7 @@ import android.widget.TextView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
-import com.workshops.onlinemusicplayer.model.Singer;
-import com.workshops.onlinemusicplayer.model.Song;
+import com.workshops.onlinemusicplayer.model.Music;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ public class PlayListAlbumActivity extends AppCompatActivity {
     String name;
     int i;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ArrayList<Song> list = new ArrayList<Song>();
+    ArrayList<Music> list = new ArrayList<Music>();
     MusicAdapter adapter;
     ListView listViewPlaylist;
 

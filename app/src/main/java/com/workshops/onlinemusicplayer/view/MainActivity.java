@@ -1,66 +1,185 @@
 package com.workshops.onlinemusicplayer.view;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import com.workshops.onlinemusicplayer.MPConstants;
+import com.workshops.onlinemusicplayer.MPPreferences;
 import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.fragment.ExploreFragment;
-import com.workshops.onlinemusicplayer.fragment.HomeFragment;
-import com.workshops.onlinemusicplayer.fragment.LikeFragment;
-import com.workshops.onlinemusicplayer.fragment.UserFragment;
+import com.workshops.onlinemusicplayer.dialog.PlayerDialog;
+import com.workshops.onlinemusicplayer.adapter.MainPagerAdapter;
+import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
+import com.workshops.onlinemusicplayer.model.Music;
+import com.workshops.onlinemusicplayer.player.PlayerBuilder;
+import com.workshops.onlinemusicplayer.player.PlayerListener;
+import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.tabs.TabLayout;
+import com.workshops.onlinemusicplayer.player.PlayerManager;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+import java.util.Locale;
 
-    BottomNavigationView bottomNavigationView;
+public class MainActivity extends AppCompatActivity
+        implements MusicSelectListener, PlayerListener, View.OnClickListener {
 
-    HomeFragment homeFragment = new HomeFragment();
-    LikeFragment likeFragment = new LikeFragment();
-    ExploreFragment exploreFragment = new ExploreFragment();
-    UserFragment userFragment = new UserFragment();
+    private RelativeLayout playerView;
+    private ImageView albumArt;
+    private TextView songName;
+    private TextView songDetails;
+    private ImageButton play_pause;
+    private LinearProgressIndicator progressIndicator;
+    private PlayerDialog playerDialog;
+
+    private PlayerBuilder playerBuilder;
+    private PlayerManager playerManager;
+    private boolean albumState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         hideSystemBars();
 
-        bottomNavigationView  = findViewById(R.id.bottom_navigation);
+        MPConstants.musicSelectListener = this;
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+        setUpUiElements();
 
-//        BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.explore);
-//        badgeDrawable.setVisible(true);
-//        badgeDrawable.setNumber(8);
+        albumState = MPPreferences.getAlbumRequest(this);
+        MPConstants.musicSelectListener = this;
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.home:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
-                        return true;
-                    case R.id.explore:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,exploreFragment).commit();
-                        return true;
-                    case R.id.like:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,likeFragment).commit();
-                        return true;
-                    case R.id.user:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,userFragment).commit();
-                        return true;
-                }
-                return false;
-            }
-        });
+        MaterialCardView playerLayout = findViewById(R.id.player_layout);
+        albumArt = findViewById(R.id.albumArt);
+        progressIndicator = findViewById(R.id.song_progress);
+        playerView = findViewById(R.id.player_view);
+        songName = findViewById(R.id.song_title);
+        songDetails = findViewById(R.id.song_details);
+        play_pause = findViewById(R.id.control_play_pause);
 
+        play_pause.setOnClickListener(this);
+        playerLayout.setOnClickListener(this);
+    }
+
+    private void setPlayerView() {
+        if (playerManager != null && playerManager.isPlaying()) {
+            playerView.setVisibility(View.VISIBLE);
+            onMusicSet(playerManager.getCurrentMusic());
+        }
+    }
+
+    public void setUpUiElements() {
+        playerBuilder = new PlayerBuilder(MainActivity.this, this);
+        MainPagerAdapter sectionsPagerAdapter = new MainPagerAdapter(
+                getSupportFragmentManager(), this);
+
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setOffscreenPageLimit(4);
+
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
+
+        for (int i = 0; i < tabs.getTabCount(); i++) {
+            tabs.getTabAt(i).setIcon(MPConstants.TAB_ICONS[i]);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (playerDialog != null)
+            playerDialog.dismiss();
+    }
+
+    @Override
+    public void playQueue(List<Music> musicList) {
+        if (musicList.size() > 0) {
+            playerManager.setMusicList(musicList);
+            setPlayerView();
+        }
+    }
+
+    @Override
+    public void setShuffleMode(boolean mode) {
+        playerManager.getPlayerQueue().setShuffle(mode);
+    }
+
+    @Override
+    public void onPrepared() {
+        playerManager = playerBuilder.getPlayerManager();
+        setPlayerView();
+    }
+
+    @Override
+    public void onStateChanged(int state) {
+        if (state == State.PLAYING)
+            play_pause.setImageResource(R.drawable.ic_pause);
+        else
+            play_pause.setImageResource(R.drawable.ic_play);
+    }
+
+    @Override
+    public void onPositionChanged(int position) {
+        progressIndicator.setProgress(position);
+    }
+
+    @Override
+    public void onMusicSet(Music music) {
+        songName.setText(music.getName());
+        songDetails.setText(
+                String.format(Locale.getDefault(), "%s • %s",
+                        music.getSinger(), music.getCategory()));
+        playerView.setVisibility(View.VISIBLE);
+
+        if (albumState)
+            Glide.with(getApplicationContext())
+                    .load(music.getImage())
+                    .centerCrop()
+                    .into(albumArt);
+
+        if (playerManager != null && playerManager.isPlaying())
+            play_pause.setImageResource(R.drawable.ic_pause);
+        else
+            play_pause.setImageResource(R.drawable.ic_play);
+    }
+
+    @Override
+    public void onPlaybackCompleted() {
+    }
+
+    @Override
+    public void onRelease() {
+        playerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        if (id == R.id.control_play_pause)
+            playerManager.playPause();
+
+        else if (id == R.id.player_layout)
+            setUpPlayerDialog();
+    }
+
+    private void setUpPlayerDialog() {
+        playerDialog = new PlayerDialog(this, playerManager);
+        playerDialog.show();
     }
 
     private void hideSystemBars() {

@@ -13,16 +13,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.model.Song;
+import com.workshops.onlinemusicplayer.model.Music;
 
 import java.util.ArrayList;
 
 public class PlayListMusicAdapter extends BaseAdapter {
     private boolean flag = false;
-    private ArrayList<Song> ds;
+    private ArrayList<Music> ds;
     private Context context;
 
-    public PlayListMusicAdapter(ArrayList<Song> ds, Context context) {
+    public PlayListMusicAdapter(ArrayList<Music> ds, Context context) {
         this.ds = ds;
         this.context = context;
     }
@@ -51,9 +51,9 @@ public class PlayListMusicAdapter extends BaseAdapter {
         ImageView imgSong = view.findViewById(R.id.imgSong);
         ImageView imgHeart = view.findViewById(R.id.imgHeart);
 
-        Song song = ds.get(i);
+        Music song = ds.get(i);
 
-        txtTitle.setText(song.getTitle());
+        txtTitle.setText(song.getName());
 //        txtSingle.setText(song.getSinger());
         for (int i1=0; i1<singers.size(); i1++) {
             if (song.getSinger().equals(singers.get(i1).getId())) {

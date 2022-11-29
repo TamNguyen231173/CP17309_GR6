@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
         android:name=".model.MyApplication"
@@ -21,7 +23,7 @@
         android:theme="@style/Theme.OnlineMusicPlayer"
         tools:targetApi="31">
         <activity
-            android:name=".PlayListAlbumActivity"
+            android:name=".view.PlayListAlbumActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -42,7 +44,11 @@
             android:name="com.facebook.sdk.ClientToken"
             android:value="@string/facebook_client_token" />
 
-        <service android:name=".service.MusicService" /> <!-- <receiver android:name=".broadcast_receiver.MusicReceiver"/> -->
+        <service android:name=".service.MusicService" />
+        <service
+            android:name="com.workshops.onlinemusicplayer.player.PlayerService"
+            android:exported="false" />
+
         <receiver
             android:name=".broadcast_receiver.MusicReceiver"
             android:exported="true">
@@ -64,7 +70,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.APP_MUSIC" />
+                <action android:name="android.intent.action.MUSIC_PLAYER" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -19,8 +19,6 @@ import android.widget.ListView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,16 +28,17 @@ import com.workshops.onlinemusicplayer.adapter.AlbumAdapter;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
 import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
 import com.workshops.onlinemusicplayer.adapter.TrendAdapter;
+import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
 import com.workshops.onlinemusicplayer.model.Albums;
 import com.workshops.onlinemusicplayer.model.Singer;
-import com.workshops.onlinemusicplayer.model.Song;
+import com.workshops.onlinemusicplayer.model.Music;
 import com.workshops.onlinemusicplayer.view.MusicActivity;
 
 import java.util.ArrayList;
 
 public class LikeFragment extends Fragment {
     private static final String TAG = "Read data from firebase";
-    ArrayList<Song> list = new ArrayList<Song>();
+    ArrayList<Music> list = new ArrayList<Music>();
     ListView listViewPlaylist, listViewAlBums;
     MusicAdapter adapter;
     AlbumAdapter adapter1;
@@ -49,6 +48,14 @@ public class LikeFragment extends Fragment {
     ArrayList<Albums> albums = new ArrayList<>();
     private RecyclerView recyclerViewAlbum;
     private LinearLayoutManager layoutManagerAlbum;
+
+    public LikeFragment() {
+    }
+
+    public static LikeFragment newInstance(MusicSelectListener selectListener) {
+        SongsFragment.listener = selectListener;
+        return new LikeFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +75,7 @@ public class LikeFragment extends Fragment {
         listViewPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Song song = list.get(i);
+                Music song = list.get(i);
                 Intent intent = new Intent(getContext(), MusicActivity.class);
                 intent.putExtra("song_id", song.getId());
                 getActivity().startActivity(intent);
@@ -91,7 +98,7 @@ public class LikeFragment extends Fragment {
                                 String singer = (String) document.getData().get("id_singer");
                                 String image = (String) document.getData().get("image");
 
-                                list.add(new Song(i, title, singer, image));
+                                list.add(new Music(i, title, singer, image));
                             }
                             adapter = new MusicAdapter(list, getContext());
                             listViewPlaylist.setAdapter(adapter);

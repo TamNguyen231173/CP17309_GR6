@@ -4,7 +4,6 @@ import static com.workshops.onlinemusicplayer.fragment.HomeFragment.singers;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +12,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.model.Song;
+import com.workshops.onlinemusicplayer.model.Music;
 
 import java.util.ArrayList;
 
 
 public class MusicAdapter extends BaseAdapter {
     private boolean flag = false;
-    private ArrayList<Song> ds;
+    private ArrayList<Music> ds;
     private Context context;
 
-    public MusicAdapter(ArrayList<Song> ds, Context context) {
+    public MusicAdapter(ArrayList<Music> ds, Context context) {
         this.ds = ds;
         this.context = context;
     }
@@ -54,10 +52,11 @@ public class MusicAdapter extends BaseAdapter {
         ImageView imgSong = view.findViewById(R.id.imgSong);
         ImageView imgHeart = view.findViewById(R.id.imgHeart);
 
-        Song song = ds.get(i);
+        Music song = ds.get(i);
 
-        txtTitle.setText(song.getTitle());
-//        txtSinger.setText(song.getSinger());
+
+        txtTitle.setText(song.getName());
+//        txtSingle.setText(song.getSinger());
         for (int i1=0; i1<singers.size(); i1++) {
             if (song.getSinger().equals(singers.get(i1).getId())) {
                 txtSinger.setText(singers.get(i1).getName());

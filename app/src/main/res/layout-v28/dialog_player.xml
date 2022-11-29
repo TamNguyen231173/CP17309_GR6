@@ -1,0 +1,490 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color">
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:gravity="bottom"
+        app:umanoDragView="@+id/dragView"
+        app:umanoOverlay="true"
+        app:umanoPanelHeight="10dp"
+        app:umanoParallaxOffset="100dp"
+        app:umanoScrollableView="@+id/list"
+        app:umanoShadowHeight="0dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                tools:context=".view.MusicActivity">
+
+                <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/view2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="39dp"
+                    app:cardBackgroundColor="#0A000000"
+                    app:cardCornerRadius="40dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    card_view:cardElevation="0dp">
+
+                    <ImageView
+                        android:id="@+id/close_dialog_music"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/arrow_back" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="38dp"
+                    android:text="@string/now_playing"
+                    android:textAppearance="@style/now_playing"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView10"
+                    app:layout_constraintStart_toEndOf="@+id/view2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="41dp"
+                    android:layout_marginEnd="28.07dp"
+                    android:src="@drawable/menu"
+                    android:translationZ="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="325dp"
+                    android:layout_height="325dp"
+                    android:layout_marginTop="27dp"
+                    app:cardCornerRadius="200dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+                    <ImageView
+                        android:id="@+id/album_art"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/billie_eilish_bad_guy"
+                        android:scaleType="fitCenter" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/song_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                    android:text="Bad guy"
+                    android:textAppearance="@style/title_song"
+                    app:layout_constraintStart_toStartOf="@+id/cardView"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+                <TextView
+                    android:id="@+id/song_album"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Billie Eilish"
+                    android:textAppearance="@style/author_song"
+                    app:layout_constraintStart_toStartOf="@+id/song_name"
+                    app:layout_constraintTop_toBottomOf="@+id/song_name" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="96dp"
+                    android:layout_marginEnd="31dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+                    <SeekBar
+                        android:id="@+id/song_progress"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:progress="60"
+                        android:progressBackgroundTint="#4D000000"
+                        android:progressTint="#434343"
+                        android:thumbTint="#434343"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/current_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="12dp"
+                        android:text="2:25"
+                        android:textAppearance="@style/time"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/song_progress" />
+
+                    <TextView
+                        android:id="@+id/total_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="4:02"
+                        android:textAppearance="@style/time"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/song_progress" />
+
+                    <RelativeLayout
+                        android:id="@+id/relativeLayout3"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:layout_marginTop="44dp"
+                        android:background="@drawable/ellipse_11"
+                        android:gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/song_progress">
+
+                        <com.workshops.onlinemusicplayer.view.PlayPauseView
+                            android:id="@+id/control_play_pause"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:srcCompat="@drawable/pause_to_play" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/control_prev"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginEnd="17dp"
+                        android:src="@drawable/ic_baseline_skip_previous_24"
+                        app:layout_constraintBottom_toBottomOf="@+id/relativeLayout3"
+                        app:layout_constraintEnd_toStartOf="@+id/relativeLayout3"
+                        app:layout_constraintTop_toTopOf="@+id/relativeLayout3" />
+
+                    <ImageView
+                        android:id="@+id/control_repeat"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="29dp"
+                        android:src="@drawable/ic_controls_repeat"
+                        app:layout_constraintBottom_toBottomOf="@+id/control_prev"
+                        app:layout_constraintEnd_toStartOf="@+id/control_prev"
+                        app:layout_constraintTop_toTopOf="@+id/control_prev" />
+
+                    <ImageView
+                        android:id="@+id/control_next"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginStart="17dp"
+                        android:src="@drawable/ic_baseline_skip_next_24"
+                        app:layout_constraintBottom_toBottomOf="@+id/relativeLayout3"
+                        app:layout_constraintStart_toEndOf="@+id/relativeLayout3"
+                        app:layout_constraintTop_toTopOf="@+id/relativeLayout3" />
+
+                    <ImageView
+                        android:id="@+id/control_shuffle"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="29dp"
+                        android:src="@drawable/ic_baseline_shuffle_24"
+                        app:layout_constraintBottom_toBottomOf="@+id/control_next"
+                        app:layout_constraintStart_toEndOf="@+id/control_next"
+                        app:layout_constraintTop_toTopOf="@+id/control_next" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="33dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+
+                    <ImageView
+                        android:id="@+id/sliding_up_btn"
+                        android:layout_width="31dp"
+                        android:layout_height="31dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_up_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/sliding_up_btn"
+                        android:layout_centerHorizontal="true"
+                        android:text="Lyrics"
+                        android:textColor="#404040"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </FrameLayout>
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_color"
+            tools:context=".fragment.LyricsFragment">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/billie_eilish_bad_guy" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#BF000000">
+
+                <RelativeLayout
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="35dp"
+                    android:background="@drawable/ellipse_9"
+                    android:gravity="center"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/arrow_back" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:text="Bad Guy"
+                    android:textAppearance="@style/name_song_lyric"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="39.07dp"
+                    android:src="@drawable/menu"
+                    android:translationZ="2dp"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent" />
+
+                <ScrollView
+                    android:id="@+id/scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_marginTop="36dp"
+                    android:translationZ="1dp"
+                    card_view:layout_constraintTop_toBottomOf="@+id/textView12">
+
+                    <TextView
+                        android:id="@+id/lyric"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="30sp"
+                        android:scrollbars="vertical"
+                        android:paddingHorizontal="47dp"/>
+                </ScrollView>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#fff"
+                    android:paddingBottom="20dp"
+                    android:translationZ="2dp"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView1"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="31dp"
+                        android:layout_marginTop="14dp"
+                        card_view:cardCornerRadius="50dp"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/billie_eilish_bad_guy" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="Bad Guy"
+                        android:textAppearance="@style/name_song_lyric_small"
+                        card_view:layout_constraintStart_toEndOf="@+id/cardView1"
+                        card_view:layout_constraintTop_toTopOf="@+id/cardView1" />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Billie Elish"
+                        android:textAppearance="@style/author_song_lyric"
+                        card_view:layout_constraintBottom_toBottomOf="@+id/cardView1"
+                        card_view:layout_constraintStart_toStartOf="@+id/textView13" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="41dp"
+                        android:src="@drawable/heart_border"
+                        card_view:layout_constraintBottom_toBottomOf="@+id/textView14"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintTop_toTopOf="@+id/textView13" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="26dp"
+                        android:paddingHorizontal="35dp"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toBottomOf="@+id/cardView1">
+
+                        <SeekBar
+                            android:id="@+id/seekBar"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:max="100"
+                            android:progress="60"
+                            android:progressBackgroundTint="#4D000000"
+                            android:progressTint="#434343"
+                            android:thumbTint="#434343"
+                            card_view:layout_constraintEnd_toEndOf="parent"
+                            card_view:layout_constraintStart_toStartOf="parent"
+                            card_view:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/time_start1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="12dp"
+                            android:text="2:25"
+                            android:textAppearance="@style/time"
+                            card_view:layout_constraintStart_toStartOf="parent"
+                            card_view:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+                        <TextView
+                            android:id="@+id/time_end1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="16dp"
+                            android:text="4:02"
+                            android:textAppearance="@style/time"
+                            card_view:layout_constraintEnd_toEndOf="parent"
+                            card_view:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayout6"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="37dp"
+                            android:background="@drawable/ellipse_11"
+                            android:gravity="center"
+                            card_view:layout_constraintEnd_toEndOf="parent"
+                            card_view:layout_constraintStart_toStartOf="parent"
+                            card_view:layout_constraintTop_toBottomOf="@+id/seekBar">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_baseline_pause_24" />
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:id="@+id/imageView11"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_marginEnd="17dp"
+                            android:src="@drawable/ic_baseline_skip_previous_24"
+                            card_view:layout_constraintBottom_toBottomOf="@+id/relativeLayout6"
+                            card_view:layout_constraintEnd_toStartOf="@+id/relativeLayout6"
+                            card_view:layout_constraintTop_toTopOf="@+id/relativeLayout6" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="29dp"
+                            android:src="@drawable/repeat_ic"
+                            card_view:layout_constraintBottom_toBottomOf="@+id/imageView11"
+                            card_view:layout_constraintEnd_toStartOf="@+id/imageView11"
+                            card_view:layout_constraintTop_toTopOf="@+id/imageView11" />
+
+                        <ImageView
+                            android:id="@+id/imageView12"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_marginStart="17dp"
+                            android:src="@drawable/ic_baseline_skip_next_24"
+                            card_view:layout_constraintBottom_toBottomOf="@+id/relativeLayout6"
+                            card_view:layout_constraintStart_toEndOf="@+id/relativeLayout6"
+                            card_view:layout_constraintTop_toTopOf="@+id/relativeLayout6" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="29dp"
+                            android:src="@drawable/ic_baseline_shuffle_24"
+                            card_view:layout_constraintBottom_toBottomOf="@+id/imageView12"
+                            card_view:layout_constraintStart_toEndOf="@+id/imageView12"
+                            card_view:layout_constraintTop_toTopOf="@+id/imageView12" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+
+</RelativeLayout>

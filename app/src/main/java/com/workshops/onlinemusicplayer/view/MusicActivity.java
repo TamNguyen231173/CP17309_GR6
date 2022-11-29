@@ -15,7 +15,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.model.Song;
+import com.workshops.onlinemusicplayer.model.Music;
 import com.workshops.onlinemusicplayer.service.MusicService;
 
 import java.text.SimpleDateFormat;
@@ -47,7 +46,7 @@ public class MusicActivity extends AppCompatActivity {
     ImageView next_btn, prev_btn, song_img, repeat_btn, shuffle_btn;
     TextView name_song_music_ac, singer_name_music_ac, time_end, time_start, lyric;
     SeekBar song_seekbar;
-    ArrayList<Song> list = new ArrayList<Song>();
+    ArrayList<Music> list = new ArrayList<Music>();
     PlayPauseView play_btn;
     int position;
     List<Integer> numbers = new ArrayList<Integer>();
@@ -91,7 +90,7 @@ public class MusicActivity extends AppCompatActivity {
                                 String resource = (String) document.getData().get("audio");
                                 String lyrics = (String) document.getData().get("lyrics");
 
-                                list.add(new Song(i, title, image, singer, resource, lyrics));
+                                list.add(new Music(i, title, image, singer, resource, lyrics));
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -171,7 +170,7 @@ public class MusicActivity extends AppCompatActivity {
                                 String resource = (String) document.getData().get("audio");
                                 String lyrics = (String) document.getData().get("lyrics");
 
-                                list.add(new Song(i, name, image, singer, resource, lyrics));
+                                list.add(new Music(i, name, singer, image, resource, lyrics));
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -277,7 +276,7 @@ public class MusicActivity extends AppCompatActivity {
 
             }
         });
-        name_song_music_ac.setText(list.get(position).getTitle());
+        name_song_music_ac.setText(list.get(position).getName());
         singer_name_music_ac.setText(list.get(position).getSinger());
         lyric.setText(list.get(position).getLyrics());
         media_player.start();
@@ -285,7 +284,7 @@ public class MusicActivity extends AppCompatActivity {
         showTime();
         UpdateTime();
         song_img.startAnimation(rotateAnimation);
-        Song song = list.get(position);
+        Music song = list.get(position);
         Intent intent = new Intent(getApplicationContext(), MusicService.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("list_song", song);

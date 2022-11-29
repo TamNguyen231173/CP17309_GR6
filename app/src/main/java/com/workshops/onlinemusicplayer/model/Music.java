@@ -1,30 +1,36 @@
 package com.workshops.onlinemusicplayer.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Song implements Serializable {
+public class Music implements Serializable {
     private  int id;
-    private String title, singer, category, resource, image, lyrics;
+    private String name, singer, category, resource, image, lyrics;
+    public Map<String, Boolean> stars = new HashMap<>();
 
-    public Song(int i, String title) {
+    public Music() {
     }
 
-    public Song(int id, String title, String singer, String image) {
-        this.title = title;
+    public Music(int id, String name, String singer, String image) {
+        this.name = name;
         this.singer = singer;
         this.id = id;
         this.image = image;
     }
-    public Song(int id, String title, String image) {
-        this.title = title;
-//        this.singer = singer;
+    public Music(int id, String name, String image) {
+        this.name = name;
         this.id = id;
         this.image = image;
     }
 
+    public Music(String singer) {
+        this.singer = singer;
+    }
 
-    public Song(int id, String title, String singer, String image, String resource, String lyrics) {
-        this.title = title;
+
+    public Music(int id, String name, String singer, String image, String resource, String lyrics) {
+        this.name = name;
         this.singer = singer;
         this.resource = resource;
         this.id = id;
@@ -40,12 +46,12 @@ public class Song implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSinger() {
@@ -87,4 +93,5 @@ public class Song implements Serializable {
     public void setLyrics(String lyrics) {
         this.lyrics = lyrics;
     }
+
 }

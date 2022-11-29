@@ -151,20 +151,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="46dp"
+                    android:layout_marginTop="38dp"
                     android:layout_marginEnd="47dp"
                     android:text="See More"
                     android:textColor="#131313"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
-                <ListView
-                    android:id="@+id/listViewPlaylist"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/songs_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="47dp"
-                    android:layout_marginTop="26dp"
-                    android:layout_marginEnd="47dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="22dp"
+                    android:paddingHorizontal="34dp"
+                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

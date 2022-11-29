@@ -1,7 +1,5 @@
 package com.workshops.onlinemusicplayer.adapter;
 
-import static com.workshops.onlinemusicplayer.fragment.HomeFragment.singers;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.model.Albums;
-import com.workshops.onlinemusicplayer.model.PlayListSinger;
-import com.workshops.onlinemusicplayer.model.Song;
 
 import java.util.ArrayList;
 
