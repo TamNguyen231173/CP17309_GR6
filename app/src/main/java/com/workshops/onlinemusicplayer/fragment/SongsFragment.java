@@ -2,7 +2,6 @@ package com.workshops.onlinemusicplayer.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,6 @@ import com.workshops.onlinemusicplayer.helper.MusicLibraryHelper;
 import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
 import com.workshops.onlinemusicplayer.listener.PlayListListener;
 import com.workshops.onlinemusicplayer.model.Music;
-import com.workshops.onlinemusicplayer.model.MainViewModel;
-import com.workshops.onlinemusicplayer.model.MainViewModelFactory;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
@@ -32,7 +29,6 @@ public class SongsFragment extends Fragment implements SearchView.OnQueryTextLis
 
     public static MusicSelectListener listener;
     private final List<Music> musicList = new ArrayList<>();
-    private MainViewModel viewModel;
     private SongsAdapter songAdapter;
     private List<Music> unChangedList = new ArrayList<>();
 
@@ -50,8 +46,7 @@ public class SongsFragment extends Fragment implements SearchView.OnQueryTextLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity(),
-                new MainViewModelFactory(requireActivity())).get(MainViewModel.class);
+
     }
 
     @Override
