@@ -51,14 +51,15 @@ public class MusicLibraryHelper {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-
                                 String title = (String) document.getData().get("name");
                                 String singer = (String) document.getData().get("singer");
                                 String image = (String) document.getData().get("image");
                                 String audio = (String) document.getData().get("audio");
                                 String lyrics = (String) document.getData().get("lyrics");
+                                String category = (String) document.getData().get("album") ;
+                                Log.d("image_singer", "onComplete: "+image);
 
-                                musicList.add(new Music(id, title, singer, image, audio, lyrics));
+                                musicList.add(new Music(id, title, singer, image, audio, lyrics, category));
                                 id++;
                             }
                         } else {

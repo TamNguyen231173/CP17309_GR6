@@ -38,6 +38,16 @@ public class Music implements Serializable {
         this.lyrics = lyrics;
     }
 
+    public Music(int id, String name, String singer, String image, String resource, String lyrics, String category) {
+        this.id = id;
+        this.name = name;
+        this.singer = singer;
+        this.category = category;
+        this.resource = resource;
+        this.image = image;
+        this.lyrics = lyrics;
+    }
+
     public int getId() {
         return id;
     }
