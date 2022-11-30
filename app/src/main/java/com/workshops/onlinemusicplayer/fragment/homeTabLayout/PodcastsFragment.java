@@ -1,6 +1,7 @@
 package com.workshops.onlinemusicplayer.fragment.homeTabLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,77 +14,107 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
+import com.workshops.onlinemusicplayer.adapter.AlbumAdapter;
+import com.workshops.onlinemusicplayer.adapter.AlbumAdapter2;
+import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
 import com.workshops.onlinemusicplayer.adapter.PlayListPopularAdapter;
+import com.workshops.onlinemusicplayer.fragment.LikeFragment;
+import com.workshops.onlinemusicplayer.fragment.SongsFragment;
+import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
+import com.workshops.onlinemusicplayer.model.Albums;
+import com.workshops.onlinemusicplayer.model.Music;
 import com.workshops.onlinemusicplayer.model.PlayListPopular;
+import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
+import com.workshops.onlinemusicplayer.model.Singer;
+import com.workshops.onlinemusicplayer.view.MusicActivity;
+import com.workshops.onlinemusicplayer.view.PlayListAlbumActivity;
 
 import java.util.ArrayList;
 
-public class PodcastsFragment extends Fragment {
+public class PodcastsFragment extends Fragment implements RecyclerViewInterface {
 
-    public static final String TITLE = "title";
+    private static final String TAG = "Read data from firebase";
+    ArrayList<Music> list = new ArrayList<Music>();
+    ListView listViewPlaylist, listViewAlBums;
+    MusicAdapter adapter;
+    AlbumAdapter2 adapter1;
+    int i;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public static ArrayList<Singer> singers = new ArrayList<>();
+    ArrayList<Albums> albums = new ArrayList<>();
+    private RecyclerView recyclerViewAlbum;
+    private LinearLayoutManager layoutManagerAlbum;
 
     public PodcastsFragment() {
-        // Required empty public constructor
     }
-    private RecyclerView recyclerViewPopular;
-    private PlayListPopularAdapter adapterPopular;
-    private LinearLayoutManager layoutManagerPopular;
-    ArrayList<PlayListPopular> listPopular = new ArrayList<>();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static final String TAG = "Read data from firebase";
-    int i;
 
-    @SuppressLint("MissingInflatedId")
+    public static PodcastsFragment newInstance(MusicSelectListener selectListener) {
+        SongsFragment.listener = selectListener;
+        return new PodcastsFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_podcasts, container, false);
-        recyclerViewPopular = view.findViewById(R.id.playListPopular);
+        recyclerViewAlbum = view.findViewById(R.id.playListPopular);
 
+        // albums
+        layoutManagerAlbum = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        adapter1 = new AlbumAdapter2(albums,getActivity(),this);
+        recyclerViewAlbum.setLayoutManager(layoutManagerAlbum);
+        recyclerViewAlbum.setAdapter(adapter1);
 
-        getListPopular();
-
-        //popular
-        adapterPopular = new PlayListPopularAdapter(listPopular,getActivity());
-        layoutManagerPopular = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewPopular.setLayoutManager(layoutManagerPopular);
-        recyclerViewPopular.setAdapter(adapterPopular);
         return view;
     }
-
-    private void getListPopular() {
-        db.collection("popular")
+    private void readDataAlbums() {
+        db.collection("category")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                i++;
+                                String id = (String) document.getData().get("id");
                                 String name = (String) document.getData().get("name");
                                 String image = (String) document.getData().get("image");
-                                String singer = (String) document.getData().get("singer");
-                                listPopular.add(new PlayListPopular(i, name, image, singer));
+                                albums.add(new Albums(id, name, image));
                             }
-                            adapterPopular = new PlayListPopularAdapter(listPopular, getContext());
-                            recyclerViewPopular.setAdapter(adapterPopular);
+                            adapter1 = new AlbumAdapter2(albums, getContext(), PodcastsFragment.this);
+                            recyclerViewAlbum.setAdapter(adapter1);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        readDataAlbums();
+    }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onClickItem(int position) {
+        Intent intent = new Intent(getActivity(), PlayListAlbumActivity.class);
+
+        intent.putExtra("id",albums.get(position).getId());
+        intent.putExtra("name",albums.get(position).getName());
+        intent.putExtra("image",albums.get(position).getImage());
+
+        startActivity(intent);
+
+        //Toast.makeText(getActivity(), "Title"+ds.get(position).getName(), Toast.LENGTH_SHORT).show();
     }
 }
