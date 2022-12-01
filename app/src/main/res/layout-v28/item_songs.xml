@@ -68,9 +68,9 @@
 
         <ImageView
             android:id="@+id/ic_heart_border"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/heart_border"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_favorite_black_30"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             />

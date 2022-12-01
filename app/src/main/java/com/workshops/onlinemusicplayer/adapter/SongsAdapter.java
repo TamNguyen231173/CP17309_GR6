@@ -51,6 +51,19 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.MyViewHolder
                         music.getSinger(),
                         music.getCategory())
         );
+        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!music.isFlag()) {
+                    holder.likeBtn.setBackgroundResource(R.drawable.ic_favorite_red_48);
+                    music.setFlag(true);
+                } else {
+                    holder.likeBtn.setBackgroundResource(R.drawable.ic_favorite_black_30);
+                    music.setFlag(false);
+                }
+            }
+        });
+
 
         holder.songHistory.setText(MusicLibraryHelper.formatDuration(music.getId()));
         Glide.with(holder.albumArt.getContext()).load(music.getImage()).into(holder.albumArt);
