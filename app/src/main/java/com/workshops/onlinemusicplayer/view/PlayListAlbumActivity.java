@@ -91,7 +91,7 @@ public class PlayListAlbumActivity extends AppCompatActivity {
 
                                 i++;
                                 String title = (String) document.getData().get("name");
-                                String singer = (String) document.getData().get("id_singer");
+                                String singer = (String) document.getData().get("singer");
                                 String image = (String) document.getData().get("image");
 
                                 list.add(new Music(i, title, singer, image));

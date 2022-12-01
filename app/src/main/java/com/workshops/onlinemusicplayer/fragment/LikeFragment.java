@@ -41,7 +41,7 @@ import java.util.ArrayList;
 public class LikeFragment extends Fragment implements RecyclerViewInterface {
     private static final String TAG = "Read data from firebase";
     ArrayList<Music> list = new ArrayList<Music>();
-    ListView listViewPlaylist, listViewAlBums;
+    ListView listViewPlaylist;
     MusicAdapter adapter;
     AlbumAdapter adapter1;
     int i;
@@ -97,10 +97,10 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 i++;
                                 String title = (String) document.getData().get("name");
-                                String singer = (String) document.getData().get("id_singer");
+                                String singer = (String) document.getData().get("singer");
                                 String image = (String) document.getData().get("image");
-
-                                list.add(new Music(i, title, singer, image));
+                                boolean flag = (boolean) document.getData().get("flag");
+                                list.add(new Music(i, title, singer, image, flag));
                             }
                             adapter = new MusicAdapter(list, getContext());
                             listViewPlaylist.setAdapter(adapter);

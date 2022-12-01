@@ -57,7 +57,6 @@ public class MusicLibraryHelper {
                                 String audio = (String) document.getData().get("audio");
                                 String lyrics = (String) document.getData().get("lyrics");
                                 String category = (String) document.getData().get("album") ;
-                                Log.d("image_singer", "onComplete: "+image);
 
                                 musicList.add(new Music(id, title, singer, image, audio, lyrics, category));
                                 id++;

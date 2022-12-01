@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 
 public class MusicAdapter extends BaseAdapter {
-    private boolean flag = false;
+    private static boolean flag;
     private ArrayList<Music> ds;
     private Context context;
 
@@ -56,13 +56,17 @@ public class MusicAdapter extends BaseAdapter {
 
 
         txtTitle.setText(song.getName());
-//        txtSingle.setText(song.getSinger());
-        for (int i1=0; i1<singers.size(); i1++) {
-            if (song.getSinger().equals(singers.get(i1).getId())) {
-                txtSinger.setText(singers.get(i1).getName());
-            }
-        }
+        txtSinger.setText(song.getSinger());
+//        for (int i1=0; i1<singers.size(); i1++) {
+//            if (song.getSinger().equals(singers.get(i1).getId())) {
+//                txtSinger.setText(singers.get(i1).getName());
+//            }
+//        }
         Glide.with(context).load(song.getImage()).into(imgSong);
+        flag = song.isFlag();
+        if (flag) {
+            imgHeart.setImageResource(R.drawable.ic_favorite_red_48);
+        }
         imgHeart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
