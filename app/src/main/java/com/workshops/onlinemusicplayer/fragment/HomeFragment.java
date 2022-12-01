@@ -2,6 +2,8 @@ package com.workshops.onlinemusicplayer.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
 import com.workshops.onlinemusicplayer.adapter.NewsAdapter;
+import com.workshops.onlinemusicplayer.adapter.PhotoAdapter;
 import com.workshops.onlinemusicplayer.adapter.SongsAdapter;
 import com.workshops.onlinemusicplayer.adapter.TrendAdapter;
 import com.workshops.onlinemusicplayer.helper.ListHelper;
@@ -36,10 +40,15 @@ import com.workshops.onlinemusicplayer.listener.CallBackDatabase;
 import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
 import com.workshops.onlinemusicplayer.listener.PlayListListener;
 import com.workshops.onlinemusicplayer.model.Music;
+import com.workshops.onlinemusicplayer.model.Photo;
 import com.workshops.onlinemusicplayer.model.Singer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import me.relex.circleindicator.CircleIndicator;
 
 public class HomeFragment extends Fragment implements SearchView.OnQueryTextListener, PlayListListener {
 
@@ -50,6 +59,11 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 
     private MaterialToolbar toolbar;
     private SearchView searchView;
+    private ViewPager viewPager;
+    private CircleIndicator circleIndicator;
+    private PhotoAdapter photoAdapter;
+    private List<Photo> mListPhoto;
+    private Timer mTimer;
 
     public static ArrayList<Singer> singers = new ArrayList<>();
 
@@ -80,6 +94,22 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         RecyclerView recyclerViewSong = view.findViewById(R.id.songs_layout);
         recyclerViewSong.setLayoutManager(new LinearLayoutManager(getActivity()));
         songAdapter = new SongsAdapter(listener, this, musicList);
+
+        //image slider
+        mListPhoto = getListPhoto();
+        viewPager = view.findViewById(R.id.viewPager);
+        circleIndicator = view.findViewById(R.id.circleIndicator);
+
+        autoImageSlider();
+
+        photoAdapter = new PhotoAdapter(getActivity(),mListPhoto);
+
+        viewPager.setAdapter(photoAdapter);
+
+        circleIndicator.setViewPager(viewPager);
+        photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
+
+        // end image slider
 
         MusicLibraryHelper.fetchMusicLibrary(view.getContext(), new CallBackDatabase() {
             @Override
@@ -116,6 +146,59 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 
         return view;
     }
+
+    private void autoImageSlider() {
+        if(mListPhoto == null || mListPhoto.isEmpty() || viewPager == null){
+            return;
+        }
+        if(mTimer == null){
+            mTimer = new Timer();
+        }
+
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        int currentItem = viewPager.getCurrentItem();
+                        int totalItem = mListPhoto.size() - 1;
+                        if(currentItem < totalItem){
+                            currentItem ++;
+                            viewPager.setCurrentItem(currentItem);
+                        }else{
+                            viewPager.setCurrentItem(0);
+                        }
+
+                    }
+                });
+
+            }
+        },1000, 2000);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mTimer != null){
+            mTimer.cancel();
+            mTimer = null;
+        }
+    }
+
+    private List<Photo> getListPhoto() {
+        List<Photo> list = new ArrayList<>();
+        list.add(new Photo(R.drawable.anh_1));
+        list.add(new Photo(R.drawable.anh_2));
+        list.add(new Photo(R.drawable.anh_3));
+        list.add(new Photo(R.drawable.anh_4));
+        list.add(new Photo(R.drawable.anh_5));
+        list.add(new Photo(R.drawable.anh_6));
+
+
+        return list;
+    }
+
 
     private void setUpSearchView() {
         searchView.setOnQueryTextListener(this);
