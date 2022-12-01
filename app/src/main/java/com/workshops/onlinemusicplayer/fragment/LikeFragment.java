@@ -73,6 +73,7 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface {
     private void readData() {
         i = 0;
         db.collection("song")
+                .whereEqualTo("flag", "true")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

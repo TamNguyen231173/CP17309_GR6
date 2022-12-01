@@ -46,7 +46,7 @@ public class Music implements Serializable {
         this.lyrics = lyrics;
     }
 
-    public Music(int id, String name, String singer, String image, String resource, String lyrics, String category) {
+    public Music(int id, String name, String singer, String image, String resource, String lyrics, String category, boolean flag) {
         this.id = id;
         this.name = name;
         this.singer = singer;
@@ -54,6 +54,7 @@ public class Music implements Serializable {
         this.resource = resource;
         this.image = image;
         this.lyrics = lyrics;
+        this.flag = flag;
     }
 
     public int getId() {

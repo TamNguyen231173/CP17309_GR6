@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.workshops.onlinemusicplayer.MPPreferences;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.helper.MusicLibraryHelper;
@@ -28,6 +29,7 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.MyViewHolder
     private final List<Music> musicList;
     private final PlayListListener playListListener;
     public MusicSelectListener listener;
+    private boolean flag;
 
     public SongsAdapter(MusicSelectListener listener, PlayListListener playListListener, List<Music> musics) {
         this.listener = listener;
@@ -51,15 +53,27 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.MyViewHolder
                         music.getSinger(),
                         music.getCategory())
         );
+        flag = music.isFlag();
+        if (flag) {
+            holder.likeBtn.setImageResource(R.drawable.ic_favorite_red_48);
+        }
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!music.isFlag()) {
+                if (!flag) {
                     holder.likeBtn.setBackgroundResource(R.drawable.ic_favorite_red_48);
                     music.setFlag(true);
+                    FirebaseFirestore.getInstance()
+                            .collection("song")
+                            .document()
+                            .update("flag", true);
                 } else {
                     holder.likeBtn.setBackgroundResource(R.drawable.ic_favorite_black_30);
                     music.setFlag(false);
+                    FirebaseFirestore.getInstance()
+                            .collection("song")
+                            .document()
+                            .update("flag", false);
                 }
             }
         });
