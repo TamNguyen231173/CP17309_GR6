@@ -51,11 +51,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     private MaterialToolbar toolbar;
     private SearchView searchView;
 
-    ArrayList<Music> list = new ArrayList<Music>();
-    ListView listViewPlaylist;
-    MusicAdapter adapter;
-    NewsAdapter newsAdapter;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static ArrayList<Singer> singers = new ArrayList<>();
 
     public HomeFragment() {
@@ -89,9 +84,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         MusicLibraryHelper.fetchMusicLibrary(view.getContext(), new CallBackDatabase() {
             @Override
             public List<Music> onCallback(List<Music> result) {
-                for (Music music : result) {
-                    unChangedList.add(music);
-                }
+                unChangedList.addAll(result);
                 musicList.clear();
                 musicList.addAll(unChangedList);
                 recyclerViewSong.setAdapter(songAdapter);
@@ -149,29 +142,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     @Override
     public void option(Context context, Music music) {
     }
-
-//   private void getDataPlaylist() {
-//        db.collection("singer")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (DocumentSnapshot document : task.getResult()) {
-//                                singers.add(new Singer(document.get("name").toString(),document.getId()));
-//                            }
-//                            adapter = new MusicAdapter(list, getContext());
-//                            listViewPlaylist.setAdapter(adapter);
-//                        }
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.d("<<singer>>", "Lấy dữ liệu không thành công" );
-//                    }
-//                });
-//   }
 
 }
 

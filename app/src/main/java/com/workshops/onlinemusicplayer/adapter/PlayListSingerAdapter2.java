@@ -18,7 +18,6 @@ import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class PlayListSingerAdapter2 extends RecyclerView.Adapter<PlayListSingerAdapter2.ViewHolder> {

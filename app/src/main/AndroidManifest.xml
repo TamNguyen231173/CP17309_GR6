@@ -59,13 +59,6 @@
         </receiver>
 
         <activity
-            android:name=".view.MusicActivity"
-            android:exported="true">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".view.WelcomeActivity"
             android:exported="true">
             <intent-filter>

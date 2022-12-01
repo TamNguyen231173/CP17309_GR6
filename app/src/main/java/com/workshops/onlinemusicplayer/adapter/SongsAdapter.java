@@ -38,8 +38,6 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.MyViewHolder
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-//        View view = inflater.inflate(R.layout.item_songs,parent,false);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_songs, parent, false);
         return new MyViewHolder(view);
     }
@@ -55,12 +53,6 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.MyViewHolder
         );
 
         holder.songHistory.setText(MusicLibraryHelper.formatDuration(music.getId()));
-//        String uri = musicList.get(position).getImage();
-//        if (holder.state)
-//            Glide.with(holder.albumArt.getContext())
-//                    .load(uri)
-//                    .placeholder(R.drawable.billie_eilish_bad_guy)
-//                    .into(holder.albumArt);
         Glide.with(holder.albumArt.getContext()).load(music.getImage()).into(holder.albumArt);
     }
 
@@ -75,6 +67,7 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.MyViewHolder
         private final TextView albumName;
         private final TextView songHistory;
         private final ImageView albumArt;
+        private final ImageView likeBtn;
         private final boolean state;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -85,6 +78,7 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.MyViewHolder
             songHistory = itemView.findViewById(R.id.song_history);
             songName = itemView.findViewById(R.id.song_name);
             albumName = itemView.findViewById(R.id.song_album);
+            likeBtn = itemView.findViewById(R.id.ic_heart_border);
 
             itemView.findViewById(R.id.root_layout).setOnClickListener(v -> {
                 listener.setShuffleMode(false);

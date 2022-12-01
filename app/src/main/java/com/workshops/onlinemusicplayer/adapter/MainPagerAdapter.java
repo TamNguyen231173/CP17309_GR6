@@ -5,11 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.google.firebase.firestore.auth.User;
 import com.workshops.onlinemusicplayer.fragment.ExploreFragment;
 import com.workshops.onlinemusicplayer.fragment.HomeFragment;
 import com.workshops.onlinemusicplayer.fragment.LikeFragment;
-import com.workshops.onlinemusicplayer.fragment.SongsFragment;
 import com.workshops.onlinemusicplayer.fragment.UserFragment;
 import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
 

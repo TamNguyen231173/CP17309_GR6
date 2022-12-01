@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -17,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.model.PlayListPopular;
-import com.workshops.onlinemusicplayer.model.PlayListSinger;
-import com.workshops.onlinemusicplayer.view.MusicActivity;
 
 import java.util.ArrayList;
 
@@ -54,15 +51,7 @@ public class PlayListPopularAdapter extends RecyclerView.Adapter<PlayListPopular
         holder.txtNameSinger.setText(popular.getSinger());
         Glide.with(context).load(popular.getImage()).into(holder.imagePopular);
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Toast.makeText(context, "Popular"+position, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, MusicActivity.class);
-                intent.putExtra("song_id", popular.getId());
-                context.startActivity(intent);
-            }
-        });
+
     }
 
     @Override

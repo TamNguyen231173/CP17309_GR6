@@ -47,7 +47,7 @@ public class ExploreFragment extends Fragment implements RecyclerViewInterface {
     }
 
     public static ExploreFragment newInstance(MusicSelectListener selectListener) {
-        SongsFragment.listener = selectListener;
+        HomeFragment.listener = selectListener;
         return new ExploreFragment();
     }
 

@@ -70,15 +70,6 @@ public class PlayListAlbumActivity extends AppCompatActivity {
         });
         listViewPlaylist = findViewById(R.id.listAlbum);
 
-        listViewPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Music song = list.get(i);
-                Intent intent = new Intent(PlayListAlbumActivity.this, MusicActivity.class);
-                intent.putExtra("song_id", song.getId());
-                startActivity(intent);
-            }
-        });
 
         db.collection("song")
                 .whereEqualTo("album", name)

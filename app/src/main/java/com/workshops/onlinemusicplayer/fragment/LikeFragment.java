@@ -7,13 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,14 +24,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.AlbumAdapter;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
-import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
-import com.workshops.onlinemusicplayer.adapter.TrendAdapter;
 import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
 import com.workshops.onlinemusicplayer.model.Albums;
 import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
 import com.workshops.onlinemusicplayer.model.Singer;
 import com.workshops.onlinemusicplayer.model.Music;
-import com.workshops.onlinemusicplayer.view.MusicActivity;
 import com.workshops.onlinemusicplayer.view.PlayListAlbumActivity;
 
 import java.util.ArrayList;
@@ -42,8 +37,8 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface {
     private static final String TAG = "Read data from firebase";
     ArrayList<Music> list = new ArrayList<Music>();
     ListView listViewPlaylist;
-    MusicAdapter adapter;
-    AlbumAdapter adapter1;
+    MusicAdapter musicAdapter;
+    AlbumAdapter albumAdapter;
     int i;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     public static ArrayList<Singer> singers = new ArrayList<>();
@@ -55,7 +50,7 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface {
     }
 
     public static LikeFragment newInstance(MusicSelectListener selectListener) {
-        SongsFragment.listener = selectListener;
+        HomeFragment.listener = selectListener;
         return new LikeFragment();
     }
 
@@ -65,24 +60,13 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface {
         View view = inflater.inflate(R.layout.fragment_like, container, false);
         recyclerViewAlbum = view.findViewById(R.id.list_view_albums);
         getDataPlaylist();
-//        listViewAlBums = view.findViewById(R.id.list_view_albums);
         listViewPlaylist = view.findViewById(R.id.listViewPlaylist);
 
         // albums
         layoutManagerAlbum = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
-        adapter1 = new AlbumAdapter(albums,getActivity(),this);
+        albumAdapter = new AlbumAdapter(albums,getActivity(),this);
         recyclerViewAlbum.setLayoutManager(layoutManagerAlbum);
-        recyclerViewAlbum.setAdapter(adapter1);
-
-        listViewPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Music song = list.get(i);
-                Intent intent = new Intent(getContext(), MusicActivity.class);
-                intent.putExtra("song_id", song.getId());
-                getActivity().startActivity(intent);
-            }
-        });
+        recyclerViewAlbum.setAdapter(albumAdapter);
 
         return view;
     }
@@ -102,8 +86,8 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface {
                                 boolean flag = (boolean) document.getData().get("flag");
                                 list.add(new Music(i, title, singer, image, flag));
                             }
-                            adapter = new MusicAdapter(list, getContext());
-                            listViewPlaylist.setAdapter(adapter);
+                            musicAdapter = new MusicAdapter(list, getContext());
+                            listViewPlaylist.setAdapter(musicAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -124,8 +108,8 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface {
                                 String image = (String) document.getData().get("image");
                                 albums.add(new Albums(id, name, image));
                             }
-                            adapter1 = new AlbumAdapter(albums, getContext(),LikeFragment.this);
-                            recyclerViewAlbum.setAdapter(adapter1);
+                            albumAdapter = new AlbumAdapter(albums, getContext(),LikeFragment.this);
+                            recyclerViewAlbum.setAdapter(albumAdapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -150,8 +134,8 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface {
                             for (DocumentSnapshot document : task.getResult()) {
                                 singers.add(new Singer(document.get("name").toString(),document.getId()));
                             }
-                            adapter = new MusicAdapter(list, getContext());
-                            listViewPlaylist.setAdapter(adapter);
+                            musicAdapter = new MusicAdapter(list, getContext());
+                            listViewPlaylist.setAdapter(musicAdapter);
                         }
                     }
                 })
@@ -171,7 +155,5 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface {
         intent.putExtra("image",albums.get(position).getImage());
 
         startActivity(intent);
-
-        //Toast.makeText(getActivity(), "Title"+ds.get(position).getName(), Toast.LENGTH_SHORT).show();
     }
 }

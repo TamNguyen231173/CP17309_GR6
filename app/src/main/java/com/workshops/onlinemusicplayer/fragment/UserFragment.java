@@ -43,7 +43,6 @@ import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
 import com.workshops.onlinemusicplayer.model.Singer;
 import com.workshops.onlinemusicplayer.model.Music;
 import com.workshops.onlinemusicplayer.view.LoginActivity;
-import com.workshops.onlinemusicplayer.view.MusicActivity;
 import com.workshops.onlinemusicplayer.view.ResetPasswordActivity;
 
 import java.util.ArrayList;
@@ -146,15 +145,6 @@ public class UserFragment extends Fragment {
 
         listViewPlaylist = view.findViewById(R.id.listViewPlaylist);
 
-        listViewPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Music song = list.get(i);
-                Intent intent = new Intent(getContext(), MusicActivity.class);
-                intent.putExtra("song_id", song.getId());
-                getActivity().startActivity(intent);
-            }
-        });
         return view;
     }
 

@@ -1,11 +1,9 @@
 package com.workshops.onlinemusicplayer.fragment.homeTabLayout;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,30 +12,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.adapter.AlbumAdapter;
 import com.workshops.onlinemusicplayer.adapter.AlbumAdapter2;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
-import com.workshops.onlinemusicplayer.adapter.PlayListPopularAdapter;
-import com.workshops.onlinemusicplayer.fragment.LikeFragment;
-import com.workshops.onlinemusicplayer.fragment.SongsFragment;
+import com.workshops.onlinemusicplayer.fragment.HomeFragment;
 import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
 import com.workshops.onlinemusicplayer.model.Albums;
 import com.workshops.onlinemusicplayer.model.Music;
-import com.workshops.onlinemusicplayer.model.PlayListPopular;
 import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
 import com.workshops.onlinemusicplayer.model.Singer;
-import com.workshops.onlinemusicplayer.view.MusicActivity;
 import com.workshops.onlinemusicplayer.view.PlayListAlbumActivity;
 
 import java.util.ArrayList;
@@ -60,7 +50,7 @@ public class PodcastsFragment extends Fragment implements RecyclerViewInterface 
     }
 
     public static PodcastsFragment newInstance(MusicSelectListener selectListener) {
-        SongsFragment.listener = selectListener;
+        HomeFragment.listener = selectListener;
         return new PodcastsFragment();
     }
 

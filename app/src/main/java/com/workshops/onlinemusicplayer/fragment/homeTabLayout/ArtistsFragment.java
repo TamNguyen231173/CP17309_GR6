@@ -20,13 +20,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
-import com.workshops.onlinemusicplayer.adapter.PlayListPopularAdapter;
-import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
 import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter2;
-import com.workshops.onlinemusicplayer.fragment.ExploreFragment;
-import com.workshops.onlinemusicplayer.fragment.SongsFragment;
+import com.workshops.onlinemusicplayer.fragment.HomeFragment;
 import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
-import com.workshops.onlinemusicplayer.model.PlayListPopular;
 import com.workshops.onlinemusicplayer.model.PlayListSinger;
 import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
 import com.workshops.onlinemusicplayer.view.PlayListSingerActivity;
@@ -47,7 +43,7 @@ public class ArtistsFragment extends Fragment implements RecyclerViewInterface {
     }
 
     public static ArtistsFragment newInstance(MusicSelectListener selectListener) {
-        SongsFragment.listener = selectListener;
+        HomeFragment.listener = selectListener;
         return new ArtistsFragment();
     }
 
@@ -106,7 +102,5 @@ public class ArtistsFragment extends Fragment implements RecyclerViewInterface {
         intent.putExtra("image",ds.get(position).getImage());
 
         startActivity(intent);
-
-        //Toast.makeText(getActivity(), "Title"+ds.get(position).getName(), Toast.LENGTH_SHORT).show();
     }
 }
