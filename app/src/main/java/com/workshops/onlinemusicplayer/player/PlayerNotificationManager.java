@@ -129,7 +129,6 @@ public class PlayerNotificationManager {
                 .setColorized(false)
                 .setSubText(song.getCategory());
 
-
         NotificationManagerCompat.from(playerService).notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 

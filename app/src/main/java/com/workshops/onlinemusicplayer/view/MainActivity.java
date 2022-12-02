@@ -173,8 +173,16 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.control_play_pause)
             playerManager.playPause();
 
+        else if (id == R.id.control_close_music)
+            closePlayerView();
+
         else if (id == R.id.player_layout)
             setUpPlayerDialog();
+    }
+
+    private void closePlayerView() {
+            playerView.setVisibility(View.INVISIBLE);
+            playerManager = null;
     }
 
     private void setUpPlayerDialog() {

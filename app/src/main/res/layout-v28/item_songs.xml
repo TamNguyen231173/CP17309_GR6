@@ -49,7 +49,7 @@
         android:layout_below="@id/song_history"
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@id/album_art_layout"
-        android:fontFamily="@font/satoshi__regular"
+        android:fontFamily="@font/satoshi_bold"
         android:maxLines="1"
         android:textColor="@color/text_black"
         android:textSize="15sp" />
@@ -61,7 +61,7 @@
         android:layout_below="@id/song_name"
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@id/album_art_layout"
-        android:fontFamily="@font/satoshi__regular"
+        android:fontFamily="@font/satoshi_bold"
         android:maxLines="1"
         android:textColor="@color/text_black"
         android:textSize="12sp" />
