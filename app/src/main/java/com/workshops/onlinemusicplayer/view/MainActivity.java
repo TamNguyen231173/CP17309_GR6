@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private TextView songName;
     private TextView songDetails;
     private ImageButton play_pause;
+    private ImageButton closePlayerViewButton;
     private LinearProgressIndicator progressIndicator;
     private PlayerDialog playerDialog;
 
@@ -68,9 +69,11 @@ public class MainActivity extends AppCompatActivity
         songName = findViewById(R.id.song_title);
         songDetails = findViewById(R.id.song_details);
         play_pause = findViewById(R.id.control_play_pause);
+        closePlayerViewButton = findViewById(R.id.control_close_music);
 
         play_pause.setOnClickListener(this);
         playerLayout.setOnClickListener(this);
+        closePlayerViewButton.setOnClickListener(this);
     }
 
     private void setPlayerView() {
@@ -181,8 +184,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void closePlayerView() {
-            playerView.setVisibility(View.INVISIBLE);
-            playerManager = null;
+        if (playerView.getVisibility() == View.VISIBLE) {
+            playerView.setVisibility(View.GONE);
+            playerManager.pauseMediaPlayer();
+        }
     }
 
     private void setUpPlayerDialog() {
