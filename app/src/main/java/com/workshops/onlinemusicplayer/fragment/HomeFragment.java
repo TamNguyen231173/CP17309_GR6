@@ -78,7 +78,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override

@@ -132,7 +132,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/songs_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="200dp"
                     android:layout_marginTop="22dp"
                     android:paddingHorizontal="34dp"
                     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
