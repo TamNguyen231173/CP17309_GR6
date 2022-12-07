@@ -20,15 +20,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginStart="47dp"
                     android:layout_marginTop="33dp"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="Search here"
                     android:src="@drawable/search"
                     android:translationZ="2dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+                    <requestFocus />
+                </androidx.appcompat.widget.SearchView>
 
                 <ImageView
                     android:id="@+id/imageView8"
@@ -71,9 +76,9 @@
                         android:id="@+id/circleIndicator"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -78,7 +78,9 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface, Sea
         MusicLibraryHelper.fetchMusicLibrary(view.getContext(), new CallBackDatabase() {
             @Override
             public List<Music> onCallback(List<Music> result) {
-                unChangedList.addAll(result);
+                for (Music item: result) {
+                    if(item.isFlag())  unChangedList.add(item);
+                }
                 musicList.clear();
                 musicList.addAll(unChangedList);
                 recyclerViewSong.setAdapter(songAdapter);
