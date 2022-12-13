@@ -1,7 +1,5 @@
 package com.workshops.onlinemusicplayer.adapter;
 
-import static com.workshops.onlinemusicplayer.fragment.HomeFragment.singers;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,15 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.model.Music;
 
 import java.util.ArrayList;
-import java.util.Map;
-
 
 public class MusicAdapter extends BaseAdapter {
     private static boolean flag;
@@ -56,18 +50,11 @@ public class MusicAdapter extends BaseAdapter {
         TextView txtSinger = view.findViewById(R.id.txtSingle);
         ImageView imgSong = view.findViewById(R.id.imgSong);
         ImageView imgHeart = view.findViewById(R.id.imgHeart);
-//        db = FirebaseDatabase.getInstance();
 
         Music music = ds.get(i);
 
-
         txtTitle.setText(music.getName());
         txtSinger.setText(music.getSinger());
-//        for (int i1=0; i1<singers.size(); i1++) {
-//            if (song.getSinger().equals(singers.get(i1).getId())) {
-//                txtSinger.setText(singers.get(i1).getName());
-//            }
-//        }
         Glide.with(context).load(music.getImage()).into(imgSong);
         flag = music.isFlag();
         if (flag) {

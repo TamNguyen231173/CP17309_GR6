@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
+import androidx.work.Logger;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,8 +55,9 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 
     public static MusicSelectListener listener;
     private final List<Music> musicList = new ArrayList<>();
+    private final List<Music> musicSearchList = new ArrayList<>();
     private SongsAdapter songAdapter;
-    private List<Music> unChangedList = new ArrayList<>();
+    private final List<Music> unChangedList = new ArrayList<>();
 
     private MaterialToolbar toolbar;
     private SearchView searchView;
@@ -64,6 +66,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     private PhotoAdapter photoAdapter;
     private List<Photo> mListPhoto;
     private Timer mTimer;
+    private RecyclerView recyclerViewSearch;
+    private RecyclerView recyclerViewSong;
 
     public static ArrayList<Singer> singers = new ArrayList<>();
 
@@ -90,7 +94,20 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        RecyclerView recyclerViewSong = view.findViewById(R.id.songs_layout);
+        searchView = view.findViewById(R.id.search_view);
+        searchView.clearFocus();
+        setUpSearchView();
+        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                Log.d(">>>>>TAG", "HasFocus: " + b);
+            }
+        });
+
+        recyclerViewSearch = view.findViewById(R.id.recycler_view_search);
+        recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        recyclerViewSong = view.findViewById(R.id.songs_layout);
         recyclerViewSong.setLayoutManager(new LinearLayoutManager(getActivity()));
         songAdapter = new SongsAdapter(listener, this, musicList);
 
@@ -194,7 +211,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         list.add(new Photo(R.drawable.anh_5));
         list.add(new Photo(R.drawable.anh_6));
 
-
         return list;
     }
 
@@ -216,9 +232,10 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     private void updateAdapter(List<Music> list) {
-        musicList.clear();
-        musicList.addAll(list);
-        songAdapter.notifyDataSetChanged();
+        musicSearchList.clear();
+        musicSearchList.addAll(list);
+        songAdapter = new SongsAdapter(listener, this, musicSearchList);
+        recyclerViewSearch.setAdapter(songAdapter);
     }
 
     @Override

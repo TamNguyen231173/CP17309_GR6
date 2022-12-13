@@ -16,16 +16,26 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.media.session.MediaSession;
 import android.os.Build;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.helper.MusicLibraryHelper;
 import com.workshops.onlinemusicplayer.model.Music;
@@ -77,12 +87,8 @@ public class PlayerNotificationManager {
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent contentIntent = PendingIntent.getActivity(playerService, REQUEST_CODE,
                 openPlayerIntent, PendingIntent.FLAG_MUTABLE);
-        Bitmap albumArt = null;
-//        try {
-//            albumArt  = Glide.with(playerService.getApplicationContext()).asBitmap().load(song.getImage()).submit().get();
-//        } catch (final ExecutionException | InterruptedException e) {
-//            Log.e(">>>>>>>>Bitmap error", e.getMessage());
-//        }
+
+        MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(playerService, "Media Session");
 
         notificationBuilder
                 .setShowWhen(false)
@@ -90,18 +96,34 @@ public class PlayerNotificationManager {
                 .setContentTitle(song.getName())
                 .setContentText(song.getSinger())
                 .setProgress(100, playerService.getPlayerManager().getCurrentPosition(), true)
-//                .setColor(getDominantColor(albumArt))
                 .setColorized(false)
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
-//                .setLargeIcon(albumArt)
                 .addAction(notificationAction(PREV_ACTION))
                 .addAction(notificationAction(PLAY_PAUSE_ACTION))
                 .addAction(notificationAction(NEXT_ACTION))
                 .addAction(notificationAction(CLOSE_ACTION))
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
-        notificationBuilder.setStyle(new androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0, 1, 2));
+        Glide.with(playerService)
+                .asBitmap()
+                .load(song.getImage())
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        notificationBuilder
+                                .setColor(getDominantColor(resource))
+                                .setLargeIcon(resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
+
+        notificationBuilder.setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                .setShowActionsInCompactView(0, 1, 2));
         return notificationBuilder.build();
     }
 
@@ -113,15 +135,9 @@ public class PlayerNotificationManager {
         notificationBuilder.setOngoing(playerService.getPlayerManager().isPlaying());
         PlayerManager playerManager = playerService.getPlayerManager();
         Music song = playerManager.getCurrentMusic();
-//        Bitmap albumArt = MusicLibraryHelper.getThumbnail(playerService.getApplicationContext(),
-//                song.getImage());
 
         if (notificationBuilder.mActions.size() > 0)
             notificationBuilder.mActions.set(1, notificationAction(PLAY_PAUSE_ACTION));
-
-//        notificationBuilder
-//                .setLargeIcon(albumArt)
-//                .setColor(getDominantColor(albumArt));
 
         notificationBuilder
                 .setContentTitle(song.getName())
