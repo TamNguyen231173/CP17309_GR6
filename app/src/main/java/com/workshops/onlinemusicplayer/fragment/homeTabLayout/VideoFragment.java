@@ -48,7 +48,7 @@ public class VideoFragment extends Fragment {
         adapter = new VideoAdapter(list,getActivity());
 
         videoList.setAdapter(adapter);
-        layoutManagerPopular = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        layoutManagerPopular = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL, false);
         videoList.setLayoutManager(layoutManagerPopular);
         videoList.setAdapter(adapter);
 

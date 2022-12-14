@@ -6,11 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +26,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.MusicAdapter;
+import com.workshops.onlinemusicplayer.fragment.ExploreFragment;
+import com.workshops.onlinemusicplayer.fragment.HomeFragment;
 import com.workshops.onlinemusicplayer.model.Music;
 
 import java.util.ArrayList;
@@ -45,6 +49,15 @@ public class PlayListSingerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_list_singer);
+
+        ImageView imageView1 = findViewById(R.id.imageView1);
+        imageView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(PlayListSingerActivity.this, ExploreFragment.class));
+                finish();
+            }
+        });
 
         nameSinger = findViewById(R.id.nameSinger);
         imageSinger = findViewById(R.id.imageSinger);

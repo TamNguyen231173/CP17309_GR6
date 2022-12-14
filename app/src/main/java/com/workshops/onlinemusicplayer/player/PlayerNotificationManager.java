@@ -89,6 +89,7 @@ public class PlayerNotificationManager {
                 openPlayerIntent, PendingIntent.FLAG_MUTABLE);
 
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(playerService, "Media Session");
+        Bitmap bitmap = BitmapFactory.decodeResource(playerService.getResources(),R.drawable.img_song);
 
         notificationBuilder
                 .setShowWhen(false)
@@ -99,6 +100,7 @@ public class PlayerNotificationManager {
                 .setColorized(false)
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
+                .setLargeIcon(bitmap)
                 .addAction(notificationAction(PREV_ACTION))
                 .addAction(notificationAction(PLAY_PAUSE_ACTION))
                 .addAction(notificationAction(NEXT_ACTION))

@@ -1,6 +1,7 @@
 package com.workshops.onlinemusicplayer.dialog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.workshops.onlinemusicplayer.R;
+import com.workshops.onlinemusicplayer.fragment.HomeFragment;
 import com.workshops.onlinemusicplayer.helper.MusicLibraryHelper;
 import com.workshops.onlinemusicplayer.model.Music;
 import com.workshops.onlinemusicplayer.player.PlayerListener;
@@ -17,6 +19,7 @@ import com.workshops.onlinemusicplayer.player.PlayerManager;
 import com.workshops.onlinemusicplayer.player.PlayerQueue;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.workshops.onlinemusicplayer.view.MainActivity;
 import com.workshops.onlinemusicplayer.view.PlayPauseView;
 
 import java.util.Locale;
@@ -59,6 +62,14 @@ public class PlayerDialog extends BottomSheetDialog implements SeekBar.OnSeekBar
         currentDuration = findViewById(R.id.current_duration);
         totalDuration = findViewById(R.id.total_duration);
         songProgress = findViewById(R.id.song_progress);
+
+        ImageView close_dialog_music = findViewById(R.id.close_dialog_music);
+        close_dialog_music.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getContext().startActivity(new Intent(getContext(), MainActivity.class));
+            }
+        });
 
         setUpUi();
         setUpListeners();
