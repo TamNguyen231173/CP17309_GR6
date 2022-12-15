@@ -7,40 +7,85 @@
     android:background="@color/bg_color"
     tools:context=".fragment.ExploreFragment">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Danh Sách Nghệ Sĩ"
-        android:layout_margin="10dp"
-        android:textSize="22sp"
-        android:textColor="@color/text_black"
-        android:gravity="center"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/playListSinger"
+    <ScrollView
         android:layout_width="match_parent"
-        android:text="Explore"
-        android:textSize="40sp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bản Phát Hành Mới Phổ Biến"
-        android:layout_margin="10dp"
-        android:textSize="22sp"
-        android:textColor="@color/text_black"
-        android:gravity="center"
-        />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Danh Sách Nghệ Sĩ"
+                android:layout_margin="10dp"
+                android:textSize="22sp"
+                android:textColor="@color/text_black"
+                android:gravity="center"
+                />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/playListPopular"
-        android:layout_width="match_parent"
-        android:text="Explore"
-        android:textSize="40sp"
-        android:layout_height="wrap_content"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playListSinger"
+                android:layout_width="match_parent"
+                android:text="Explore"
+                android:textSize="40sp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bản Phát Hành Mới Phổ Biến"
+                android:layout_margin="10dp"
+                android:textSize="22sp"
+                android:textColor="@color/text_black"
+                android:gravity="center"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playListPopular"
+                android:layout_width="match_parent"
+                android:text="Explore"
+                android:textSize="40sp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tuyển Tập Nhạc Tâm Trạng"
+                android:layout_margin="10dp"
+                android:textSize="22sp"
+                android:textColor="@color/text_black"
+                android:gravity="center"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playListMood"
+                android:layout_width="match_parent"
+                android:text="Explore"
+                android:textSize="40sp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top 50 Bài Hát Của Các Quốc Gia"
+                android:layout_margin="10dp"
+                android:textSize="22sp"
+                android:textColor="@color/text_black"
+                android:gravity="center"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playListTop50"
+                android:layout_width="match_parent"
+                android:text="Explore"
+                android:textSize="40sp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </ScrollView>
+
 
 
 

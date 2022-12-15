@@ -14,6 +14,11 @@ public class PlayListPopular implements Serializable {
         this.resource = resource;
         this.lyrics = lyrics;
     }
+
+    public PlayListPopular(String image) {
+        this.image = image;
+    }
+
     public PlayListPopular(int id, String name, String image, String singer) {
         this.id = id;
         this.name = name;

@@ -19,12 +19,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
+import com.workshops.onlinemusicplayer.adapter.PlayListMoodAdapter;
 import com.workshops.onlinemusicplayer.adapter.PlayListPopularAdapter;
 import com.workshops.onlinemusicplayer.adapter.PlayListSingerAdapter;
+import com.workshops.onlinemusicplayer.adapter.PlayListTop50Adapter;
 import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
+import com.workshops.onlinemusicplayer.model.Mood;
 import com.workshops.onlinemusicplayer.model.PlayListPopular;
 import com.workshops.onlinemusicplayer.model.PlayListSinger;
 import com.workshops.onlinemusicplayer.model.RecyclerViewInterface;
+import com.workshops.onlinemusicplayer.model.Top50;
 import com.workshops.onlinemusicplayer.view.PlayListSingerActivity;
 
 import java.util.ArrayList;
@@ -35,11 +39,19 @@ public class ExploreFragment extends Fragment implements RecyclerViewInterface {
     private static final String TAG = "Read data from firebase";
     private RecyclerView recyclerViewSinger;
     private RecyclerView recyclerViewPopular;
+    private RecyclerView recyclerViewMood;
+    private RecyclerView recyclerViewTop50;
     private PlayListSingerAdapter adapterSinger;
+    private PlayListMoodAdapter adapterMood;
+    private PlayListTop50Adapter adapterTop50;
     private PlayListPopularAdapter adapterPopular;
     private LinearLayoutManager layoutManagerSinger;
     private LinearLayoutManager layoutManagerPopular;
+    private LinearLayoutManager layoutManagerMood;
+    private LinearLayoutManager layoutManagerTop50;
     ArrayList<PlayListPopular> listPopular = new ArrayList<>();
+    ArrayList<Mood> listMood = new ArrayList<>();
+    ArrayList<Top50> listTop50 = new ArrayList<>();
     ArrayList<PlayListSinger> ds = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -58,10 +70,13 @@ public class ExploreFragment extends Fragment implements RecyclerViewInterface {
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
         recyclerViewSinger = view.findViewById(R.id.playListSinger);
         recyclerViewPopular = view.findViewById(R.id.playListPopular);
-
+        recyclerViewMood = view.findViewById(R.id.playListMood);
+        recyclerViewTop50 = view.findViewById(R.id.playListTop50);
 
         getListSinger();
         getListPopular();
+        getListMood();
+        getListTop50();
 //        readData();
 
         // singer
@@ -76,8 +91,37 @@ public class ExploreFragment extends Fragment implements RecyclerViewInterface {
         recyclerViewPopular.setLayoutManager(layoutManagerPopular);
         recyclerViewPopular.setAdapter(adapterPopular);
 
+        //mood
+        adapterMood = new PlayListMoodAdapter(listMood,getActivity());
+        layoutManagerMood = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewMood.setLayoutManager(layoutManagerMood);
+        recyclerViewMood.setAdapter(adapterMood);
+
+        //top 50
+        adapterTop50 = new PlayListTop50Adapter(listTop50,getActivity());
+        layoutManagerTop50 = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewTop50.setLayoutManager(layoutManagerTop50);
+        recyclerViewTop50.setAdapter(adapterTop50);
         return view;
 
+    }
+
+    private void getListTop50() {
+        listTop50.add(new Top50(R.drawable.img_1));
+        listTop50.add(new Top50(R.drawable.img_2));
+        listTop50.add(new Top50(R.drawable.img_3));
+        listTop50.add(new Top50(R.drawable.img_4));
+        listTop50.add(new Top50(R.drawable.img_5));
+        listTop50.add(new Top50(R.drawable.img_6));
+    }
+
+    private void getListMood() {
+        listMood.add(new Mood(R.drawable.hinh_1));
+        listMood.add(new Mood(R.drawable.hinh_2));
+        listMood.add(new Mood(R.drawable.hinh_3));
+        listMood.add(new Mood(R.drawable.hinh_4));
+        listMood.add(new Mood(R.drawable.hinh_5));
+        listMood.add(new Mood(R.drawable.hinh_6));
     }
 
 
