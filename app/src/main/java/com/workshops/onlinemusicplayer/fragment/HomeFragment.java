@@ -97,12 +97,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         searchView = view.findViewById(R.id.search_view);
         searchView.clearFocus();
         setUpSearchView();
-        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                Log.d(">>>>>TAG", "HasFocus: " + b);
-            }
-        });
 
         recyclerViewSearch = view.findViewById(R.id.recycler_view_search);
         recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -124,7 +118,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 
         circleIndicator.setViewPager(viewPager);
         photoAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
-
         // end image slider
 
         MusicLibraryHelper.fetchMusicLibrary(view.getContext(), new CallBackDatabase() {
@@ -214,7 +207,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         return list;
     }
 
-
     private void setUpSearchView() {
         searchView.setOnQueryTextListener(this);
     }
@@ -222,12 +214,15 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     @Override
     public boolean onQueryTextSubmit(String query) {
         updateAdapter(ListHelper.searchMusicByName(unChangedList, query.toLowerCase()));
+        recyclerViewSearch.setVisibility(View.VISIBLE);
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
         updateAdapter(ListHelper.searchMusicByName(unChangedList, newText.toLowerCase()));
+        if (newText.isEmpty()) recyclerViewSearch.setVisibility(View.GONE);
+        else recyclerViewSearch.setVisibility(View.VISIBLE);
         return true;
     }
 

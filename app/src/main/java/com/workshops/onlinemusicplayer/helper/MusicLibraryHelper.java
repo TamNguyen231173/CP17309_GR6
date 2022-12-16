@@ -72,16 +72,6 @@ public class MusicLibraryHelper {
         return musicList;
     }
 
-    public static Bitmap getThumbnail(Context context, String url) {
-        try {
-            Bitmap bitmap  = Glide.with(context).asBitmap().load(url).submit().get();
-            return bitmap;
-        } catch (final ExecutionException | InterruptedException e) {
-            Log.e(TAG, e.getMessage());
-        }
-        return null;
-    }
-
     public static String formatDuration(long duration) {
         long seconds = TimeUnit.MILLISECONDS.toSeconds(duration);
         String second = String.valueOf(seconds);

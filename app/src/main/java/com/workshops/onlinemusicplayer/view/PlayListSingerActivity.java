@@ -42,8 +42,6 @@ public class PlayListSingerActivity extends AppCompatActivity {
     MusicAdapter adapter;
     ListView listViewPlaylist;
 
-
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,6 @@ public class PlayListSingerActivity extends AppCompatActivity {
         imageView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startActivity(new Intent(PlayListSingerActivity.this, ExploreFragment.class));
                 finish();
             }
         });

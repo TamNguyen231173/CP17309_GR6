@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
 public class PlayListSingerAdapter extends RecyclerView.Adapter<PlayListSingerAdapter.ViewHolder> {
 
     private final RecyclerViewInterface recyclerViewInterface;
@@ -47,10 +46,7 @@ public class PlayListSingerAdapter extends RecyclerView.Adapter<PlayListSingerAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-//        holder.imageSinger.setImageResource(ds.get(position).getImageSinger());
         PlayListSinger singer = ds.get(position);
-//        holder.NameSinger.setText(ds.get(position).getName());
         holder.NameSinger.setText(singer.getName());
         Glide.with(context).load(singer.getImage()).into(holder.imageSinger);
     }
