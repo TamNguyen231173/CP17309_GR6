@@ -3,6 +3,8 @@ package com.workshops.onlinemusicplayer.dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -41,6 +43,8 @@ public class PlayerDialog extends BottomSheetDialog implements SeekBar.OnSeekBar
     private final TextView totalDuration;
     private final SeekBar songProgress;
 
+    private final Animation animation;
+
     private Boolean dragging = false;
 
     public PlayerDialog(@NonNull Context context, PlayerManager playerManager) {
@@ -62,6 +66,8 @@ public class PlayerDialog extends BottomSheetDialog implements SeekBar.OnSeekBar
         currentDuration = findViewById(R.id.current_duration);
         totalDuration = findViewById(R.id.total_duration);
         songProgress = findViewById(R.id.song_progress);
+        animation = AnimationUtils.loadAnimation(context,
+                R.anim.rotate_anim);
 
         ImageView close_dialog_music = findViewById(R.id.close_dialog_music);
         close_dialog_music.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +106,8 @@ public class PlayerDialog extends BottomSheetDialog implements SeekBar.OnSeekBar
 
         int icon = playerManager.isPlaying() ? R.drawable.ic_pause : R.drawable.ic_play;
         playPauseControl.setImageResource(icon);
+
+        if(playerManager.isPlaying()) albumArt.startAnimation(animation);
 
         if (playerQueue.isShuffle()) shuffleControl.setAlpha(1f);
         else shuffleControl.setAlpha(0.3f);
@@ -141,10 +149,15 @@ public class PlayerDialog extends BottomSheetDialog implements SeekBar.OnSeekBar
 
     @Override
     public void onStateChanged(int state) {
-        if (state == State.PLAYING)
+        if (state == State.PLAYING) {
             playPauseControl.setImageResource(R.drawable.ic_pause);
-        else
+            albumArt.startAnimation(animation);
+        }
+        else {
             playPauseControl.setImageResource(R.drawable.ic_play);
+            albumArt.clearAnimation();
+        }
+
     }
 
     @Override
