@@ -45,14 +45,9 @@ public class LikeFragment extends Fragment implements RecyclerViewInterface, Sea
     public static MusicSelectListener listener;
     private final List<Music> musicList = new ArrayList<>();
     private List<Music> unChangedList = new ArrayList<>();
-    private ArrayList<Music> list = new ArrayList<Music>();
-    private ListView listViewPlaylist;
-    private MusicAdapter musicAdapter;
     private AlbumAdapter albumAdapter;
     private SongsAdapter songAdapter;
-    private int i;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static ArrayList<Singer> singers = new ArrayList<>();
     private ArrayList<Albums> albums = new ArrayList<>();
     private RecyclerView recyclerViewAlbum;
     private LinearLayoutManager layoutManagerAlbum;

@@ -1,84 +1,79 @@
 package com.workshops.onlinemusicplayer.fragment;
 
 import android.app.Activity;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.workshops.onlinemusicplayer.R;
 import com.workshops.onlinemusicplayer.adapter.PlayListMusicAdapter;
+import com.workshops.onlinemusicplayer.adapter.SongsAdapter;
+import com.workshops.onlinemusicplayer.helper.MusicLibraryHelper;
+import com.workshops.onlinemusicplayer.listener.CallBackDatabase;
 import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
+import com.workshops.onlinemusicplayer.listener.PlayListListener;
 import com.workshops.onlinemusicplayer.model.Singer;
 import com.workshops.onlinemusicplayer.model.Music;
 import com.workshops.onlinemusicplayer.view.LoginActivity;
 import com.workshops.onlinemusicplayer.view.ResetPasswordActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class UserFragment extends Fragment {
-    private static MusicSelectListener listener;
+public class UserFragment extends Fragment implements PlayListListener {
+    public static MusicSelectListener listener;
     private ImageView menu_btn;
-    FirebaseAuth mAuth;
-    FirebaseFirestore fStore;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore fStore;
     private GoogleSignInClient mGoogleSignInClient;
-    TextView etEmail, etName;
-    String userID;
-    AlertDialog.Builder reset_alert;
-    LayoutInflater inflater2;
+    private TextView etEmail, etName;
+    private String userID;
+    private AlertDialog.Builder reset_alert;
+    private LayoutInflater inflater2;
     private static final String TAG = "Read data from firebase";
-    ArrayList<Music> list = new ArrayList<Music>();
-    ListView listViewPlaylist;
-    PlayListMusicAdapter adapter;
-    int i;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ArrayList<Music> list = new ArrayList<Music>();
+    private PlayListMusicAdapter adapter;
     public static ArrayList<Singer> singers = new ArrayList<>();
+    private final List<Music> unChangedList = new ArrayList<>();
 
     public UserFragment() {
     }
 
-    public static Fragment newInstance()
-    {
-        UserFragment userFragment = new UserFragment();
-        return userFragment;
+    public static UserFragment newInstance(MusicSelectListener selectListener) {
+        UserFragment.listener = selectListener;
+        return new UserFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_user, container, false);
+
         etEmail = view.findViewById(R.id.etEmail);
         etName = view.findViewById(R.id.etName);
         mAuth = FirebaseAuth.getInstance();
@@ -92,7 +87,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 etEmail.setText(documentSnapshot.getString("email"));
-                etName.setText(documentSnapshot.getString("fName"));
+                etName.setText(documentSnapshot.getString("Name"));
             }
         });
 
@@ -133,9 +128,21 @@ public class UserFragment extends Fragment {
                 popupMenu.show();
             }
         });
-        getDataPlaylist();
 
-        listViewPlaylist = view.findViewById(R.id.listViewPlaylist);
+        RecyclerView recyclerViewSong = view.findViewById(R.id.recycler_view_playlist_user);
+        recyclerViewSong.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new PlayListMusicAdapter(listener, this, list);
+
+        MusicLibraryHelper.fetchMusicLibrary(view.getContext(), new CallBackDatabase() {
+            @Override
+            public List<Music> onCallback(List<Music> result) {
+                unChangedList.addAll(result);
+                list.clear();
+                list.addAll(unChangedList);
+                recyclerViewSong.setAdapter(adapter);
+                return result;
+            }
+        });
 
         return view;
     }
@@ -160,58 +167,13 @@ public class UserFragment extends Fragment {
         LoginManager.getInstance().logOut();
     }
 
-    private void readData() {
-        i = 0;
-        db.collection("song")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                i++;
-                                String title = (String) document.getData().get("name");
-                                String singer = (String) document.getData().get("singer");
-                                String image = (String) document.getData().get("image");
-
-                                list.add(new Music(i, title, singer, image));
-                            }
-                            adapter = new PlayListMusicAdapter(list, getContext());
-                            listViewPlaylist.setAdapter(adapter);
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-    }
     @Override
     public void onResume() {
         super.onResume();
-        readData();
     }
 
-    private void getDataPlaylist() {
-        db.collection("singer")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                singers.add(new Singer(document.get("name").toString(),document.getId()));
-                            }
-                            adapter = new PlayListMusicAdapter(list, getContext());
-                            listViewPlaylist.setAdapter(adapter);
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("<<singer>>", "Lấy dữ liệu không thành công" );
-                    }
-                });
-    }
+    @Override
+    public void option(Context context, Music music) {
 
+    }
 }

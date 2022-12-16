@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="10dp"
+    android:id="@+id/root_layout"
     android:background="@color/bg_color">
 
     <androidx.cardview.widget.CardView
@@ -36,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txtSingle"
+        android:id="@+id/txtSinger"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Billie Eilish"

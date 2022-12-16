@@ -32,7 +32,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         fragments.add(HomeFragment.newInstance(selectListener));
         fragments.add(ExploreFragment.newInstance(selectListener));
         fragments.add(LikeFragment.newInstance(selectListener));
-        fragments.add(UserFragment.newInstance());
+        fragments.add(UserFragment.newInstance(selectListener));
     }
 
     @NotNull

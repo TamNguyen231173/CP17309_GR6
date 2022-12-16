@@ -1,38 +1,49 @@
 package com.workshops.onlinemusicplayer.adapter;
 
-import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.workshops.onlinemusicplayer.R;
+import com.workshops.onlinemusicplayer.helper.MusicLibraryHelper;
+import com.workshops.onlinemusicplayer.listener.MusicSelectListener;
+import com.workshops.onlinemusicplayer.listener.PlayListListener;
 import com.workshops.onlinemusicplayer.model.Music;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class PlayListMusicAdapter extends BaseAdapter {
-    private boolean flag = false;
-    private ArrayList<Music> ds;
-    private Context context;
+public class PlayListMusicAdapter extends  RecyclerView.Adapter<PlayListMusicAdapter.MyViewHolder> {
+    private final List<Music> musicList;
+    private final PlayListListener playListListener;
+    public MusicSelectListener listener;
 
-    public PlayListMusicAdapter(ArrayList<Music> ds, Context context) {
-        this.ds = ds;
-        this.context = context;
+    public PlayListMusicAdapter(MusicSelectListener listener, PlayListListener playListListener, List<Music> musics) {
+        this.listener = listener;
+        this.musicList = musics;
+        this.playListListener = playListListener;
+    }
+
+    @NonNull
+    @Override
+    public PlayListMusicAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_public_playlist, parent, false);
+        return new PlayListMusicAdapter.MyViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return ds.size();
-    }
+    public void onBindViewHolder(@NonNull PlayListMusicAdapter.MyViewHolder holder, int position) {
+        Music music = musicList.get(position);
+        holder.txtTitle.setText(music.getName());
+        holder.txtSinger.setText(music.getSinger());
 
-    @Override
-    public Object getItem(int i) {
-        return null;
+        holder.duration.setText(MusicLibraryHelper.formatDuration(music.getId()));
+        Glide.with(holder.imgSong.getContext()).load(music.getImage()).into(holder.imgSong);
     }
 
     @Override
@@ -41,21 +52,34 @@ public class PlayListMusicAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-        view = inflater.inflate(R.layout.item_public_playlist,null);
-        TextView txtTitle = view.findViewById(R.id.txtTitle);
-        TextView txtSinger = view.findViewById(R.id.txtSingle);
-        ImageView imgSong = view.findViewById(R.id.imgSong);
-        TextView duration = view.findViewById(R.id.tv_duration);
+    public int getItemCount() {
+        return musicList.size();
+    }
 
-        Music song = ds.get(i);
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        txtTitle.setText(song.getName());
-        txtSinger.setText(song.getSinger());
-        duration.setText("dcsdf");
-        Glide.with(context).load(song.getImage()).into(imgSong);
+        private final TextView txtTitle;
+        private final TextView txtSinger;
+        private final TextView duration;
+        private final ImageView imgSong;
 
-        return view;
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            txtTitle = itemView.findViewById(R.id.txtTitle);
+            txtSinger = itemView.findViewById(R.id.txtSinger);
+            duration = itemView.findViewById(R.id.tv_duration);
+            imgSong = itemView.findViewById(R.id.imgSong);
+
+            itemView.findViewById(R.id.root_layout).setOnClickListener(v -> {
+                listener.setShuffleMode(false);
+                listener.playQueue(musicList.subList(getAdapterPosition(), musicList.size()));
+            });
+
+            itemView.findViewById(R.id.root_layout).setOnLongClickListener(v -> {
+                playListListener.option(itemView.getContext(), musicList.get(getAdapterPosition()));
+                return true;
+            });
+        }
     }
 }
