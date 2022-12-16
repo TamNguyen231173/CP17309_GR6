@@ -1,7 +1,5 @@
 package com.workshops.onlinemusicplayer.adapter;
 
-import static com.workshops.onlinemusicplayer.fragment.HomeFragment.singers;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -46,33 +44,18 @@ public class PlayListMusicAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = ((Activity)context).getLayoutInflater();
         view = inflater.inflate(R.layout.item_public_playlist,null);
-        TextView txtTitle = view.findViewById(R.id.txtitle);
+        TextView txtTitle = view.findViewById(R.id.txtTitle);
         TextView txtSinger = view.findViewById(R.id.txtSingle);
         ImageView imgSong = view.findViewById(R.id.imgSong);
-        ImageView imgHeart = view.findViewById(R.id.imgHeart);
+        TextView duration = view.findViewById(R.id.tv_duration);
 
         Music song = ds.get(i);
 
         txtTitle.setText(song.getName());
         txtSinger.setText(song.getSinger());
-//        for (int i1=0; i1<singers.size(); i1++) {
-//            if (song.getSinger().equals(singers.get(i1).getId())) {
-//                txtSinger.setText(singers.get(i1).getName());
-//            }
-//        }
+        duration.setText("dcsdf");
         Glide.with(context).load(song.getImage()).into(imgSong);
-//        imgHeart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (!flag){
-//                    imgHeart.setImageResource(R.drawable.ic_favorite_red_48);
-//                    flag = true;
-//                }else{
-//                    imgHeart.setImageResource(R.drawable.ic_favorite_black_30);
-//                    flag = false;
-//                }
-//            }
-//        });
+
         return view;
     }
 }

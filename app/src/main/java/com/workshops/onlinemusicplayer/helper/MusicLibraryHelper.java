@@ -58,8 +58,9 @@ public class MusicLibraryHelper {
                                 String lyrics = (String) document.getData().get("lyrics");
                                 String category = (String) document.getData().get("album") ;
                                 boolean flag = (boolean) document.getData().get("flag");
+                                String id_flag = (String) document.getData().get("id");
 
-                                musicList.add(new Music(id, title, singer, image, audio, lyrics, category, flag));
+                                musicList.add(new Music(id, title, singer, image, audio, lyrics, category, flag, id_flag));
                                 id++;
                             }
                         } else {

@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Music implements Serializable {
     private  int id;
-    private String name, singer, category, resource, image, lyrics;
+    private String name, singer, category, resource, image, lyrics , id_flag;
     private boolean flag;
     public Map<String, Boolean> stars = new HashMap<>();
 
@@ -46,7 +46,7 @@ public class Music implements Serializable {
         this.lyrics = lyrics;
     }
 
-    public Music(int id, String name, String singer, String image, String resource, String lyrics, String category, boolean flag) {
+    public Music(int id, String name, String singer, String image, String resource, String lyrics, String category, boolean flag, String id_flag) {
         this.id = id;
         this.name = name;
         this.singer = singer;
@@ -55,6 +55,7 @@ public class Music implements Serializable {
         this.image = image;
         this.lyrics = lyrics;
         this.flag = flag;
+        this.id_flag = id_flag;
     }
 
     public int getId() {
@@ -119,5 +120,13 @@ public class Music implements Serializable {
 
     public void setFlag(boolean flag) {
         this.flag = flag;
+    }
+
+    public String getId_flag() {
+        return id_flag;
+    }
+
+    public void setId_flag(String id_flag) {
+        this.id_flag = id_flag;
     }
 }

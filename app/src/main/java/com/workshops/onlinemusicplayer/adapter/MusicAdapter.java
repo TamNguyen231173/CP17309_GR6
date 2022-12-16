@@ -68,14 +68,14 @@ public class MusicAdapter extends BaseAdapter {
                     flag = true;
                     FirebaseFirestore.getInstance()
                             .collection("song")
-                            .document()
+                            .document(music.getId_flag())
                             .update("flag", true);
                 }else{
                     imgHeart.setImageResource(R.drawable.ic_favorite_black_30);
                     flag = false;
                     FirebaseFirestore.getInstance()
                             .collection("song")
-                            .document()
+                            .document(music.getId_flag())
                             .update("flag", false);
                 }
             }
